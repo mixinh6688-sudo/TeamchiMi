@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Học cùng chị Mimi — TOEIC ETS 2026 | Test 01 - Part 5 Interactive</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-dark: #1e40af;
+    --primary-light: #eff6ff;
+    --primary-border: #bfdbfe;
+    --success: #15803d;
+    --success-bg: #dcfce7;
+    --danger: #b91c1c;
+    --danger-bg: #fee2e2;
+    --warn: #b45309;
+    --warn-bg: #fef3c7;
+    --text: #1e293b;
+    --muted: #64748b;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --radius: 14px;
+    --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding-bottom: 80px;
+  }
+
+  /* Header */
+  .hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 55%, #2563eb 100%);
+    color: #fff;
+    padding: 26px 20px 22px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(29, 78, 216, 0.25);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: clamp(1.35rem, 3vw, 1.95rem);
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .hero p {
+    font-size: 0.94rem;
+    opacity: 0.92;
+  }
+
+  /* Sticky Toolbar */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    padding: 10px 14px;
+  }
+  .toolbar-inner {
+    max-width: 1020px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toolbar-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .tb-btn {
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: var(--text);
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .tb-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+  .tb-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .tb-btn.reset-btn:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+
+  .score-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-light);
+    border: 1px solid var(--primary-border);
+    color: var(--primary-dark);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.86rem;
+  }
+  .timer-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #334155;
+  }
+  .timer-btn {
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 9px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .timer-btn:hover { background: var(--primary-dark); }
+
+  /* Quick Nav & Filters */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .filter-pill {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-pill:hover { border-color: var(--primary); color: var(--primary); }
+  .filter-pill.active { background: var(--primary-dark); color: #fff; border-color: var(--primary-dark); }
+
+  .q-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-top: 2px;
+  }
+  .q-dot {
+    width: 30px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #334155;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .q-dot:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+  .q-dot.right { background: var(--success); color: #fff; border-color: var(--success); }
+  .q-dot.wrong { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+  /* Main Container */
+  .container {
+    max-width: 960px;
+    margin: 22px auto 0;
+    padding: 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .hint-banner {
+    background: #fff;
+    border-left: 4px solid var(--primary);
+    padding: 11px 15px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #334155;
+    box-shadow: var(--shadow);
+  }
+
+  /* Question Card */
+  .q-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid #e2e8f0;
+    scroll-margin-top: 175px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .q-card.shake {
+    animation: shake 0.36s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  .q-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .q-num {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--primary-dark);
+  }
+  .q-badge-num {
+    background: var(--primary);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+  .q-tag {
+    background: #eef2ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+  body.hide-tags .q-tag { display: none; }
+
+  /* Sentence */
+  .q-stem {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 14px;
+    line-height: 1.75;
+  }
+  .blank-slot {
+    display: inline-block;
+    min-width: 90px;
+    text-align: center;
+    border-bottom: 2.5px dashed var(--primary);
+    color: var(--primary);
+    font-weight: 800;
+    padding: 0 8px;
+    margin: 0 3px;
+    border-radius: 6px;
+    transition: all 0.25s;
+  }
+  .blank-slot.filled {
+    background: var(--success-bg);
+    color: var(--success);
+    border-bottom: 2.5px solid var(--success);
+  }
+
+  /* Clickable words */
+  .w-click {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0 1px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .w-click:hover {
+    background: #dbeafe;
+    color: var(--primary-dark);
+  }
+
+  /* Options */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: 1fr; }
+  }
+  .opt-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 13px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    transition: all 0.18s;
+  }
+  .opt-row:hover { border-color: #93c5fd; background: #eff6ff; }
+  .opt-row.correct { border-color: var(--success); background: var(--success-bg); }
+  .opt-row.wrong { border-color: var(--danger); background: var(--danger-bg); }
+  .opt-circle {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .opt-circle:hover { background: var(--primary); color: #fff; transform: scale(1.06); }
+  .opt-row.correct .opt-circle { background: var(--success); border-color: var(--success); color: #fff; }
+  .opt-row.wrong .opt-circle { background: var(--danger); border-color: var(--danger); color: #fff; }
+  .opt-text {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  /* Audio Bar + IPA */
+  .audio-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+  }
+  .play-tts-btn {
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .play-tts-btn:hover { background: var(--primary-dark); }
+  .play-tts-btn.playing { background: #dc2626; }
+  .wave-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: #cbd5e1;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+    transition: width 0.15s linear;
+  }
+  .wave-bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+  }
+  .wave-bars span {
+    width: 3px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+  .audio-box.playing .wave-bars span {
+    animation: waveAnim 0.6s infinite ease-in-out alternate;
+  }
+  .audio-box.playing .wave-bars span:nth-child(2) { animation-delay: 0.15s; }
+  .audio-box.playing .wave-bars span:nth-child(3) { animation-delay: 0.3s; }
+  .audio-box.playing .wave-bars span:nth-child(4) { animation-delay: 0.45s; }
+  @keyframes waveAnim {
+    from { height: 4px; }
+    to { height: 14px; }
+  }
+
+  .ipa-line {
+    color: #607d8b;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.88em;
+    background: #f8fafc;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 1px solid #edf2f7;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  /* Card Controls */
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #e2e8f0;
+  }
+  .chk-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+  }
+  .exp-toggle-btn {
+    border: 1px solid #fcd34d;
+    background: #fffbeb;
+    color: #92400e;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .exp-toggle-btn:hover { background: #fef3c7; }
+  .exp-toggle-btn.open { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+
+  /* Meaning Box */
+  .vi-box {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  .vi-box.show { display: block; }
+  .vi-sentence { font-weight: 700; color: #0369a1; margin-bottom: 6px; }
+  .vi-opts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 12px;
+    font-size: 0.84rem;
+    color: #334155;
+  }
+  @media (max-width: 600px) { .vi-opts { grid-template-columns: 1fr; } }
+
+  /* Explanation Box */
+  .exp-box {
+    display: none;
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  .exp-box.show { display: block; }
+  .exp-item { margin-bottom: 8px; }
+  .exp-item:last-child { margin-bottom: 0; }
+  .exp-title { font-weight: 800; color: #92400e; }
+  .exp-tip {
+    background: #fff;
+    border-left: 4px solid #f59e0b;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+  }
+
+  /* Feedback Popup */
+  .fb-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: #fff;
+    padding: 18px 28px;
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+    text-align: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.22s ease;
+    border: 3px solid transparent;
+  }
+  .fb-toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .fb-toast.right { border-color: var(--success); }
+  .fb-toast.wrong { border-color: var(--danger); }
+  .fb-emoji { font-size: 2.5rem; line-height: 1.1; margin-bottom: 4px; }
+  .fb-msg { font-weight: 800; font-size: 1rem; color: #0f172a; }
+
+  .float-heart {
+    position: fixed;
+    font-size: 1.6rem;
+    pointer-events: none;
+    z-index: 9998;
+    animation: floatUp 1.2s ease-out forwards;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.8); }
+    100% { opacity: 0; transform: translateY(-130px) scale(1.4); }
+  }
+
+  /* Dictionary Modal */
+  .dict-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 16px;
+  }
+  .dict-backdrop.show { display: flex; }
+  .dict-card {
+    background: #fff;
+    width: 100%;
+    max-width: 440px;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .dict-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    border: none;
+    background: #f1f5f9;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .dict-word {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .dict-speak {
+    border: none;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.82rem;
+  }
+  .dict-meta { color: var(--muted); font-size: 0.9rem; margin: 4px 0 12px; }
+  .dict-vi {
+    background: #f0f9ff;
+    border-left: 4px solid var(--primary);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+  }
+  .dict-extra { font-size: 0.86rem; color: #334155; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-badge">HỌC CÙNG CHỊ MIMI • OFFLINE INTERACTIVE</div>
+  <h1>TOEIC ETS 2026 — TEST 01 | PART 5</h1>
+  <p>30 câu trắc nghiệm hoàn thành câu (101–130) kèm giải thích 4 lớp, mẹo khoanh nhanh &amp; từ điển bấm từ</p>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="toolbar-row">
+      <div class="btn-group">
+        <span style="font-size:0.8rem;font-weight:700;color:#475569;">🔊 Tốc độ:</span>
+        <button class="tb-btn speed-btn" data-speed="0.75">0.75x</button>
+        <button class="tb-btn speed-btn" data-speed="0.88">0.88x</button>
+        <button class="tb-btn speed-btn active" data-speed="1.0">1.0x</button>
+      </div>
+      <div class="btn-group">
+        <span class="score-box">🎯 Đúng: <span id="scoreVal">0</span> / 30</span>
+        <span class="timer-box">⏱️ <span id="timerText">00:00</span> <button class="timer-btn" id="timerToggle">Bắt đầu</button></span>
+        <button class="tb-btn reset-btn" id="resetBtn">🔄 Làm lại</button>
+      </div>
+    </div>
+
+    <div class="toolbar-row">
+      <div class="btn-group">
+        <button class="tb-btn" id="toggleAllAns">✅ Hiện tất cả đáp án</button>
+        <button class="tb-btn" id="toggleAllVi">📖 Hiện tất cả nghĩa</button>
+        <button class="tb-btn" id="toggleAllExp">💡 Hiện tất cả giải thích &amp; mẹo</button>
+        <button class="tb-btn active" id="toggleTags">🏷️ Nhãn dạng câu</button>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="filterBar"></div>
+    <div class="q-nav" id="qNav"></div>
+  </div>
+</div>
+
+<main class="container">
+  <div class="hint-banner">
+    💡 <b>Mẹo tự học:</b> Bấm trực tiếp vào nút tròn <b>(A)(B)(C)(D)</b> để làm bài. Bấm vào <b>bất kỳ từ tiếng Anh nào</b> để nghe phát âm &amp; tra từ điển TOEIC ngay lập tức!
+  </div>
+  <div id="questionsWrap" style="display:flex;flex-direction:column;gap:18px;"></div>
+</main>
+
+<!-- Feedback Toast -->
+<div class="fb-toast" id="fbToast">
+  <div class="fb-emoji" id="fbEmoji">❤️</div>
+  <div class="fb-msg" id="fbMsg">Chính xác!</div>
+</div>
+
+<!-- Dictionary Modal -->
+<div class="dict-backdrop" id="dictModal">
+  <div class="dict-card">
+    <button class="dict-close" id="dictClose">✕</button>
+    <div class="dict-word">
+      <span id="dWord">word</span>
+      <button class="dict-speak" id="dSpeak">🔊 Phát âm</button>
+    </div>
+    <div class="dict-meta" id="dMeta">/ipa/ • (pos)</div>
+    <div class="dict-vi" id="dVi">Đang tra nghĩa...</div>
+    <div class="dict-extra" id="dExtra"></div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [{"id": 101, "category": "Giới từ & Liên từ", "tag": "Giới từ + Đại từ quan hệ", "before": "The lecture will take place at 6:00 P.M., ", "after": " which attendees may ask questions.", "options": {"A": "after", "B": "across", "C": "inside", "D": "among"}, "ans": "A", "ipa": "/ðə ˈlektʃə wɪl teɪk pleɪs æt sɪks piː em, ˈɑːftə wɪtʃ əˈtendɪz meɪ ɑːsk ˈkwestʃənz/", "vi": "Bài giảng sẽ diễn ra vào lúc 6 giờ tối, sau đó những người tham dự có thể đặt câu hỏi.", "opt_vi": {"A": "after (prep): sau, sau khi", "B": "across (prep): băng qua, khắp", "C": "inside (prep): bên trong", "D": "among (prep): giữa (3 đối tượng trở lên)"}, "explain": {"correct": "Cụm <b>after which</b> (= after that / sau đó) dùng để chỉ trình tự thời gian tiếp nối sự kiện vừa nêu (bài giảng lúc 6:00 P.M.). Sau bài giảng thì người tham dự có thể đặt câu hỏi.", "wrong": "<b>(B) across</b> (băng qua – chỉ không gian), <b>(C) inside</b> (bên trong – chỉ vị trí), <b>(D) among</b> (giữa nhiều đối tượng) đều không đi với mốc thời gian/sự kiện để chỉ trình tự trước – sau.", "tip": "Thấy dấu phẩy + <b>[chỗ trống] + which</b> ngay sau một mốc thời gian hoặc sự kiện → ưu tiên xét ngay giới từ chỉ thời gian như <b>after which</b> (sau đó) hoặc <b>during which</b> (trong suốt lúc đó)."}}, {"id": 102, "category": "Từ loại", "tag": "Từ loại (Tính từ)", "before": "The ", "after": " antique shop in Pepper Valley will close down next month.", "options": {"A": "last", "B": "lasts", "C": "lasted", "D": "lasting"}, "ans": "A", "ipa": "/ðə lɑːst ænˈtiːk ʃɒp ɪn ˈpepə ˈvæli wɪl kləʊz daʊn nekst mʌnθ/", "vi": "Cửa hàng đồ cổ cuối cùng ở Pepper Valley sẽ đóng cửa vào tháng tới.", "opt_vi": {"A": "last (adj): cuối cùng", "B": "lasts (v): kéo dài (ngôi 3 số ít)", "C": "lasted (v-ed): đã kéo dài", "D": "lasting (adj): lâu dài, bền vững"}, "explain": {"correct": "Giữa mạo từ <b>The</b> và cụm danh từ <b>antique shop</b> cần một tính từ bổ nghĩa. Xét nghĩa câu 'sẽ đóng cửa vào tháng tới', tính từ <b>last</b> (cuối cùng) là phù hợp nhất: <i>The last antique shop</i> (cửa hàng đồ cổ cuối cùng).", "wrong": "<b>(B) lasts</b> và <b>(C) lasted</b> là động từ chia thì, không thể đứng giữa mạo từ và danh từ. <b>(D) lasting</b> là tính từ mang nghĩa 'bền lâu, lâu dài' (như <i>lasting impression</i>), mâu thuẫn với vế 'sẽ đóng cửa'.", "tip": "Cấu trúc <b>The + [adj] + N</b> rất hay bẫy giữa <b>last</b> (cuối cùng) và <b>lasting</b> (lâu dài). Thấy 'close down' (đóng cửa) → khoanh ngay <b>last</b>!"}}, {"id": 103, "category": "Từ vựng", "tag": "Từ vựng (Danh từ / Collocation)", "before": "Merryville residents will receive an online status ", "after": " about the ongoing bridge construction project.", "options": {"A": "update", "B": "change", "C": "payment", "D": "request"}, "ans": "A", "ipa": "/ˈmerɪvɪl ˈrezɪdənts wɪl rɪˈsiːv ən ˈɒnlaɪn ˈsteɪtəs ˈʌpdeɪt əˈbaʊt ði ˈɒŋɡəʊɪŋ brɪdʒ kənˈstrʌkʃən ˈprɒdʒekt/", "vi": "Cư dân Merryville sẽ nhận được bản cập nhật tình trạng trực tuyến về dự án xây dựng cầu đang triển khai.", "opt_vi": {"A": "update (n): bản cập nhật, thông tin mới", "B": "change (n): sự thay đổi", "C": "payment (n): khoản thanh toán", "D": "request (n): yêu cầu"}, "explain": {"correct": "Cụm danh từ cố định trong tiếng Anh công sở là <b>status update</b> (bản cập nhật tình trạng/tiến độ), rất hợp ngữ cảnh 'về dự án xây dựng cầu đang diễn ra (ongoing)'.", "wrong": "<b>(B) change</b> (sự thay đổi), <b>(C) payment</b> (khoản thanh toán), <b>(D) request</b> (yêu cầu) đều không tạo thành cụm tự nhiên với <i>status</i> và không khớp nghĩa với dự án xây cầu công cộng.", "tip": "Học thuộc cụm tủ ETS: <b>status update</b> (cập nhật tiến độ/tình trạng). Nhìn thấy <b>status + [chỗ trống]</b> → chọn ngay <b>update</b> trong 3 giây!"}}, {"id": 104, "category": "Đại từ & Cấu trúc", "tag": "Đại từ / Tính từ sở hữu", "before": "As a result of ", "after": " many years leading media organizations, Ms. Ayo was selected for the Dowel Journalism Prize.", "options": {"A": "she", "B": "her", "C": "hers", "D": "herself"}, "ans": "B", "ipa": "/æz ə rɪˈzʌlt əv hɜː ˈmeni jɪəz ˈliːdɪŋ ˈmiːdiə ˌɔːɡənaɪˈzeɪʃənz, mɪz ˈaɪəʊ wɒz sɪˈlektɪd fə ðə ˈdaʊəl ˈdʒɜːnəlɪzəm praɪz/", "vi": "Nhờ nhiều năm lãnh đạo các tổ chức truyền thông, bà Ayo đã được chọn trao Giải thưởng Báo chí Dowel.", "opt_vi": {"A": "she (đại từ chủ ngữ): cô ấy", "B": "her (tính từ sở hữu / tân ngữ): của cô ấy", "C": "hers (đại từ sở hữu): cái của cô ấy", "D": "herself (đại từ phản thân): chính cô ấy"}, "explain": {"correct": "Sau giới từ <b>of</b> là cụm danh từ <b>many years</b>. Đứng trước cụm danh từ để chỉ sự sở hữu bắt buộc phải là tính từ sở hữu <b>her</b> (nhiều năm của cô ấy).", "wrong": "<b>(A) she</b> chỉ làm chủ ngữ; <b>(C) hers</b> là đại từ sở hữu (đứng độc lập, không có danh từ theo sau); <b>(D) herself</b> dùng để nhấn mạnh hoặc làm tân ngữ trùng chủ ngữ.", "tip": "Quy tắc vàng đại từ: Thấy <b>[chỗ trống] + Cụm danh từ (many years)</b> → 99% chọn <b>Tính từ sở hữu (my/your/his/her/its/our/their)</b>."}}, {"id": 105, "category": "Từ vựng", "tag": "Từ vựng (Danh từ)", "before": "To stop the ", "after": " of computer viruses, do not open suspicious e-mails.", "options": {"A": "break", "B": "spread", "C": "balance", "D": "surface"}, "ans": "B", "ipa": "/tə stɒp ðə spred əv kəmˈpjuːtə ˈvaɪərəsɪz, duː nɒt ˈəʊpən səˈspɪʃəs ˈiːmeɪlz/", "vi": "Để ngăn chặn sự lây lan của vi-rút máy tính, đừng mở các email đáng ngờ.", "opt_vi": {"A": "break (n): giờ nghỉ, chỗ vỡ", "B": "spread (n): sự lây lan, lan truyền", "C": "balance (n): sự cân bằng, số dư", "D": "surface (n): bề mặt"}, "explain": {"correct": "Danh từ <b>spread</b> mang nghĩa 'sự lây lan'. Cụm <b>stop the spread of computer viruses</b> (ngăn chặn sự lây lan của vi-rút máy tính) là cách diễn đạt cực kỳ chuẩn xác.", "wrong": "<b>(A) break</b> (sự gãy/nghỉ), <b>(C) balance</b> (sự cân bằng), <b>(D) surface</b> (bề mặt) hoàn toàn sai nghĩa khi đi với 'vi-rút máy tính'.", "tip": "Ghi nhớ collocation kinh điển: <b>stop / prevent the spread of + [bệnh dịch / virus / tin đồn]</b>."}}, {"id": 106, "category": "Từ loại", "tag": "Từ loại (Trạng từ)", "before": "The hiring manager ", "after": " considered each applicant's résumé and qualifications.", "options": {"A": "caring", "B": "careful", "C": "carefully", "D": "carefulness"}, "ans": "C", "ipa": "/ðə ˈhaɪərɪŋ ˈmænɪdʒə ˈkeəfəli kənˈsɪdəd iːtʃ ˈæplɪkənts ˈrezjumeɪ ænd ˌkwɒlɪfɪˈkeɪʃənz/", "vi": "Giám đốc tuyển dụng đã xem xét cẩn thận sơ yếu lý lịch và bằng cấp của từng ứng viên.", "opt_vi": {"A": "caring (adj): chu đáo, biết quan tâm", "B": "careful (adj): cẩn thận", "C": "carefully (adv): một cách cẩn thận", "D": "carefulness (n): sự cẩn thận"}, "explain": {"correct": "Chỗ trống đứng giữa chủ ngữ <b>The hiring manager</b> và động từ chính <b>considered</b>. Cần một trạng từ bổ nghĩa cho động từ → chọn <b>carefully</b> (xem xét một cách cẩn thận).", "wrong": "<b>(A) caring</b> và <b>(B) careful</b> là tính từ (không bổ nghĩa cho động từ thường); <b>(D) carefulness</b> là danh từ (gây dư danh từ trước động từ).", "tip": "Công thức khoanh nhanh 3 giây: <b>S + [Adv] + V + O</b>. Đứng chen giữa Chủ ngữ và Động từ thường thì cứ trạng từ đuôi <b>-ly</b> mà chọn!"}}, {"id": 107, "category": "Giới từ & Liên từ", "tag": "Liên từ đẳng lập", "before": "In October, Mr. Sakamoto will leave for New Zealand ", "after": " will oversee the opening of the new Auckland branch.", "options": {"A": "because", "B": "in addition", "C": "and", "D": "prior to"}, "ans": "C", "ipa": "/ɪn ɒkˈtəʊbə, ˈmɪstə ˌsækəˈməʊtəʊ wɪl liːv fə njuː ˈziːlənd ænd wɪl ˌəʊvəˈsiː ði ˈəʊpənɪŋ əv ðə njuː ˈɔːklənd brɑːntʃ/", "vi": "Vào tháng 10, ông Sakamoto sẽ lên đường sang New Zealand và sẽ giám sát việc khai trương chi nhánh Auckland mới.", "opt_vi": {"A": "because (conj): bởi vì", "B": "in addition (adv): thêm vào đó", "C": "and (conj): và", "D": "prior to (prep): trước khi"}, "explain": {"correct": "Phía trước chỗ trống có động từ <b>will leave</b>, phía sau có <b>will oversee</b> (không có chủ ngữ lặp lại). Cần liên từ đẳng lập <b>and</b> để nối hai cụm động từ song song chung chủ ngữ Mr. Sakamoto.", "wrong": "<b>(A) because</b> cần một mệnh đề đầy đủ (S + V) phía sau; <b>(B) in addition</b> là trạng từ nối (thường đứng đầu câu có dấu phẩy, không nối trực tiếp 2 động từ); <b>(D) prior to</b> là giới từ (theo sau là N/V-ing).", "tip": "Thấy <b>V1 ... [chỗ trống] + V2</b> (khuyết chủ ngữ ở vế sau) → chọn ngay liên từ đẳng lập <b>and / or / but</b>!"}}, {"id": 108, "category": "Từ loại", "tag": "Danh từ ghép (Compound Noun)", "before": "Tarateer Pharmaceuticals is varying its product ", "after": " to include over-the-counter medications.", "options": {"A": "to line", "B": "lining", "C": "lined", "D": "line"}, "ans": "D", "ipa": "/ˌtærəˈtɪə ˌfɑːməˈsjuːtɪkəlz ɪz ˈveəriɪŋ ɪts ˈprɒdʌkt laɪn tuː ɪnˈkluːd ˌəʊvə ðə ˈkaʊntə ˌmedɪˈkeɪʃənz/", "vi": "Công ty Dược phẩm Tarateer đang đa dạng hóa dòng sản phẩm của mình để bao gồm cả các loại thuốc không kê đơn.", "opt_vi": {"A": "to line (to-V): để lót, xếp hàng", "B": "lining (n/V-ing): lớp lót", "C": "lined (adj/V-ed): có lót, có kẻ dòng", "D": "line (n): dòng (sản phẩm)"}, "explain": {"correct": "Sau tính từ sở hữu <b>its</b> và danh từ phụ <b>product</b> cần một danh từ chính tạo thành cụm danh từ ghép quen thuộc trong kinh doanh: <b>product line</b> (dòng sản phẩm).", "wrong": "<b>(A) to line</b> là động từ nguyên mẫu có to; <b>(B) lining</b> nghĩa là 'lớp lót áo/vật liệu'; <b>(C) lined</b> là tính từ/phân từ (không thể làm danh từ chính sau <i>its product</i>).", "tip": "Cụm danh từ ghép siêu kinh điển trong TOEIC: <b>product line</b> (dòng sản phẩm), <b>assembly line</b> (dây chuyền lắp ráp)."}}, {"id": 109, "category": "Thì & Động từ", "tag": "Chia động từ chính", "before": "Dynart, Inc., continuously ", "after": " new ways to reduce its use of plastics.", "options": {"A": "seeks", "B": "seeker", "C": "to seek", "D": "seeking"}, "ans": "A", "ipa": "/ˈdaɪnɑːt ɪŋk kənˈtɪnjuəsli siːks njuː weɪz tə rɪˈdjuːs ɪts juːs əv ˈplæstɪks/", "vi": "Tập đoàn Dynart liên tục tìm kiếm những cách thức mới để giảm việc sử dụng nhựa.", "opt_vi": {"A": "seeks (v): tìm kiếm (chia ngôi 3 số ít)", "B": "seeker (n): người tìm kiếm", "C": "to seek (to-V): để tìm kiếm", "D": "seeking (V-ing): đang tìm kiếm"}, "explain": {"correct": "Câu có chủ ngữ là tên công ty số ít <b>Dynart, Inc.</b>, trạng từ <b>continuously</b>, và phía sau chưa hề có động từ chính nào (<i>to reduce</i> chỉ là động từ nguyên mẫu). Do đó chỗ trống cần động từ chính chia thì hiện tại đơn số ít → <b>seeks</b>.", "wrong": "<b>(B) seeker</b> là danh từ; <b>(C) to seek</b> và <b>(D) seeking</b> không thể làm động từ chính đứng một mình trong câu.", "tip": "Kiểm tra nhanh khung câu: <b>S (tên công ty = số ít) + [Adv] + [V chính chia s/es] + O</b>. Loại ngay V-ing và to-V khi câu chưa có động từ chính!"}}, {"id": 110, "category": "Thì & Động từ", "tag": "Chia động từ chính (Hòa hợp S-V)", "before": "The cash registers at Pirkle Books automatically ", "after": " the remaining inventory of books available.", "options": {"A": "calculate", "B": "calculator", "C": "calculating", "D": "calculation"}, "ans": "A", "ipa": "/ðə kæʃ ˈredʒɪstəz æt ˈpɜːkəl bʊks ˌɔːtəˈmætɪkli ˈkælkjuleɪt ðə rɪˈmeɪnɪŋ ˈɪnvəntri əv bʊks əˈveɪləbəl/", "vi": "Các máy tính tiền tại hiệu sách Pirkle Books tự động tính toán lượng sách tồn kho còn lại.", "opt_vi": {"A": "calculate (v): tính toán (nguyên mẫu / số nhiều)", "B": "calculator (n): máy tính cầm tay", "C": "calculating (V-ing): đang tính toán", "D": "calculation (n): phép tính"}, "explain": {"correct": "Chủ ngữ chính của câu là <b>The cash registers</b> (số nhiều), theo sau là trạng từ <b>automatically</b> và tân ngữ <b>the remaining inventory</b>. Câu thiếu động từ chính chia ở hiện tại đơn dạng số nhiều → <b>calculate</b>.", "wrong": "<b>(B) calculator</b> và <b>(D) calculation</b> đều là danh từ; <b>(C) calculating</b> là V-ing không có trợ động từ <i>be</i> nên không thể làm động từ chính.", "tip": "Thấy <b>S + [trạng từ -ly] + [chỗ trống] + the + N</b> mà cả câu chưa có động từ chính → khoanh ngay <b>động từ chia thì</b>!"}}, {"id": 111, "category": "Từ vựng", "tag": "Từ vựng (Trạng từ)", "before": "The product team is designing mapping software that can ", "after": " locate underground minerals.", "options": {"A": "infinitely", "B": "sincerely", "C": "precisely", "D": "greatly"}, "ans": "C", "ipa": "/ðə ˈprɒdʌkt tiːm ɪz dɪˈzaɪnɪŋ ˈmæpɪŋ ˈsɒftweə ðæt kæn prɪˈsaɪsli ləʊˈkeɪt ˌʌndəˈɡraʊnd ˈmɪnərəlz/", "vi": "Nhóm sản phẩm đang thiết kế phần mềm bản đồ có thể định vị chính xác các khoáng sản dưới lòng đất.", "opt_vi": {"A": "infinitely (adv): vô hạn, vô cùng", "B": "sincerely (adv): một cách chân thành", "C": "precisely (adv): một cách chính xác", "D": "greatly (adv): rất nhiều, đáng kể"}, "explain": {"correct": "Động từ <b>locate</b> (định vị, xác định vị trí) kết hợp tự nhiên nhất với trạng từ <b>precisely</b> (một cách chính xác) trong ngữ cảnh phần mềm lập bản đồ.", "wrong": "<b>(A) infinitely</b> (vô hạn), <b>(B) sincerely</b> (chân thành – dùng cho cảm xúc/thư từ), <b>(D) greatly</b> (rất nhiều – thường đi với động từ tăng/giảm/cảm kích) không phù hợp với <i>locate</i>.", "tip": "Nhìn thấy các động từ đo đạc/định vị (<b>locate, measure, calculate</b>) → ưu tiên ngay nhóm trạng từ chỉ độ chính xác: <b>precisely / accurately / exactly</b>."}}, {"id": 112, "category": "Từ loại", "tag": "Từ loại (Trạng từ bổ nghĩa Tính từ)", "before": "According to CEO Mayu Yamada, it would not be ", "after": " responsible to expand the warehouse at this time.", "options": {"A": "finance", "B": "financials", "C": "financially", "D": "financing"}, "ans": "C", "ipa": "/əˈkɔːdɪŋ tə ˌsiː iː ˈəʊ ˈmɑːjuː jəˈmɑːdə, ɪt wʊd nɒt biː faɪˈnænʃəli rɪˈspɒnsəbəl tuː ɪkˈspænd ðə ˈweəhaʊs æt ðɪs taɪm/", "vi": "Theo Giám đốc điều hành Mayu Yamada, việc mở rộng nhà kho vào thời điểm này là không hợp lý về mặt tài chính.", "opt_vi": {"A": "finance (n/v): tài chính / cấp vốn", "B": "financials (n): báo cáo/số liệu tài chính", "C": "financially (adv): về mặt tài chính", "D": "financing (n): việc huy động vốn"}, "explain": {"correct": "Sau động từ to-be <b>would not be</b> đã có sẵn tính từ <b>responsible</b>. Đứng ngay trước tính từ để bổ nghĩa cho nó phải là một trạng từ → <b>financially</b> (hợp lý/có trách nhiệm về mặt tài chính).", "wrong": "<b>(A) finance</b>, <b>(B) financials</b>, <b>(D) financing</b> đều là danh từ/động từ, không thể đứng trước bổ nghĩa cho tính từ <i>responsible</i>.", "tip": "Công thức ăn điểm tuyệt đối: <b>be + [Adv] + Adj</b>. Thấy phía sau chỗ trống có tính từ đuôi <b>-ible/-able/-ive/-al</b> → chọn ngay trạng từ đuôi <b>-ly</b>!"}}, {"id": 113, "category": "Từ vựng", "tag": "Từ vựng (Danh từ / Cụm cố định)", "before": "Analysts cannot say with any ", "after": " what the regional demand for electric trucks will be.", "options": {"A": "certainty", "B": "justice", "C": "excellence", "D": "denial"}, "ans": "A", "ipa": "/ˈænəlɪsts ˈkænɒt seɪ wɪð ˈeni ˈsɜːtənti wɒt ðə ˈriːdʒənəl dɪˈmɑːnd fər ɪˈlektrɪk trʌks wɪl biː/", "vi": "Các nhà phân tích không thể nói một cách chắc chắn nhu cầu trong khu vực đối với xe tải điện sẽ như thế nào.", "opt_vi": {"A": "certainty (n): sự chắc chắn", "B": "justice (n): công lý, sự công bằng", "C": "excellence (n): sự xuất sắc", "D": "denial (n): sự phủ nhận"}, "explain": {"correct": "Cụm từ cố định <b>say with (any) certainty</b> nghĩa là 'nói một cách chắc chắn'. Rất khớp với ngữ cảnh dự đoán nhu cầu thị trường trong tương lai (<i>will be</i>).", "wrong": "<b>(B) justice</b> (công lý), <b>(C) excellence</b> (sự xuất sắc), <b>(D) denial</b> (sự phủ nhận) đều không hợp nghĩa sau <i>say with any ...</i>.", "tip": "Ghi nhớ cụm tủ: <b>with certainty = certainly</b> (một cách chắc chắn), thường đi sau <i>know / say / predict</i>."}}, {"id": 114, "category": "Từ vựng", "tag": "Từ vựng (Trạng từ)", "before": "As part of its marketing campaign, Elegancia Dishware is ", "after": " soliciting feedback from customers.", "options": {"A": "lightly", "B": "loyally", "C": "actively", "D": "cleanly"}, "ans": "C", "ipa": "/æz pɑːt əv ɪts ˈmɑːkɪtɪŋ kæmˈpeɪn, ˌelɪˈɡænsiə ˈdɪʃweə ɪz ˈæktɪvli səˈlɪsɪtɪŋ ˈfiːdbæk frəm ˈkʌstəməz/", "vi": "Là một phần trong chiến dịch tiếp thị, Elegancia Dishware đang tích cực thu thập phản hồi từ khách hàng.", "opt_vi": {"A": "lightly (adv): một cách nhẹ nhàng", "B": "loyally (adv): một cách trung thành", "C": "actively (adv): một cách tích cực, chủ động", "D": "cleanly (adv): một cách sạch sẽ, gọn gàng"}, "explain": {"correct": "Động từ <b>solicit</b> (thu thập, kêu gọi, tìm kiếm) đi cực chuẩn với trạng từ <b>actively</b>: <i>actively soliciting feedback</i> (tích cực thu thập phản hồi).", "wrong": "<b>(A) lightly</b> (nhẹ nhàng), <b>(B) loyally</b> (trung thành), <b>(D) cleanly</b> (sạch sẽ) không kết hợp tự nhiên với hoạt động thu thập ý kiến khách hàng.", "tip": "Collocation tần suất cao của ETS: <b>actively seek / recruit / solicit / participate</b> (tích cực tìm kiếm / tuyển dụng / thu thập / tham gia)."}}, {"id": 115, "category": "Từ vựng", "tag": "Từ vựng (Động từ)", "before": "Rain gardens are intended to ", "after": " water to prevent flooding of local roads.", "options": {"A": "engage", "B": "undergo", "C": "absorb", "D": "overwhelm"}, "ans": "C", "ipa": "/reɪn ˈɡɑːdənz ɑːr ɪnˈtendɪd tuː əbˈzɔːb ˈwɔːtə tə prɪˈvent ˈflʌdɪŋ əv ˈləʊkəl rəʊdz/", "vi": "Các khu vườn hứng mưa được thiết kế để thấm hút nước nhằm ngăn ngừa ngập lụt trên các tuyến đường địa phương.", "opt_vi": {"A": "engage (v): tham gia, thu hút", "B": "undergo (v): trải qua (phẫu thuật, kiểm tra)", "C": "absorb (v): hấp thụ, thấm hút", "D": "overwhelm (v): làm choáng ngợp, tràn ngập"}, "explain": {"correct": "Dựa vào mục đích 'ngăn ngừa ngập lụt' (<i>prevent flooding</i>) và tân ngữ <b>water</b>, động từ <b>absorb</b> (hấp thụ, thấm hút nước) là đáp án duy nhất hợp lý.", "wrong": "<b>(A) engage</b> (thu hút/tham gia), <b>(B) undergo</b> (trải qua), <b>(D) overwhelm</b> (làm quá tải/choáng ngợp) không hợp nghĩa với tân ngữ <i>water</i>.", "tip": "Nhìn thấy <b>water / moisture / liquid</b> đi kèm <b>prevent flooding</b> → khoanh ngay <b>absorb</b> (thấm hút)!"}}, {"id": 116, "category": "Từ loại", "tag": "Từ loại (Danh từ chỉ vật/khái niệm)", "before": "Theta Industries' training program aims to increase the ", "after": " of its manufacturing systems.", "options": {"A": "producer", "B": "produce", "C": "productive", "D": "productivity"}, "ans": "D", "ipa": "/ˈθiːtə ˈɪndəstriz ˈtreɪnɪŋ ˈprəʊɡræm eɪmz tuː ɪnˈkriːs ðə ˌprɒdʌkˈtɪvəti əv ɪts ˌmænjuˈfæktʃərɪŋ ˈsɪstəmz/", "vi": "Chương trình đào tạo của Theta Industries nhằm mục đích tăng năng suất của các hệ thống sản xuất.", "opt_vi": {"A": "producer (n): nhà sản xuất (chỉ người/công ty)", "B": "produce (v/n): sản xuất / nông sản", "C": "productive (adj): có năng suất, hiệu quả", "D": "productivity (n): năng suất"}, "explain": {"correct": "Cấu trúc <b>the + [Danh từ] + of</b>. Cả (A), (B) và (D) đều có thể là danh từ, nhưng xét nghĩa 'tăng ... của hệ thống sản xuất' thì <b>productivity</b> (năng suất) là chính xác nhất.", "wrong": "<b>(A) producer</b> là danh từ chỉ người/đơn vị sản xuất (không thể 'tăng nhà sản xuất của hệ thống'); <b>(B) produce</b> (n) nghĩa là nông sản tươi sống; <b>(C) productive</b> là tính từ.", "tip": "Cẩn thận bẫy 2 danh từ! Thấy <b>increase / boost / improve + the [chỗ trống]</b> → chọn ngay <b>productivity / efficiency</b> (năng suất / hiệu quả), tránh nhầm danh từ chỉ người đuôi <b>-er</b>."}}, {"id": 117, "category": "Giới từ & Liên từ", "tag": "Giới từ cố định", "before": "The board of directors has voted to award Mr. Mitrakos a bonus for his role ", "after": " obtaining the international contract.", "options": {"A": "in", "B": "at", "C": "except", "D": "apart"}, "ans": "A", "ipa": "/ðə bɔːd əv daɪˈrektəz hæz ˈvəʊtɪd tuː əˈwɔːd ˈmɪstə mɪˈtrɑːkɒs ə ˈbəʊnəs fə hɪz rəʊl ɪn əbˈteɪnɪŋ ði ˌɪntəˈnæʃənəl ˈkɒntrækt/", "vi": "Hội đồng quản trị đã bỏ phiếu thưởng cho ông Mitrakos vì vai trò của ông trong việc giành được hợp đồng quốc tế.", "opt_vi": {"A": "in (prep): trong (việc gì)", "B": "at (prep): tại", "C": "except (prep): ngoại trừ", "D": "apart (adv): tách rời (apart from: ngoại trừ)"}, "explain": {"correct": "Danh từ <b>role</b> (vai trò) luôn đi kèm với giới từ <b>in</b>: <b>role in + N/V-ing</b> (vai trò trong việc làm gì đó).", "wrong": "<b>(B) at</b>, <b>(C) except</b> (ngoại trừ) không kết hợp với <i>role</i>; <b>(D) apart</b> muốn làm giới từ phải có <i>from</i> (apart from).", "tip": "Cụm giới từ tủ trong TOEIC: <b>play a role in + V-ing</b> / <b>his role in + V-ing</b>. Thấy <b>role + [chỗ trống] + V-ing</b> → khoanh thẳng <b>in</b>!"}}, {"id": 118, "category": "Giới từ & Liên từ", "tag": "Liên từ chỉ mục đích", "before": "The finance director gave his approval ", "after": " the project can move forward.", "options": {"A": "along", "B": "furthermore", "C": "cautiously", "D": "so that"}, "ans": "D", "ipa": "/ðə ˈfaɪnæns daɪˈrektə ɡeɪv hɪz əˈpruːvəl səʊ ðæt ðə ˈprɒdʒekt kæn muːv ˈfɔːwəd/", "vi": "Giám đốc tài chính đã phê duyệt để dự án có thể tiến triển.", "opt_vi": {"A": "along (prep/adv): dọc theo", "B": "furthermore (adv): hơn nữa", "C": "cautiously (adv): một cách thận trọng", "D": "so that (conj): để mà"}, "explain": {"correct": "Trước chỗ trống là 1 mệnh đề hoàn chỉnh (<i>The finance director gave his approval</i>), sau chỗ trống cũng là 1 mệnh đề hoàn chỉnh có động từ khuyết thiếu <b>can</b> (<i>the project can move forward</i>). Cần một liên từ nối 2 mệnh đề chỉ mục đích → <b>so that</b>.", "wrong": "<b>(A) along</b> là giới từ; <b>(B) furthermore</b> và <b>(C) cautiously</b> đều là trạng từ, không có chức năng nối 2 mệnh đề độc lập mà không có dấu chấm phẩy/liên từ.", "tip": "Dấu hiệu nhận biết 100% chính xác: Thấy 2 mệnh đề nối với nhau mà vế sau có <b>can / could / will / may</b> → chọn ngay liên từ chỉ mục đích <b>so that</b>!"}}, {"id": 119, "category": "Từ vựng", "tag": "Từ vựng (Động từ + Giới từ)", "before": "The newspaper article describes ways job seekers can ", "after": " for having little workplace experience.", "options": {"A": "reply", "B": "capture", "C": "compensate", "D": "accumulate"}, "ans": "C", "ipa": "/ðə ˈnjuːzpeɪpər ˈɑːtɪkəl dɪˈskraɪbz weɪz dʒɒb ˈsiːkəz kæn ˈkɒmpenseɪt fə ˈhævɪŋ ˈlɪtəl ˈwɜːkpleɪs ɪkˈspɪəriəns/", "vi": "Bài báo mô tả những cách mà người tìm việc có thể bù đắp cho việc có ít kinh nghiệm làm việc.", "opt_vi": {"A": "reply (v): trả lời (đi với 'to')", "B": "capture (v): nắm bắt, chụp lại", "C": "compensate (v): bù đắp, đền bù (đi với 'for')", "D": "accumulate (v): tích lũy"}, "explain": {"correct": "Cụm động từ <b>compensate for + N/V-ing</b> mang nghĩa 'bù đắp cho thiếu sót nào đó', hoàn toàn phù hợp với ngữ cảnh 'có ít kinh nghiệm làm việc'.", "wrong": "<b>(A) reply</b> đi với giới từ <i>to</i>; <b>(B) capture</b> (nắm bắt) và <b>(D) accumulate</b> (tích lũy) là ngoại động từ không đi trực tiếp với <i>for</i> và sai nghĩa.", "tip": "Học thuộc cụm động từ ăn điểm: <b>compensate for</b> (bù đắp cho) = <b>make up for</b>. Thấy <b>[V] + for + điểm yếu/thiếu sót</b> → khoanh ngay <b>compensate</b>!"}}, {"id": 120, "category": "Đại từ & Cấu trúc", "tag": "Đại từ bất định", "before": "Mr. Ellis and Ms. Barnes were both highly qualified, but ", "after": " got the job.", "options": {"A": "myself", "B": "neither", "C": "anybody", "D": "whoever"}, "ans": "B", "ipa": "/ˈmɪstər ˈelɪs ænd mɪz bɑːnz wɜː bəʊθ ˈhaɪli ˈkwɒlɪfaɪd, bʌt ˈnaɪðə ɡɒt ðə dʒɒb/", "vi": "Ông Ellis và bà Barnes đều có trình độ chuyên môn rất cao, nhưng không ai trong hai người nhận được công việc đó.", "opt_vi": {"A": "myself (pron): chính bản thân tôi", "B": "neither (pron): không ai/cái nào trong hai", "C": "anybody (pron): bất kỳ ai", "D": "whoever (pron): bất cứ ai mà"}, "explain": {"correct": "Vế trước nhắc đến <b>2 người</b> (Mr. Ellis and Ms. Barnes ... <b>both</b>), vế sau có liên từ tương phản <b>but</b>. Đại từ <b>neither</b> (không ai trong cả hai) vừa khớp số lượng 2 người, vừa tạo nghĩa tương phản hợp lý.", "wrong": "<b>(A) myself</b> sai ngôi (không nhắc đến 'I'); <b>(C) anybody</b> không dùng làm chủ ngữ câu khẳng định mang nghĩa phủ định; <b>(D) whoever</b> cần một mệnh đề đi kèm để làm cụm danh từ.", "tip": "Cặp bài trùng trong TOEIC: Vế đầu có <b>both</b> (cả 2) + liên từ tương phản <b>but</b> → vế sau khoanh ngay <b>neither</b> (không ai trong 2)!"}}, {"id": 121, "category": "Giới từ & Liên từ", "tag": "Giới từ nhượng bộ", "before": "Ennis Photography purchased all new lighting equipment ", "after": " the high cost.", "options": {"A": "even though", "B": "however", "C": "until", "D": "despite"}, "ans": "D", "ipa": "/ˈenɪs fəˈtɒɡrəfi ˈpɜːtʃəst ɔːl njuː ˈlaɪtɪŋ ɪˈkwɪpmənt dɪˈspaɪt ðə haɪ kɒst/", "vi": "Ennis Photography đã mua toàn bộ thiết bị chiếu sáng mới bất chấp chi phí cao.", "opt_vi": {"A": "even though (conj): mặc dù (+ S + V)", "B": "however (adv): tuy nhiên", "C": "until (prep/conj): cho đến khi", "D": "despite (prep): mặc dù, bất chấp (+ N/V-ing)"}, "explain": {"correct": "Phía sau chỗ trống là một cụm danh từ <b>the high cost</b> (không có động từ). Về nghĩa có sự tương phản (mua toàn bộ thiết bị mới ↔ chi phí cao) nên chọn giới từ <b>despite</b>.", "wrong": "<b>(A) even though</b> là liên từ (phải cộng mệnh đề S + V); <b>(B) however</b> là trạng từ nối (không đứng trước cụm danh từ); <b>(C) until</b> (cho đến khi) sai nghĩa.", "tip": "Bẫy kinh điển nhất TOEIC Part 5: <b>Despite / In spite of + Cụm danh từ</b> ≠ <b>Although / Even though + S + V</b>. Nhìn sau chỗ trống không có động từ → loại ngay <i>even though</i>, chọn <b>despite</b>!"}}, {"id": 122, "category": "Thì & Động từ", "tag": "Động từ nguyên mẫu (to + V)", "before": "Marburton residents who wish to ", "after": " a home should contact the award-winning team at Kwan Real Estate.", "options": {"A": "seller", "B": "sold", "C": "sell", "D": "selling"}, "ans": "C", "ipa": "/ˈmɑːbɜːtən ˈrezɪdənts huː wɪʃ tə sel ə həʊm ʃʊd ˈkɒntækt ði əˈwɔːd ˈwɪnɪŋ tiːm æt kwɒn ˈrɪəl ɪˈsteɪt/", "vi": "Cư dân Marburton có mong muốn bán nhà nên liên hệ với đội ngũ từng đoạt giải thưởng tại Kwan Real Estate.", "opt_vi": {"A": "seller (n): người bán", "B": "sold (v-ed): đã bán", "C": "sell (v): bán (nguyên mẫu)", "D": "selling (V-ing): đang bán / việc bán"}, "explain": {"correct": "Cấu trúc <b>wish to + V-nguyên mẫu</b> (mong muốn làm gì). Phía sau có tân ngữ <b>a home</b> nên chọn ngay động từ nguyên mẫu <b>sell</b>.", "wrong": "<b>(A) seller</b> là danh từ; <b>(B) sold</b> là dạng quá khứ/phân từ; <b>(D) selling</b> là V-ing — tất cả đều sai ngữ pháp sau <i>wish to</i>.", "tip": "Câu cho điểm 2 giây: Thấy <b>wish / want / hope / plan / decide + to + [chỗ trống]</b> → khoanh thẳng <b>V-nguyên mẫu (V0)</b>!"}}, {"id": 123, "category": "Từ vựng", "tag": "Từ vựng (Tính từ)", "before": "Maswa Bistro began a ", "after": " agreement with local farmers to purchase a set amount of produce each week.", "options": {"A": "disruptive", "B": "cooperative", "C": "grateful", "D": "concerned"}, "ans": "B", "ipa": "/ˈmɑːswə ˈbiːstrəʊ bɪˈɡæn ə kəʊˈɒpərətɪv əˈɡriːmənt wɪð ˈləʊkəl ˈfɑːməz tə ˈpɜːtʃəs ə set əˈmaʊnt əv ˈprɒdjuːs iːtʃ wiːk/", "vi": "Nhà hàng Maswa Bistro đã bắt đầu một thỏa thuận hợp tác với nông dân địa phương để mua một lượng nông sản cố định mỗi tuần.", "opt_vi": {"A": "disruptive (adj): gây gián đoạn, phá vỡ", "B": "cooperative (adj): có tính hợp tác", "C": "grateful (adj): biết ơn", "D": "concerned (adj): lo ngại, quan tâm"}, "explain": {"correct": "Danh từ <b>agreement</b> (thỏa thuận) kết hợp cực chuẩn với tính từ <b>cooperative</b>: <i>cooperative agreement</i> (thỏa thuận hợp tác đôi bên cùng có lợi).", "wrong": "<b>(A) disruptive</b> (gây gián đoạn – nghĩa tiêu cực); <b>(C) grateful</b> (biết ơn) và <b>(D) concerned</b> (lo lắng) là tính từ chỉ cảm xúc của con người, không bổ nghĩa cho <i>agreement</i>.", "tip": "Mẹo loại trừ nhanh: Danh từ sau chỗ trống là vật/văn bản (<b>agreement</b>) → loại ngay các tính từ chỉ cảm xúc người (<i>grateful, concerned</i>) và tính từ tiêu cực (<i>disruptive</i>)!"}}, {"id": 124, "category": "Từ loại", "tag": "Từ loại (Danh từ số nhiều)", "before": "The City of Doyle's new downtown parking ", "after": " have been met with opposition by residents and visitors.", "options": {"A": "restricts", "B": "restricted", "C": "restrictions", "D": "restricting"}, "ans": "C", "ipa": "/ðə ˈsɪti əv dɔɪlz njuː ˌdaʊnˈtaʊn ˈpɑːkɪŋ rɪˈstrɪkʃənz hæv biːn met wɪð ˌɒpəˈzɪʃən baɪ ˈrezɪdənts ænd ˈvɪzɪtəz/", "vi": "Các quy định hạn chế đỗ xe mới ở khu trung tâm thành phố Doyle đã vấp phải sự phản đối từ cư dân và du khách.", "opt_vi": {"A": "restricts (v): hạn chế (ngôi 3 số ít)", "B": "restricted (v-ed/adj): bị hạn chế", "C": "restrictions (n): các sự hạn chế, quy định hạn chế", "D": "restricting (V-ing): đang hạn chế"}, "explain": {"correct": "Động từ chính của câu là <b>have been met</b> (chia số nhiều). Toàn bộ cụm phía trước là chủ ngữ (<i>The City of Doyle's new downtown parking ___</i>), nên chỗ trống phải là danh từ chính số nhiều → <b>restrictions</b> (các quy định hạn chế đỗ xe).", "wrong": "<b>(A) restricts</b> là động từ chia số ít; <b>(B) restricted</b> là tính từ/V-ed; <b>(D) restricting</b> là V-ing — không thể làm danh từ chính cho động từ số nhiều <i>have been met</i>.", "tip": "Nhìn ngay sau chỗ trống thấy trợ động từ số nhiều <b>have / are / were</b> → chỗ trống chắc chắn là <b>Danh từ số nhiều (đuôi -s/-es)</b>!"}}, {"id": 125, "category": "Từ vựng", "tag": "Từ vựng (Trạng từ)", "before": "The plumbing position requires extensive training, even for those who studied ", "after": " in technical school.", "options": {"A": "diligently", "B": "scientifically", "C": "objectively", "D": "decidedly"}, "ans": "A", "ipa": "/ðə ˈplʌmɪŋ pəˈzɪʃən rɪˈkwaɪəz ɪkˈstensɪv ˈtreɪnɪŋ, ˈiːvən fə ðəʊz huː ˈstʌdid ˈdɪlɪdʒəntli ɪn ˈteknɪkəl skuːl/", "vi": "Vị trí thợ sửa ống nước đòi hỏi sự đào tạo chuyên sâu, ngay cả đối với những người đã học tập chăm chỉ ở trường kỹ thuật.", "opt_vi": {"A": "diligently (adv): một cách chăm chỉ, siêng năng", "B": "scientifically (adv): một cách khoa học", "C": "objectively (adv): một cách khách quan", "D": "decidedly (adv): một cách rõ rệt, dứt khoát"}, "explain": {"correct": "Động từ <b>studied</b> (đã học) kết hợp tự nhiên nhất với trạng từ <b>diligently</b> (học tập chăm chỉ, cần cù), tạo sự nhấn mạnh với <i>even for those</i> (ngay cả những người đã học chăm chỉ vẫn cần đào tạo thêm).", "wrong": "<b>(B) scientifically</b> (một cách khoa học), <b>(C) objectively</b> (một cách khách quan), <b>(D) decidedly</b> (rõ ràng/dứt khoát) không hợp ngữ cảnh học nghề sửa ống nước.", "tip": "Collocation rất chuộng trong TOEIC: <b>work / study diligently</b> (làm việc / học tập chăm chỉ, miệt mài)."}}, {"id": 126, "category": "Từ loại", "tag": "Từ loại (Danh từ)", "before": "With its fixed price ", "after": ", Omega Cell guarantees no phone bill increases for three years.", "options": {"A": "assurance", "B": "assuredly", "C": "assuring", "D": "assures"}, "ans": "A", "ipa": "/wɪð ɪts fɪkst praɪs əˈʃʊərəns, ˈəʊmɪɡə sel ˌɡærənˈtiːz nəʊ fəʊn bɪl ˈɪnkriːsɪz fə θriː jɪəz/", "vi": "Với cam kết đảm bảo giá cố định, Omega Cell bảo đảm hóa đơn điện thoại sẽ không tăng trong vòng ba năm.", "opt_vi": {"A": "assurance (n): sự đảm bảo, lời cam đoan", "B": "assuredly (adv): một cách chắc chắn", "C": "assuring (V-ing): đang đảm bảo", "D": "assures (v): đảm bảo (ngôi 3 số ít)"}, "explain": {"correct": "Sau giới từ <b>With</b> và tính từ sở hữu <b>its</b> là một cụm danh từ kết thúc ở dấu phẩy (<i>With its fixed price ___</i>). Cần danh từ chính mang đuôi <b>-ance</b> → <b>assurance</b> (sự đảm bảo giá cố định).", "wrong": "<b>(B) assuredly</b> là trạng từ; <b>(C) assuring</b> là V-ing (không đứng làm danh từ chính sau cụm <i>fixed price</i>); <b>(D) assures</b> là động từ chia thì.", "tip": "Công thức cụm giới từ đầu câu: <b>With + [tính từ sở hữu] + ... + [Danh từ chính], S + V</b>. Thấy đuôi danh từ <b>-ance / -ence / -tion / -ment</b> → chọn ngay!"}}, {"id": 127, "category": "Từ vựng", "tag": "Từ vựng (Danh từ)", "before": "As chief analytics officer, Mr. Ko has worked at Lochston Ltd. with great ", "after": " for more than twenty years.", "options": {"A": "deduction", "B": "duplication", "C": "declaration", "D": "dedication"}, "ans": "D", "ipa": "/æz tʃiːf ˌænəˈlɪtɪks ˈɒfɪsə, ˈmɪstə kəʊ hæz wɜːkt æt ˈlɒkstən ˈlɪmɪtɪd wɪð ɡreɪt ˌdedɪˈkeɪʃən fə mɔː ðæn ˈtwenti jɪəz/", "vi": "Với tư cách là giám đốc phân tích, ông Ko đã làm việc tại Lochston Ltd. với sự tận tâm lớn trong hơn hai mươi năm.", "opt_vi": {"A": "deduction (n): sự khấu trừ, sự suy luận", "B": "duplication (n): sự sao chép, trùng lặp", "C": "declaration (n): lời tuyên bố, tờ khai", "D": "dedication (n): sự cống hiến, tận tâm"}, "explain": {"correct": "Cụm từ <b>work with great dedication</b> (làm việc với sự tận tâm/cống hiến lớn) hoàn toàn phù hợp với bối cảnh gắn bó với công ty hơn 20 năm.", "wrong": "<b>(A) deduction</b> (sự khấu trừ thuế/lương), <b>(B) duplication</b> (sự sao chép), <b>(C) declaration</b> (tờ khai/tuyên bố) là các từ có mặt chữ gần giống nhau (bẫy hình thức) nhưng sai hoàn toàn về nghĩa.", "tip": "Bẫy 4 từ cùng đầu <b>d-</b> và cùng đuôi <b>-tion</b>! Nhìn thấy <b>worked ... with great [chỗ trống] for 20 years</b> → khoanh ngay <b>dedication</b> (sự tận tâm/cống hiến)."}}, {"id": 128, "category": "Giới từ & Liên từ", "tag": "Cụm từ nối / Tương phản", "before": "Milltown Hospital's cafeteria serves lunch seven days a week ", "after": " only on weekdays.", "options": {"A": "up to", "B": "as though", "C": "each time", "D": "rather than"}, "ans": "D", "ipa": "/ˈmɪltaʊn ˈhɒspɪtəlz ˌkæfəˈtɪəriə sɜːvz lʌntʃ ˈsevən deɪz ə wiːk ˈrɑːðə ðæn ˈəʊnli ɒn ˈwiːkdeɪz/", "vi": "Căn tin của Bệnh viện Milltown phục vụ bữa trưa bảy ngày một tuần thay vì chỉ vào các ngày trong tuần.", "opt_vi": {"A": "up to (prep): lên đến (số lượng/mức độ)", "B": "as though (conj): cứ như thể là", "C": "each time (conj): mỗi khi", "D": "rather than (conj/prep): thay vì"}, "explain": {"correct": "Hai cụm thời gian đối lập nhau: <b>seven days a week</b> (7 ngày/tuần) ↔ <b>only on weekdays</b> (chỉ các ngày trong tuần). Dùng <b>rather than</b> (thay vì) để nối hai cấu trúc song song mang tính loại trừ.", "wrong": "<b>(A) up to</b> đứng trước con số (<i>up to 50 people</i>); <b>(B) as though</b> và <b>(C) each time</b> cần theo sau bởi một mệnh đề (S + V) và không hợp nghĩa.", "tip": "Thấy 2 vế đối lập song song (A ↔ B) mà vế sau chỉ là cụm từ (không có S + V) → <b>rather than</b> (thay vì) hoặc <b>instead of</b> là đáp án vàng!"}}, {"id": 129, "category": "Từ vựng", "tag": "Từ vựng (Tính từ)", "before": "The store's entire inventory of lumber comes from a nearby ", "after": " supplier.", "options": {"A": "financial", "B": "promotional", "C": "chemical", "D": "commercial"}, "ans": "D", "ipa": "/ðə stɔːz ɪnˈtaɪər ˈɪnvəntri əv ˈlʌmbə kʌmz frəm ə ˈnɪəbaɪ kəˈmɜːʃəl səˈplaɪə/", "vi": "Toàn bộ kho gỗ xẻ của cửa hàng đều đến từ một nhà cung cấp thương mại ở gần đó.", "opt_vi": {"A": "financial (adj): thuộc về tài chính", "B": "promotional (adj): mang tính quảng cáo, khuyến mãi", "C": "chemical (adj): thuộc về hóa chất", "D": "commercial (adj): thuộc về thương mại, kinh doanh quy mô lớn"}, "explain": {"correct": "Tính từ <b>commercial</b> (thương mại / cung cấp cho doanh nghiệp) đi với <b>supplier</b> tạo thành cụm <b>commercial supplier</b> (nhà cung cấp thương mại), phù hợp với ngữ cảnh nhập toàn bộ gỗ xẻ (<i>lumber</i>) cho cửa hàng.", "wrong": "<b>(A) financial</b> (tài chính), <b>(B) promotional</b> (quảng bá), <b>(C) chemical</b> (hóa chất) không liên quan đến nguồn cung cấp gỗ xẻ (<i>lumber</i>).", "tip": "Học cụm từ vựng thương mại: <b>commercial supplier / commercial property / commercial vehicle</b> (nhà cung cấp / bất động sản / xe thương mại)."}}, {"id": 130, "category": "Từ loại", "tag": "Từ loại (Tính từ chuyên ngành)", "before": "For a $95 ", "after": " fee, our mechanics will determine what repairs are needed.", "options": {"A": "diagnosed", "B": "diagnostic", "C": "diagnosable", "D": "diagnose"}, "ans": "B", "ipa": "/fər ə ˈnaɪnti faɪv ˈdɒlə ˌdaɪəɡˈnɒstɪk fiː, ˈaʊə məˈkænɪks wɪl dɪˈtɜːmɪn wɒt rɪˈpeəz ɑː ˈniːdɪd/", "vi": "Với mức phí chẩn đoán 95 đô la, các thợ máy của chúng tôi sẽ xác định những hạng mục sửa chữa nào là cần thiết.", "opt_vi": {"A": "diagnosed (v-ed/adj): đã được chẩn đoán", "B": "diagnostic (adj): thuộc về chẩn đoán, kiểm tra lỗi", "C": "diagnosable (adj): có thể chẩn đoán được", "D": "diagnose (v): chẩn đoán"}, "explain": {"correct": "Giữa <b>$95</b> và danh từ <b>fee</b> cần một tính từ chỉ mục đích/tính chất của khoản phí. <b>diagnostic fee</b> (phí kiểm tra/chẩn đoán lỗi) là thuật ngữ cực kỳ phổ biến trong sửa chữa xe hơi, thiết bị và y tế.", "wrong": "<b>(A) diagnosed</b> (đã bị chẩn đoán – mang nghĩa bị động cho bệnh nhân/lỗi, không dùng cho <i>fee</i>); <b>(C) diagnosable</b> (có thể chẩn đoán được – sai sắc thái); <b>(D) diagnose</b> là động từ.", "tip": "Câu phân loại 850+ của ETS! Khi cả 3 đáp án đều có thể làm tính từ, hãy nhớ cụm chuẩn thực tế: <b>diagnostic fee / diagnostic test / diagnostic tool</b> (phí / bài kiểm tra / công cụ chẩn đoán)."}}];
+const LOCAL_DICT = {"lecture": {"ipa": "/ˈlektʃər/", "pos": "n", "vi": "bài giảng, buổi thuyết trình", "syn": "talk, presentation, speech", "ant": "—"}, "attendees": {"ipa": "/əˌtenˈdiːz/", "pos": "n", "vi": "những người tham dự", "syn": "participants, guests", "ant": "absentees"}, "antique": {"ipa": "/ænˈtiːk/", "pos": "adj/n", "vi": "cổ, đồ cổ", "syn": "vintage, classic, ancient", "ant": "modern, contemporary"}, "close": {"ipa": "/kləʊz/", "pos": "v", "vi": "đóng cửa (close down: ngừng kinh doanh)", "syn": "shut down, cease", "ant": "open, launch"}, "residents": {"ipa": "/ˈrezɪdənts/", "pos": "n", "vi": "cư dân, người dân địa phương", "syn": "inhabitants, locals", "ant": "visitors, tourists"}, "status": {"ipa": "/ˈsteɪtəs/", "pos": "n", "vi": "tình trạng, trạng thái, tiến độ", "syn": "state, condition, progress", "ant": "—"}, "update": {"ipa": "/ˈʌpdeɪt/", "pos": "n/v", "vi": "bản cập nhật / cập nhật thông tin", "syn": "report, briefing, revision", "ant": "—"}, "ongoing": {"ipa": "/ˈɒŋɡəʊɪŋ/", "pos": "adj", "vi": "đang diễn ra, đang tiến hành", "syn": "continuous, in progress", "ant": "completed, finished"}, "construction": {"ipa": "/kənˈstrʌkʃən/", "pos": "n", "vi": "sự xây dựng, công trình", "syn": "building, development", "ant": "demolition"}, "leading": {"ipa": "/ˈliːdɪŋ/", "pos": "v/adj", "vi": "lãnh đạo, dẫn dắt; hàng đầu", "syn": "directing, managing, top", "ant": "following, minor"}, "selected": {"ipa": "/sɪˈlektɪd/", "pos": "v", "vi": "được lựa chọn", "syn": "chosen, picked, nominated", "ant": "rejected"}, "journalism": {"ipa": "/ˈdʒɜːnəlɪzəm/", "pos": "n", "vi": "ngành báo chí", "syn": "reporting, press", "ant": "—"}, "spread": {"ipa": "/spred/", "pos": "n/v", "vi": "sự lây lan, lan truyền", "syn": "transmission, expansion", "ant": "containment"}, "suspicious": {"ipa": "/səˈspɪʃəs/", "pos": "adj", "vi": "đáng ngờ, khả nghi", "syn": "doubtful, questionable", "ant": "trustworthy, legitimate"}, "hiring": {"ipa": "/ˈhaɪərɪŋ/", "pos": "n/adj", "vi": "tuyển dụng (hiring manager: quản lý tuyển dụng)", "syn": "recruiting, staffing", "ant": "firing, laying off"}, "considered": {"ipa": "/kənˈsɪdəd/", "pos": "v", "vi": "xem xét, cân nhắc", "syn": "reviewed, evaluated", "ant": "ignored, overlooked"}, "carefully": {"ipa": "/ˈkeəfəli/", "pos": "adv", "vi": "một cách cẩn thận, kỹ lưỡng", "syn": "thoroughly, attentively", "ant": "carelessly, hastily"}, "applicant": {"ipa": "/ˈæplɪkənt/", "pos": "n", "vi": "ứng viên, người nộp đơn", "syn": "candidate, contender", "ant": "employer, interviewer"}, "qualifications": {"ipa": "/ˌkwɒlɪfɪˈkeɪʃənz/", "pos": "n", "vi": "bằng cấp, trình độ chuyên môn", "syn": "credentials, skills", "ant": "—"}, "oversee": {"ipa": "/ˌəʊvəˈsiː/", "pos": "v", "vi": "giám sát, trông nom", "syn": "supervise, manage, direct", "ant": "neglect"}, "branch": {"ipa": "/brɑːntʃ/", "pos": "n", "vi": "chi nhánh", "syn": "office, division, subsidiary", "ant": "headquarters"}, "pharmaceuticals": {"ipa": "/ˌfɑːməˈsjuːtɪkəlz/", "pos": "n", "vi": "dược phẩm", "syn": "medications, drugs", "ant": "—"}, "varying": {"ipa": "/ˈveəriɪŋ/", "pos": "v", "vi": "đa dạng hóa, thay đổi", "syn": "diversifying, modifying", "ant": "standardizing"}, "line": {"ipa": "/laɪn/", "pos": "n", "vi": "dòng (sản phẩm), dây chuyền", "syn": "range, series, collection", "ant": "—"}, "medications": {"ipa": "/ˌmedɪˈkeɪʃənz/", "pos": "n", "vi": "thuốc men, dược phẩm", "syn": "medicines, remedies", "ant": "—"}, "continuously": {"ipa": "/kənˈtɪnjuəsli/", "pos": "adv", "vi": "liên tục, không ngừng", "syn": "constantly, steadily", "ant": "occasionally, rarely"}, "seeks": {"ipa": "/siːks/", "pos": "v", "vi": "tìm kiếm", "syn": "searches for, pursues", "ant": "avoids"}, "reduce": {"ipa": "/rɪˈdjuːs/", "pos": "v", "vi": "cắt giảm, làm giảm", "syn": "decrease, cut, lower", "ant": "increase, expand"}, "registers": {"ipa": "/ˈredʒɪstəz/", "pos": "n", "vi": "máy tính tiền (cash registers)", "syn": "tills, checkouts", "ant": "—"}, "automatically": {"ipa": "/ˌɔːtəˈmætɪkli/", "pos": "adv", "vi": "một cách tự động", "syn": "mechanically, by itself", "ant": "manually"}, "calculate": {"ipa": "/ˈkælkjuleɪt/", "pos": "v", "vi": "tính toán", "syn": "compute, determine, tally", "ant": "guess, estimate"}, "inventory": {"ipa": "/ˈɪnvəntri/", "pos": "n", "vi": "hàng tồn kho, danh mục hàng hóa", "syn": "stock, supply, goods", "ant": "—"}, "available": {"ipa": "/əˈveɪləbəl/", "pos": "adj", "vi": "có sẵn, sẵn có", "syn": "accessible, in stock", "ant": "unavailable, out of stock"}, "precisely": {"ipa": "/prɪˈsaɪsli/", "pos": "adv", "vi": "một cách chính xác", "syn": "accurately, exactly", "ant": "roughly, vaguely"}, "locate": {"ipa": "/ləʊˈkeɪt/", "pos": "v", "vi": "định vị, xác định vị trí", "syn": "find, pinpoint, detect", "ant": "lose, miss"}, "minerals": {"ipa": "/ˈmɪnərəlz/", "pos": "n", "vi": "khoáng sản", "syn": "ores, natural resources", "ant": "—"}, "financially": {"ipa": "/faɪˈnænʃəli/", "pos": "adv", "vi": "về mặt tài chính", "syn": "economically, fiscally", "ant": "—"}, "responsible": {"ipa": "/rɪˈspɒnsəbəl/", "pos": "adj", "vi": "có trách nhiệm, hợp lý", "syn": "prudent, sensible, accountable", "ant": "irresponsible, reckless"}, "expand": {"ipa": "/ɪkˈspænd/", "pos": "v", "vi": "mở rộng", "syn": "enlarge, grow, extend", "ant": "shrink, contract"}, "warehouse": {"ipa": "/ˈweəhaʊs/", "pos": "n", "vi": "nhà kho", "syn": "depot, storage facility", "ant": "—"}, "analysts": {"ipa": "/ˈænəlɪsts/", "pos": "n", "vi": "các nhà phân tích", "syn": "experts, researchers", "ant": "—"}, "certainty": {"ipa": "/ˈsɜːtənti/", "pos": "n", "vi": "sự chắc chắn", "syn": "assurance, confidence", "ant": "doubt, uncertainty"}, "regional": {"ipa": "/ˈriːdʒənəl/", "pos": "adj", "vi": "thuộc khu vực, vùng miền", "syn": "local, territorial", "ant": "global, national"}, "demand": {"ipa": "/dɪˈmɑːnd/", "pos": "n", "vi": "nhu cầu (thị trường)", "syn": "need, requirement", "ant": "supply"}, "campaign": {"ipa": "/kæmˈpeɪn/", "pos": "n", "vi": "chiến dịch", "syn": "drive, initiative, promotion", "ant": "—"}, "actively": {"ipa": "/ˈæktɪvli/", "pos": "adv", "vi": "một cách tích cực, chủ động", "syn": "vigorously, energetically", "ant": "passively"}, "soliciting": {"ipa": "/səˈlɪsɪtɪŋ/", "pos": "v", "vi": "thu thập, kêu gọi, thỉnh cầu", "syn": "seeking, requesting, gathering", "ant": "refusing"}, "feedback": {"ipa": "/ˈfiːdbæk/", "pos": "n", "vi": "phản hồi, ý kiến đóng góp", "syn": "comments, input, response", "ant": "—"}, "intended": {"ipa": "/ɪnˈtendɪd/", "pos": "adj/v", "vi": "được thiết kế/dự định nhằm mục đích", "syn": "designed, meant, aimed", "ant": "unintended"}, "absorb": {"ipa": "/əbˈzɔːb/", "pos": "v", "vi": "hấp thụ, thấm hút", "syn": "soak up, take in", "ant": "release, emit"}, "prevent": {"ipa": "/prɪˈvent/", "pos": "v", "vi": "ngăn ngừa, phòng tránh", "syn": "stop, avoid, avert", "ant": "cause, allow"}, "flooding": {"ipa": "/ˈflʌdɪŋ/", "pos": "n", "vi": "sự ngập lụt, lũ lụt", "syn": "overflow, inundation", "ant": "drought"}, "productivity": {"ipa": "/ˌprɒdʌkˈtɪvəti/", "pos": "n", "vi": "năng suất", "syn": "efficiency, output", "ant": "inefficiency"}, "manufacturing": {"ipa": "/ˌmænjuˈfæktʃərɪŋ/", "pos": "n/adj", "vi": "sản xuất, chế tạo", "syn": "production, industrial", "ant": "—"}, "award": {"ipa": "/əˈwɔːd/", "pos": "v/n", "vi": "trao thưởng / giải thưởng", "syn": "grant, present, prize", "ant": "revoke"}, "bonus": {"ipa": "/ˈbəʊnəs/", "pos": "n", "vi": "tiền thưởng", "syn": "incentive, reward, perk", "ant": "penalty, fine"}, "obtaining": {"ipa": "/əbˈteɪnɪŋ/", "pos": "v", "vi": "giành được, đạt được", "syn": "acquiring, securing, winning", "ant": "losing"}, "contract": {"ipa": "/ˈkɒntrækt/", "pos": "n", "vi": "hợp đồng", "syn": "agreement, deal", "ant": "—"}, "approval": {"ipa": "/əˈpruːvəl/", "pos": "n", "vi": "sự phê duyệt, chấp thuận", "syn": "consent, authorization, endorsement", "ant": "rejection, disapproval"}, "compensate": {"ipa": "/ˈkɒmpenseɪt/", "pos": "v", "vi": "bù đắp, đền bù", "syn": "make up for, offset, reimburse", "ant": "—"}, "qualified": {"ipa": "/ˈkwɒlɪfaɪd/", "pos": "adj", "vi": "đủ tiêu chuẩn, có trình độ", "syn": "competent, skilled, eligible", "ant": "unqualified"}, "neither": {"ipa": "/ˈnaɪðər/", "pos": "pron", "vi": "không ai/cái nào trong hai", "syn": "not either", "ant": "both"}, "purchased": {"ipa": "/ˈpɜːtʃəst/", "pos": "v", "vi": "đã mua", "syn": "bought, acquired", "ant": "sold"}, "equipment": {"ipa": "/ɪˈkwɪpmənt/", "pos": "n", "vi": "thiết bị, trang thiết bị", "syn": "gear, apparatus, tools", "ant": "—"}, "despite": {"ipa": "/dɪˈspaɪt/", "pos": "prep", "vi": "mặc dù, bất chấp", "syn": "in spite of, regardless of", "ant": "because of"}, "cooperative": {"ipa": "/kəʊˈɒpərətɪv/", "pos": "adj", "vi": "hợp tác, cùng phối hợp", "syn": "collaborative, joint, mutual", "ant": "competitive, uncooperative"}, "agreement": {"ipa": "/əˈɡriːmənt/", "pos": "n", "vi": "thỏa thuận, giao kèo", "syn": "contract, deal, arrangement", "ant": "disagreement"}, "produce": {"ipa": "/ˈprɒdjuːs/", "pos": "n", "vi": "nông sản tươi sống (rau củ quả)", "syn": "crops, agricultural goods", "ant": "—"}, "restrictions": {"ipa": "/rɪˈstrɪkʃənz/", "pos": "n", "vi": "các quy định hạn chế", "syn": "limitations, constraints, rules", "ant": "freedoms, permissions"}, "opposition": {"ipa": "/ˌɒpəˈzɪʃən/", "pos": "n", "vi": "sự phản đối", "syn": "resistance, objection, protest", "ant": "support, approval"}, "extensive": {"ipa": "/ɪkˈstensɪv/", "pos": "adj", "vi": "chuyên sâu, rộng lớn, toàn diện", "syn": "thorough, comprehensive, broad", "ant": "limited, brief"}, "diligently": {"ipa": "/ˈdɪlɪdʒəntli/", "pos": "adv", "vi": "một cách chăm chỉ, siêng năng", "syn": "hard, industriously, carefully", "ant": "lazily, carelessly"}, "assurance": {"ipa": "/əˈʃʊərəns/", "pos": "n", "vi": "sự đảm bảo, lời cam kết", "syn": "guarantee, promise, pledge", "ant": "uncertainty"}, "guarantees": {"ipa": "/ˌɡærənˈtiːz/", "pos": "v", "vi": "bảo đảm, cam đoan", "syn": "ensures, promises, warrants", "ant": "—"}, "dedication": {"ipa": "/ˌdedɪˈkeɪʃən/", "pos": "n", "vi": "sự cống hiến, tận tâm", "syn": "commitment, devotion, loyalty", "ant": "indifference, apathy"}, "cafeteria": {"ipa": "/ˌkæfəˈtɪəriə/", "pos": "n", "vi": "căn tin, nhà ăn tự phục vụ", "syn": "canteen, dining hall", "ant": "—"}, "weekdays": {"ipa": "/ˈwiːkdeɪz/", "pos": "n", "vi": "các ngày trong tuần (Thứ 2 – Thứ 6)", "syn": "workdays", "ant": "weekends"}, "lumber": {"ipa": "/ˈlʌmbər/", "pos": "n", "vi": "gỗ xẻ, gỗ xây dựng", "syn": "timber, wood", "ant": "—"}, "commercial": {"ipa": "/kəˈmɜːʃəl/", "pos": "adj", "vi": "thuộc về thương mại", "syn": "business, trade, industrial", "ant": "residential, personal"}, "supplier": {"ipa": "/səˈplaɪər/", "pos": "n", "vi": "nhà cung cấp", "syn": "vendor, provider, distributor", "ant": "buyer, customer"}, "diagnostic": {"ipa": "/ˌdaɪəɡˈnɒstɪk/", "pos": "adj", "vi": "thuộc về chẩn đoán, kiểm tra lỗi", "syn": "evaluative, analytical", "ant": "—"}, "mechanics": {"ipa": "/məˈkænɪks/", "pos": "n", "vi": "thợ máy, thợ sửa xe", "syn": "technicians, repairers", "ant": "—"}, "determine": {"ipa": "/dɪˈtɜːmɪn/", "pos": "v", "vi": "xác định, quyết định", "syn": "identify, establish, figure out", "ant": "—"}, "repairs": {"ipa": "/rɪˈpeəz/", "pos": "n", "vi": "việc sửa chữa", "syn": "fixes, maintenance, servicing", "ant": "damage"}};
+
+let currentSpeed = 1.0;
+let userAnswers = {};
+let showAllAns = false;
+let showAllVi = false;
+let showAllExp = false;
+let activeCategory = "Tất cả";
+
+// Timer state
+let timerSec = 0;
+let timerInterval = null;
+
+// Web Audio API Sound Effects
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playCorrectSound() {
+  try {
+    ensureAudio();
+    const now = audioCtx.currentTime;
+    [587.33, 880].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + i * 0.11);
+      gain.gain.setValueAtTime(0.18, now + i * 0.11);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.28);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.11);
+      osc.stop(now + i * 0.11 + 0.3);
+    });
+  } catch (e) {}
+}
+
+function playWrongSound() {
+  try {
+    ensureAudio();
+    const now = audioCtx.currentTime;
+    [220, 185].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, now + i * 0.14);
+      gain.gain.setValueAtTime(0.12, now + i * 0.14);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.14 + 0.22);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.14);
+      osc.stop(now + i * 0.14 + 0.24);
+    });
+  } catch (e) {}
+}
+
+// Feedback Toast & Hearts
+const PRAISES = ["Chị Mimi vỗ tay rần rần cho em luôn! Quá đỉnh! 🎉", "Xuất sắc quá em ơi, chị Mimi tự hào về em ghê! 💖", "Chuẩn không cần chỉnh! Chị Mimi chấm 100 điểm luôn! ✨", "Trời ơi giỏi quá trời! Chị Mimi thả nghìn tim cho em! ❤️", "Đúng phóc luôn! Học trò chị Mimi có khác! 🔥", "Quá mượt mà! Chị Mimi tin em sắp chạm mốc 900+ rồi! 🚀", "Bắt bài ETS gọn ơ! Chị Mimi khen em nức nở luôn! 🌟", "Chính xác 100%! Chị Mimi tặng em một tràng pháo tay! 👏", "Nhanh như chớp, chuẩn như máy! Chị Mimi phục sát đất! ⚡", "Ôi đỉnh của chóp! Chị Mimi cười tít mắt vì em đấy! 😍", "Tuyệt vời ông mặt trời! Chị Mimi cộng cho em 10 điểm phong độ! ☀️", "ETS cũng phải chào thua em thôi! Chị Mimi tự hào quá! 🏆", "Đúng rồi nha! Chị Mimi biết ngay em làm được mà! 💪", "Cú khoanh quá uy tín! Chị Mimi duyệt luôn! ✅", "Học đâu chắc đó, chị Mimi thích cái cách em làm bài ghê! 📘", "Quá xịn xò! Chị Mimi thả tim mỏi tay cho em luôn! 💗", "Chuẩn từng milimet! Chị Mimi phong em làm cao thủ Part 5! 👑", "Giỏi dữ vậy trời! Chị Mimi phải học hỏi lại em mất thôi! 😆", "Ngầu quá em ơi! Chị Mimi cổ vũ hết mình cho câu tiếp theo! 🎯", "Đáp án chuẩn không lệch một ly! Chị Mimi mê quá! ✨", "Bẫy của ETS gặp em là tắt điện! Chị Mimi khen nhé! 💡", "Tốc độ và chính xác đều 10/10! Chị Mimi vỗ tay! 🙌", "Em làm bài đỉnh quá, chị Mimi vui nguyên ngày luôn! 🌈", "Đúng rồi nè! Chị Mimi gửi ngàn lời khen tới em! 💐", "Phong độ đỉnh cao! Chị Mimi thấy mùi điểm cao đâu đây rồi! 📈", "Chắc tay quá em ơi! Chị Mimi cực kỳ ấn tượng! 🌟", "Khoanh phát ăn ngay! Chị Mimi tặng em 5 sao chất lượng! ⭐⭐⭐⭐⭐", "Chị Mimi biết em có thực lực mà, chuẩn quá chuẩn! 💖", "Quá thông minh! Em vừa né bẫy ETS cực nghệ luôn! 😎", "Tuyệt cú mèo! Chị Mimi chấm em điểm A+ nha! 🏅", "Đúng chuẩn sách giáo khoa! Chị Mimi ưng cái bụng lắm! 🥰", "Em tiến bộ nhanh quá trời! Chị Mimi thấy rõ luôn á! 🌱", "Một pha xử lý cực kỳ đi vào lòng chị Mimi! ❤️", "Không trượt phát nào! Chị Mimi cổ vũ em phá đảo đề này! 🔥", "Giỏi quá đi mất! Chị Mimi thưởng em một cái ôm tinh thần! 🤗", "Chị Mimi nhìn đáp án mà gật gù khen ngợi luôn! 👍", "Chính xác tuyệt đối! Em đang vào guồng cực tốt đó! ⚡", "Đỉnh thật sự! Chị Mimi tin mục tiêu TOEIC của em trong tầm tay! 🎯", "Làm câu nào chắc câu đó, chị Mimi khen em chăm chỉ nha! 📚", "Quá hay em ơi! Chị Mimi thấy em nắm ngữ pháp cực chắc! 🧠", "Chuẩn đét! Chị Mimi thả mưa tim cho sự xuất sắc này! 💕", "Em làm chị Mimi bất ngờ quá, nhanh mà chuẩn ghê! 🤩", "Đúng rồi! Chị Mimi chúc mừng em ghi thêm 1 điểm ngọt lịm! 🍬", "Xử lý gọn gàng! Chị Mimi đánh giá cao sự tập trung của em! 💎", "ETS ra đề khó mấy cũng không làm khó được trò chị Mimi! 🦁", "Chị Mimi phải thả icon tim tới tấp cho pha khoanh này! 💓", "Quá đỉnh luôn! Giữ vững nhịp độ này em nhé — chị Mimi cổ vũ! 📣", "Chính xác! Chị Mimi thấy sự nỗ lực của em đang đơm hoa kết trái! 🌸", "Đúng chuẩn rồi! Chị Mimi tin em sẽ làm bài thi thật cực mượt! ✨", "Ôi sao mà giỏi thế! Chị Mimi tự hào khoe em với cả lớp mất thôi! 🎉", "Một điểm cộng siêu to khổng lồ từ chị Mimi! 🎁", "Nhìn em làm bài mà chị Mimi mát lòng mát dạ quá! 💙", "Đúng quá trời đúng! Chị Mimi tung hoa chúc mừng em! 🎊", "Phản xạ Part 5 đỉnh ghê! Chị Mimi khen em hết lời! ⚡", "Chuẩn xác từng chi tiết! Chị Mimi rất hài lòng! ✅", "Em đúng là chiến thần ngữ pháp của lớp chị Mimi! 🛡️", "Khoanh cực kỳ tự tin và chuẩn xác! Chị Mimi rất thích! 💖", "Thêm một câu đúng nữa rồi! Chị Mimi cổ vũ em về đích rực rỡ! 🏁", "Chị Mimi thấy em đọc câu là ra đáp án luôn, quá siêu! 🧠", "Tuyệt vời lắm em! Chị Mimi luôn tin tưởng ở em! 🌟", "Đúng rồi nha! Chị Mimi ghi nhận sự tiến bộ vượt bậc của em! 📊", "Pha chọn đáp án quá sắc bén! Chị Mimi vỗ tay tán thưởng! 👏", "Giỏi hết phần thiên hạ rồi! Chị Mimi thả tim liên hoàn! ❤️‍🔥", "Em làm tốt lắm! Chị Mimi thấy em sắp thành bậc thầy TOEIC rồi! 🎓", "Chuẩn bài luôn! Chị Mimi khen em nhớ mẹo cực tốt! 💡", "Không gì cản nổi em lúc này! Chị Mimi cổ vũ nhiệt tình! 🔥", "Đáp án quá đẹp! Chị Mimi tặng em ngàn bông hoa điểm 10! 🌺", "Chính xác! Em đang chứng minh học chăm là có thưởng đó! 🏆", "Chị Mimi cười tươi như hoa vì em làm đúng câu này! 🌻", "Xuất sắc không tì vết! Chị Mimi cực kỳ tự hào! ✨", "Quá nhạy bén! Em nhìn phát ra ngay từ khóa — chị Mimi khen! 👀", "Đúng rồi em yêu quý! Chị Mimi tiếp thêm năng lượng cho em nhé! ⚡", "Một bước nữa gần hơn tới chứng chỉ TOEIC mơ ước! Chị Mimi mừng cho em! 🎯", "Chị Mimi chấm câu này 10 điểm tinh tế, không vướng bẫy nào! 💎", "Trời ơi quá xuất sắc! Chị Mimi muốn nhảy múa ăn mừng luôn! 💃", "Chuẩn xác 1000%! Chị Mimi luôn đồng hành cổ vũ em! 🤝", "Em làm bài có tâm và có tầm quá! Chị Mimi khen nha! 📘", "Đúng chuẩn chỉnh! Chị Mimi thấy em ngày càng tự tin hơn rồi! 🌈", "Quá giỏi! Chị Mimi gửi em một cơn mưa lời khen! 🌧️💖", "Khoanh đâu trúng đó! Chị Mimi gọi em là xạ thủ TOEIC! 🏹", "Đỉnh cao phong độ! Chị Mimi tin em sẽ vượt target dễ dàng! 🚀", "Chính xác tuyệt đối! Chị Mimi thích tinh thần học của em lắm! 🌟", "Tuyệt vời! Em vừa ghi điểm cực đẹp trong mắt chị Mimi! 👀❤️", "Chị Mimi vỗ vai khen em một cái thật kêu: Quá giỏi! 👏", "Đúng rồi! Cứ đà này thì đề nào cũng qua cái vèo — chị Mimi đảm bảo! 😎", "Em nắm bài chắc quá trời! Chị Mimi vui lắm luôn á! 🥰", "Chuẩn không còn gì để bàn! Chị Mimi tặng em cúp vàng! 🏆", "Hay quá em ơi! Chị Mimi thấy em tư duy cực kỳ logic! 🧩", "Đúng phóc! Chị Mimi cổ vũ em giữ lửa đến câu 130 nhé! 🔥", "Quá tài năng! Chị Mimi rất hạnh phúc khi có học viên như em! 💕", "Một câu trả lời điểm 10! Chị Mimi thả tim nồng nhiệt! ❤️", "Em vừa hạ gục câu này trong một nốt nhạc! Chị Mimi khen! 🎵", "Chính xác! Chị Mimi thấy em xử lý bẫy từ vựng/ngữ pháp siêu mượt! ✨", "Giỏi quá chừng! Chị Mimi gửi ngàn sao lấp lánh cho em! 🌟", "Đúng chuẩn gu chị Mimi! Nhanh, gọn, chính xác! ✅", "Chị Mimi chúc mừng em! Càng làm càng lên tay thấy rõ luôn! 📈", "Quá tuyệt! Em đang tỏa sáng rực rỡ với câu trả lời này! ☀️", "Đúng rồi nhé! Chị Mimi tự hào vì sự kiên trì của em! 💪", "Pha chốt đáp án quá đỉnh! Chị Mimi cho em tràng pháo tay lớn! 👏🎉", "Hoàn hảo luôn em ơi! Chị Mimi thương và tự hào về em lắm! 💖"];
+const ENCOURAGES = ["Ôi suýt đúng rồi! Chị Mimi ở đây, mình thử chọn lại câu này nhé! 💪", "Không sao đâu em ơi, sai ở đây để đi thi không sai! Chị Mimi cổ vũ! 🌟", "Bẫy của ETS hơi tinh vi xíu, chị Mimi gợi ý em nhìn kỹ từ trước chỗ trống nha! 👀", "Đừng buồn nha, chị Mimi tin lần chọn tiếp theo em sẽ đúng ngay! 💖", "Sai một câu là nhớ thêm một mẹo! Mở 💡 Giải thích của chị Mimi xem nhé! 💡", "Cố lên em ơi! Ai học TOEIC cũng từng dính bẫy này, chị Mimi cũng từng đó! 😄", "Chưa chuẩn lắm nè, hít thở sâu rồi đọc lại cả câu cùng chị Mimi nhé! 📘", "Suýt trúng rồi đó! Chị Mimi tin em chỉ cần soi kỹ từ loại thêm 3 giây thôi! ⏱️", "Không có gì phải nản hết, chị Mimi luôn ở đây đồng hành cùng em! 🤗", "Bẫy ETS vừa gài em đó! Thử lại đáp án khác cho chị Mimi xem nào! 🎯", "Sai lúc luyện tập là điều tuyệt vời nhất để lên điểm thật — chị Mimi hứa luôn! 📈", "Chị Mimi nhắc nhỏ: coi chừng từ loại hoặc ngữ cảnh phía sau chỗ trống nha! 🔍", "Thất bại là mẹ thành công! Chị Mimi cổ vũ em chinh phục lại câu này! 🔥", "Chưa đúng rồi, nhưng đừng vội bỏ cuộc nhé — chị Mimi tin em làm được! 💪", "Một chút nhầm lẫn thôi, chị Mimi vẫn chấm em 10 điểm tinh thần cố gắng! ❤️", "Ôi tiếc quá! Em bấm xem nghĩa hoặc mẹo của chị Mimi rồi chọn lại nhé! 📖", "Cứ bình tĩnh em ơi, đọc chậm lại một nhịp là thấy ngay đáp án — chị Mimi đảm bảo! 🌿", "ETS thích đánh lừa chỗ này lắm, chị Mimi chỉ mẹo trong nút 💡 rồi đó, xem nha! 💡", "Chưa trúng đích, nhưng em đang rất gần rồi! Thử lại cùng chị Mimi nào! 🏹", "Đừng lo lắng nhé, mỗi lần sai là một lần não ghi nhớ sâu hơn — chị Mimi khẳng định! 🧠", "Chị Mimi gửi em chút năng lượng tích cực: Làm lại câu này thật tự tin nào! ⚡", "Câu này hơi lắt léo thật, chị Mimi hiểu mà! Mình xem kỹ lại rồi chọn tiếp nhé! 😊", "Chưa đúng em ơi, nhưng không sao hết — học cùng chị Mimi là phải thoải mái! 🌈", "Bị ETS gài kèo rồi! Em đọc lại phần giải thích của chị Mimi để lần sau né mượt nha! 🛡️", "Cố lên chiến binh của chị Mimi! Thử một phương án khác xem sao nào! 🚀", "Sai câu này giúp em tỉnh táo hơn cho 29 câu còn lại — chị Mimi cổ vũ! ✨", "Chưa chính xác lắm, chị Mimi gợi ý em thử dịch nhanh nghĩa cả câu xem nhé! 🇻🇳", "Đừng để một câu sai làm tụt mood nha, chị Mimi vẫn tin em siêu giỏi! 💕", "Chị Mimi vỗ vai động viên em: Không sao cả, mình làm lại phát nữa là chuẩn! 👏", "Câu này là bẫy kinh điển đó em! Mở mẹo của chị Mimi ra bỏ túi ngay nhé! 🎒", "Gần đúng rồi nè! Chỉ lệch một xíu thôi, chị Mimi cổ vũ em chọn lại! 🎯", "Học là quá trình thử và sai mà, chị Mimi luôn kiên nhẫn chờ em chọn đúng! 🌸", "Chưa đúng rồi, nhưng chị Mimi rất thích việc em dám thử và không ngại sai! 🌟", "Nhìn kỹ lại dấu hiệu ngữ pháp một chút nhé, chị Mimi tin em sẽ phát hiện ra ngay! 🔎", "Ôi chao, ETS chơi khó ghê! Để chị Mimi tiếp sức cho em làm lại câu này nha! 💪", "Sai bây giờ để ngày thi cười tươi nhé em! Chị Mimi luôn ủng hộ em! 😊", "Chưa chuẩn đâu nha, em nghe lại cả câu hoặc xem nghĩa rồi chọn lại cùng chị Mimi! 🎧", "Cố lên em yêu quý! Chị Mimi biết em chỉ hơi vội một xíu thôi! ⏱️", "Một cú trượt nhẹ không làm khó được trò chị Mimi đâu, làm lại nào! 🔥", "Chị Mimi tặng em một nụ cười động viên: Cứ từ từ phân tích, em sẽ ra đáp án! 😄", "Chưa đúng rồi! Em thử loại trừ 2 đáp án vô lý trước nhé — mẹo ruột chị Mimi đó! 💡", "Đừng nản chí nhé, cao thủ 990 cũng từng sai những câu thế này — chị Mimi thề! 🏆", "Sai một lần, nhớ cả đời! Chị Mimi tin lần sau gặp dạng này em khoanh trong 3 giây! ⚡", "Chưa trúng rồi em ơi, nhưng chị Mimi thấy em đang rất cố gắng, tiếp tục nào! 💖", "ETS lại tung hỏa mù rồi! Mình bình tĩnh gỡ bẫy cùng chị Mimi nhé! 🕵️", "Không sao đâu nha! Bấm nút 💡 Giải thích của chị Mimi là hiểu liền trong tích tắc! ✨", "Chị Mimi nhắc nhẹ: Kiểm tra xem câu đã có động từ chính chưa hoặc cần từ loại gì nhé! 📝", "Hơi tiếc một chút, nhưng em hoàn toàn có thể sửa sai ngay bây giờ — chị Mimi cổ vũ! 🙌", "Cứ thoải mái chọn lại nhé em, phòng luyện tập của chị Mimi không trừ điểm đâu! 😉", "Chưa đúng lắm, chị Mimi tin em chỉ cần đọc thêm vế sau chỗ trống là thấy ngay! 👀", "Đừng buồn nha em, mỗi câu sai là một viên gạch xây nền tảng vững chắc — chị Mimi tin vậy! 🧱", "Ôi suýt nữa thì ăn điểm rồi! Thử lại thêm một lần nữa cho chị Mimi vui nào! 🎉", "Chị Mimi gửi em cái ôm cổ vũ: Câu này hơi khoai, mình xem mẹo rồi chinh phục nó nhé! 🤗", "Chưa chuẩn em ơi! Chú ý cụm từ cố định (collocation) trong câu nha — chị Mimi mách nhỏ! 🤫", "Sai không đáng sợ, bỏ cuộc mới đáng sợ! Chiến tiếp cùng chị Mimi nào! 🔥", "Chị Mimi thấy em đang đi đúng hướng rồi, chỉ cần chỉnh lại lựa chọn một chút thôi! 🧭", "Câu này nhiều bạn cũng nhầm lắm, nên em đừng tự trách mình nhé — chị Mimi hiểu mà! 💙", "Thử lại nào! Chị Mimi đặt cược 100% lần này em sẽ khoanh trúng tim đen! ❤️", "Chưa đúng rồi, nhưng không sao — chị Mimi luôn ở đây gỡ rối cùng em! 🧩", "Hít một hơi thật sâu, đọc lại câu hỏi rồi chọn lại thật ngầu nhé — chị Mimi cổ vũ! 😎", "Bẫy này hơi sâu đó em! Mở giải thích của chị Mimi để thấy rõ chân tướng nha! 💡", "Cố lên nào! Chị Mimi tin sức bền của em sẽ đánh bại mọi câu khó! 💪", "Chưa khớp đáp án rồi, em thử kiểm tra lại thì hoặc giới từ đi kèm nhé — chị Mimi gợi ý! 📌", "Đừng để câu này làm khó được em! Xem lại một chút rồi phục thù cùng chị Mimi nào! ⚔️", "Sai một bước nhỏ để tiến ba bước lớn! Chị Mimi luôn tự hào vì sự chăm chỉ của em! 🌱", "Chưa đúng nha em, nhưng chị Mimi vẫn thả tim cho tinh thần tự học tuyệt vời này! 💗", "Ôi ETS lừa khéo quá! Không sao, mình ghi chú lại mẹo của chị Mimi là xong! 📓", "Thử chọn lại xem sao em ơi, chị Mimi đang chờ tung hoa chúc mừng em đây! 🎊", "Chưa chính xác lắm, mình chậm lại 5 giây để soi kỹ ngữ cảnh nhé — chị Mimi khuyên thật! ⏳", "Cố lên em nhé! Mỗi lần vấp ngã là một lần trưởng thành hơn trong TOEIC — chị Mimi tin thế! 🌟", "Không sao hết trơn! Chị Mimi vẫn chấm em 10 điểm nỗ lực, chọn lại nha! 💯", "Câu này hơi đánh đố xíu, em bấm 📖 Hiện nghĩa xem rồi chọn lại cùng chị Mimi nhé! 📖", "Chưa đúng rồi! Chị Mimi cổ vũ em đừng nản, câu sau lấy lại phong độ ngay! 🚀", "Lệch một chút xíu thôi em ơi! Chị Mimi tin em sẽ sửa đúng ngay trong nốt nhạc tiếp theo! 🎵", "Đừng lo, chị Mimi đã viết sẵn mẹo siêu dễ hiểu ở dưới rồi, mở ra xem nhé! 💡", "Chị Mimi tiếp thêm vitamin tự tin cho em nè: Chọn lại và chiến thắng câu này thôi! 🍊", "Sai ở nhà còn hơn sai ở phòng thi! Chị Mimi mừng vì em phát hiện ra lỗ hổng này sớm! 🛡️", "Chưa trúng đáp án rồi, em thử đọc to cả câu lên xem từ nào nghe thuận tai nhất nha! 🗣️", "Cố lên nào bạn nhỏ của chị Mimi! Chỉ cần tinh mắt thêm một tí là ra ngay! 👀", "Chị Mimi hiểu cảm giác bị dính bẫy mà, cay cú xíu thôi rồi mình làm lại cho chuẩn nha! 😆", "Chưa đúng em ơi, nhưng không ai giỏi ngay từ lần đầu cả — chị Mimi luôn bên em! 🤝", "Một chút thử thách mới thú vị chứ! Chị Mimi cổ vũ em vượt qua câu này! 🏔️", "Đừng vội nản nhé, chị Mimi thấy em sắp tìm ra quy luật của câu này rồi đó! 🔍", "Chưa chuẩn xác lắm, em xem lại mối quan hệ giữa 2 vế câu giúp chị Mimi nhé! 🔗", "Ôi tiếc ghê, suýt nữa thì đúng! Làm lại phát nữa là ăn chắc luôn — chị Mimi cổ vũ! 🎯", "Chị Mimi gửi ngàn lời động viên tới em: Sai thì sửa, chửa thì... à nhầm, học thì giỏi! 😂", "Chưa đúng rồi nha! Mình dừng lại 3 giây xem phần loại trừ của chị Mimi để nhớ lâu hơn! 🧠", "Cố lên em ơi! Mục tiêu TOEIC đang vẫy gọi, chị Mimi kéo tay em đi tiếp nhé! 🏁", "Không có câu khó, chỉ có câu mình chưa biết mẹo thôi! Mở mẹo chị Mimi ra ngay nào! 💡", "Chưa đúng lắm đâu, nhưng chị Mimi cực kỳ trân trọng từng phút em ngồi luyện đề! 💖", "ETS vừa ghi 1 điểm, giờ tới lượt em ghi điểm gỡ hòa nhé — chị Mimi cổ vũ! ⚽", "Đừng nhíu mày nha, cười lên một cái rồi chọn lại cùng chị Mimi nào! 😊", "Chị Mimi nhắc nhẹ: Đọc kỹ từ khóa ngay sát chỗ trống là ra chân ái đó em! ✨", "Sai một câu không ảnh hưởng đến đẳng cấp của em đâu! Thử lại nhé — chị Mimi tin em! 👑", "Chưa chuẩn rồi, nhưng mỗi lỗi sai hôm nay là điểm cộng cho ngày mai — chị Mimi khẳng định! ☀️", "Cố lên nào! Chị Mimi luôn ở đây, sẵn sàng vỗ tay khi em chọn lại đúng! 👏", "Câu này hơi lừa tình xíu, em đừng mắc bẫy lần hai nhé — chị Mimi mách mẹo ở dưới rồi! 😉", "Chưa đúng em ơi! Thử lại đáp án khác đi, chị Mimi linh cảm lần này chuẩn 100%! 🔮", "Kiên trì là chìa khóa vàng! Chị Mimi cổ vũ em chinh phục trọn bộ 30 câu này! 🔑", "Không sao đâu em yêu quý, có chị Mimi đồng hành thì câu nào rồi cũng thành dễ ợt! 💕"];
+let toastTimer = null;
+
+function showFeedback(isRight) {
+  const toast = document.getElementById('fbToast');
+  document.getElementById('fbEmoji').textContent = isRight ? '❤️' : '🤡';
+  const arr = isRight ? PRAISES : ENCOURAGES;
+  document.getElementById('fbMsg').textContent = arr[Math.floor(Math.random() * arr.length)];
+  toast.className = 'fb-toast show ' + (isRight ? 'right' : 'wrong');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1900);
+
+  if (isRight) {
+    for (let i = 0; i < 6; i++) {
+      const h = document.createElement('div');
+      h.className = 'float-heart';
+      h.textContent = ['❤️','💖','✨','💙'][i % 4];
+      h.style.left = (35 + Math.random() * 30) + 'vw';
+      h.style.top = (48 + Math.random() * 14) + 'vh';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1250);
+    }
+  }
+}
+
+// Tokenize English text into clickable words
+function makeClickable(text) {
+  return text.replace(/([A-Za-z]+(?:'[A-Za-z]+)?)/g, '<span class="w-click" data-word="$1">$1</span>');
+}
+
+// ===== QUẢN LÝ GIỌNG ĐỌC CHUẨN ANH - MỸ (en-US) ĐỒNG BỘ FILE MẪU =====
+let cachedUSVoice = null;
+function loadUSVoice() {
+  if (!('speechSynthesis' in window)) return;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices || voices.length === 0) return;
+
+  const preferredNames = [
+    'Google US English',
+    'Microsoft Aria Online',
+    'Microsoft Jenny Online',
+    'Microsoft Guy Online',
+    'Samantha',
+    'Alex',
+    'Microsoft Zira',
+    'Microsoft David'
+  ];
+  for (const name of preferredNames) {
+    const found = voices.find(v => v.name.includes(name) && v.lang.toLowerCase().startsWith('en-us'));
+    if (found) { cachedUSVoice = found; return; }
+  }
+  cachedUSVoice = voices.find(v => v.lang.toLowerCase() === 'en-us')
+               || voices.find(v => v.lang.toLowerCase().startsWith('en-us'))
+               || voices.find(v => v.lang.toLowerCase().startsWith('en'))
+               || null;
+}
+
+if ('speechSynthesis' in window) {
+  loadUSVoice();
+  window.speechSynthesis.onvoiceschanged = loadUSVoice;
+}
+
+let activeAudioBox = null;
+let progressTimer = null;
+
+function speakWordUS(text) {
+  if (!('speechSynthesis' in window)) return;
+  stopActiveAudio();
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = Math.min(currentSpeed, 0.9);
+  if (!cachedUSVoice) loadUSVoice();
+  if (cachedUSVoice) u.voice = cachedUSVoice;
+  window.speechSynthesis.speak(u);
+}
+
+function playSentenceAudio(qId) {
+  if (!('speechSynthesis' in window)) {
+    alert('Trình duyệt của bạn không hỗ trợ tính năng phát âm thanh.');
+    return;
+  }
+  const q = QUESTIONS.find(x => x.id === qId);
+  const box = document.getElementById('audio-' + qId);
+  const btn = box.querySelector('.play-tts-btn');
+  const fill = box.querySelector('.progress-fill');
+
+  if (activeAudioBox === box) {
+    window.speechSynthesis.cancel();
+    stopActiveAudio();
+    return;
+  }
+  stopActiveAudio();
+  window.speechSynthesis.cancel();
+
+  const fullSentence = q.before + q.options[q.ans] + q.after;
+  activeAudioBox = box;
+  box.classList.add('playing');
+  btn.classList.add('playing');
+  btn.textContent = '⏹ Đang phát (US)...';
+  fill.style.width = '8%';
+
+  const u = new SpeechSynthesisUtterance(fullSentence);
+  u.lang = 'en-US';
+  u.rate = currentSpeed;
+  if (!cachedUSVoice) loadUSVoice();
+  if (cachedUSVoice) u.voice = cachedUSVoice;
+
+  const totalChars = Math.max(fullSentence.length, 1);
+  const estDurationMs = Math.max(1200, (fullSentence.split(/\s+/).length * 380) / currentSpeed);
+  const startTime = Date.now();
+
+  progressTimer = setInterval(() => {
+    if (activeAudioBox !== box) { clearInterval(progressTimer); return; }
+    const elapsed = Date.now() - startTime;
+    const pct = Math.min(95, Math.max(10, (elapsed / estDurationMs) * 100));
+    fill.style.width = pct + '%';
+  }, 80);
+
+  u.onboundary = function(ev) {
+    if (activeAudioBox === box && typeof ev.charIndex === 'number' && ev.charIndex > 0) {
+      const pct = Math.min(98, Math.round((ev.charIndex / totalChars) * 100));
+      fill.style.width = pct + '%';
+    }
+  };
+  u.onend = function() {
+    if (activeAudioBox === box) {
+      clearInterval(progressTimer);
+      fill.style.width = '100%';
+      setTimeout(() => {
+        if (activeAudioBox === box) stopActiveAudio();
+      }, 220);
+    }
+  };
+  u.onerror = function() {
+    if (activeAudioBox === box) stopActiveAudio();
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function stopActiveAudio() {
+  clearInterval(progressTimer);
+  if (activeAudioBox) {
+    activeAudioBox.classList.remove('playing');
+    const btn = activeAudioBox.querySelector('.play-tts-btn');
+    btn.classList.remove('playing');
+    btn.textContent = '▶ Nghe cả câu (Anh - Mỹ)';
+    activeAudioBox.querySelector('.progress-fill').style.width = '0%';
+    activeAudioBox = null;
+  }
+}
+
+// Render Filters
+function renderFilters() {
+  const cats = ["Tất cả", "Từ loại", "Từ vựng", "Thì & Động từ", "Giới từ & Liên từ", "Đại từ & Cấu trúc"];
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = cats.map(c => {
+    const count = c === "Tất cả" ? QUESTIONS.length : QUESTIONS.filter(q => q.category === c).length;
+    return `<button class="filter-pill ${c === activeCategory ? 'active' : ''}" data-cat="${c}">${c} (${count})</button>`;
+  }).join('');
+  bar.querySelectorAll('.filter-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCategory = btn.dataset.cat;
+      renderFilters();
+      applyFilter();
+    });
+  });
+}
+
+function applyFilter() {
+  QUESTIONS.forEach(q => {
+    const card = document.getElementById('q-' + q.id);
+    if (!card) return;
+    card.style.display = (activeCategory === "Tất cả" || q.category === activeCategory) ? 'block' : 'none';
+  });
+}
+
+// Render Quick Nav
+function renderNav() {
+  const nav = document.getElementById('qNav');
+  nav.innerHTML = QUESTIONS.map(q => `<a class="q-dot" id="dot-${q.id}" href="#q-${q.id}">${q.id}</a>`).join('');
+}
+
+// Render Questions
+function renderQuestions() {
+  const wrap = document.getElementById('questionsWrap');
+  wrap.innerHTML = QUESTIONS.map(q => {
+    const optsHtml = ['A','B','C','D'].map(letter => `
+      <div class="opt-row" id="opt-${q.id}-${letter}">
+        <button class="opt-circle" onclick="chooseOption(${q.id}, '${letter}')">${letter}</button>
+        <div class="opt-text">${makeClickable(q.options[letter])}</div>
+      </div>
+    `).join('');
+
+    const optViHtml = ['A','B','C','D'].map(l => `<div><b>(${l})</b> ${q.opt_vi[l]}</div>`).join('');
+
+    return `
+      <article class="q-card" id="q-${q.id}">
+        <div class="q-header">
+          <div class="q-num">
+            <span class="q-badge-num">Câu ${q.id}</span>
+            <span style="font-size:0.8rem;color:#64748b;font-weight:600;">${q.category}</span>
+          </div>
+          <span class="q-tag">🏷️ ${q.tag}</span>
+        </div>
+
+        <div class="q-stem" style="margin-bottom: 6px;">
+          ${makeClickable(q.before)}<span class="blank-slot" id="blank-${q.id}">_______</span>${makeClickable(q.after)}
+        </div>
+        <div class="ipa-line"><strong>UK IPA:</strong> ${q.ipa}</div>
+
+        <div class="audio-box" id="audio-${q.id}" style="margin-bottom: 14px;">
+          <button class="play-tts-btn" onclick="playSentenceAudio(${q.id})">▶ Nghe cả câu (Anh - Mỹ)</button>
+          <div class="wave-wrap">
+            <div class="wave-bars"><span></span><span></span><span></span><span></span></div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+          </div>
+        </div>
+
+        <div class="options-grid">${optsHtml}</div>
+
+        <div class="card-actions">
+          <label class="chk-label">
+            <input type="checkbox" class="vi-chk" id="vichk-${q.id}" onchange="toggleVi(${q.id}, this.checked)">
+            📖 Hiện nghĩa
+          </label>
+          <button class="exp-toggle-btn" id="expbtn-${q.id}" onclick="toggleExp(${q.id})">💡 Giải thích &amp; Mẹo làm bài</button>
+        </div>
+
+        <div class="vi-box" id="vi-${q.id}">
+          <div class="vi-sentence">🇻🇳 ${q.vi}</div>
+          <div class="vi-opts">${optViHtml}</div>
+        </div>
+
+        <div class="exp-box" id="exp-${q.id}">
+          <div class="exp-item"><span class="exp-title">🏷️ Dạng câu hỏi:</span> ${q.tag} (Nhóm: ${q.category})</div>
+          <div class="exp-item"><span class="exp-title">✅ Phân tích đáp án đúng (${q.ans} — ${q.options[q.ans]}):</span> ${q.explain.correct}</div>
+          <div class="exp-item"><span class="exp-title">❌ Loại trừ 3 đáp án sai:</span> ${q.explain.wrong}</div>
+          <div class="exp-tip"><span class="exp-title">🎯 Mẹo làm nhanh (5–10 giây):</span> ${q.explain.tip}</div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+// Answer Logic
+function chooseOption(qId, letter) {
+  const q = QUESTIONS.find(x => x.id === qId);
+  userAnswers[qId] = letter;
+  const isRight = (letter === q.ans);
+
+  ['A','B','C','D'].forEach(l => {
+    const row = document.getElementById(`opt-${qId}-${l}`);
+    row.classList.remove('correct', 'wrong');
+  });
+
+  const chosenRow = document.getElementById(`opt-${qId}-${letter}`);
+  const blank = document.getElementById(`blank-${qId}`);
+  const dot = document.getElementById(`dot-${qId}`);
+  const card = document.getElementById(`q-${qId}`);
+
+  if (isRight) {
+    chosenRow.classList.add('correct');
+    blank.innerHTML = makeClickable(q.options[q.ans]);
+    blank.classList.add('filled');
+    dot.classList.remove('wrong');
+    dot.classList.add('right');
+    playCorrectSound();
+    showFeedback(true);
+  } else {
+    chosenRow.classList.add('wrong');
+    if (showAllAns) {
+      document.getElementById(`opt-${qId}-${q.ans}`).classList.add('correct');
+      blank.innerHTML = makeClickable(q.options[q.ans]);
+      blank.classList.add('filled');
+    } else {
+      blank.textContent = '_______';
+      blank.classList.remove('filled');
+    }
+    dot.classList.remove('right');
+    dot.classList.add('wrong');
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    playWrongSound();
+    showFeedback(false);
+  }
+  updateScore();
+}
+
+function updateScore() {
+  let correct = 0;
+  QUESTIONS.forEach(q => {
+    if (userAnswers[q.id] === q.ans) correct++;
+  });
+  document.getElementById('scoreVal').textContent = correct;
+}
+
+function toggleVi(qId, force) {
+  const box = document.getElementById('vi-' + qId);
+  const chk = document.getElementById('vichk-' + qId);
+  const show = (typeof force === 'boolean') ? force : !box.classList.contains('show');
+  box.classList.toggle('show', show);
+  chk.checked = show;
+}
+
+function toggleExp(qId, force) {
+  const box = document.getElementById('exp-' + qId);
+  const btn = document.getElementById('expbtn-' + qId);
+  const show = (typeof force === 'boolean') ? force : !box.classList.contains('show');
+  box.classList.toggle('show', show);
+  btn.classList.toggle('open', show);
+}
+
+// Global Toolbar Controls
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSpeed = parseFloat(btn.dataset.speed);
+  });
+});
+
+document.getElementById('toggleAllAns').addEventListener('click', function() {
+  showAllAns = !showAllAns;
+  this.classList.toggle('active', showAllAns);
+  this.textContent = showAllAns ? '✅ Ẩn tất cả đáp án' : '✅ Hiện tất cả đáp án';
+  QUESTIONS.forEach(q => {
+    const ansRow = document.getElementById(`opt-${q.id}-${q.ans}`);
+    const blank = document.getElementById(`blank-${q.id}`);
+    if (showAllAns) {
+      ansRow.classList.add('correct');
+      blank.innerHTML = makeClickable(q.options[q.ans]);
+      blank.classList.add('filled');
+    } else {
+      if (userAnswers[q.id] !== q.ans) {
+        ansRow.classList.remove('correct');
+        blank.textContent = '_______';
+        blank.classList.remove('filled');
+      }
+    }
+  });
+});
+
+document.getElementById('toggleAllVi').addEventListener('click', function() {
+  showAllVi = !showAllVi;
+  this.classList.toggle('active', showAllVi);
+  this.textContent = showAllVi ? '📖 Ẩn tất cả nghĩa' : '📖 Hiện tất cả nghĩa';
+  QUESTIONS.forEach(q => toggleVi(q.id, showAllVi));
+});
+
+document.getElementById('toggleAllExp').addEventListener('click', function() {
+  showAllExp = !showAllExp;
+  this.classList.toggle('active', showAllExp);
+  this.textContent = showAllExp ? '💡 Ẩn tất cả giải thích & mẹo' : '💡 Hiện tất cả giải thích & mẹo';
+  QUESTIONS.forEach(q => toggleExp(q.id, showAllExp));
+});
+
+document.getElementById('toggleTags').addEventListener('click', function() {
+  const hidden = document.body.classList.toggle('hide-tags');
+  this.classList.toggle('active', !hidden);
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  userAnswers = {};
+  showAllAns = false;
+  document.getElementById('toggleAllAns').classList.remove('active');
+  document.getElementById('toggleAllAns').textContent = '✅ Hiện tất cả đáp án';
+  QUESTIONS.forEach(q => {
+    ['A','B','C','D'].forEach(l => {
+      document.getElementById(`opt-${q.id}-${l}`).classList.remove('correct', 'wrong');
+    });
+    const blank = document.getElementById(`blank-${q.id}`);
+    blank.textContent = '_______';
+    blank.classList.remove('filled');
+    document.getElementById(`dot-${q.id}`).classList.remove('right', 'wrong');
+  });
+  updateScore();
+  // Reset timer
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerSec = 0;
+  document.getElementById('timerText').textContent = '00:00';
+  document.getElementById('timerToggle').textContent = 'Bắt đầu';
+});
+
+// Stopwatch
+document.getElementById('timerToggle').addEventListener('click', function() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    this.textContent = 'Tiếp tục';
+  } else {
+    this.textContent = 'Tạm dừng';
+    timerInterval = setInterval(() => {
+      timerSec++;
+      const m = String(Math.floor(timerSec / 60)).padStart(2, '0');
+      const s = String(timerSec % 60).padStart(2, '0');
+      document.getElementById('timerText').textContent = `${m}:${s}`;
+    }, 1000);
+  }
+});
+
+// Clickable Word Dictionary
+let currentDictWord = "";
+document.addEventListener('click', async (e) => {
+  const el = e.target.closest('.w-click');
+  if (!el) return;
+  const raw = el.dataset.word || el.textContent.trim();
+  const key = raw.toLowerCase().replace(/[^a-z']/g, '');
+  if (!key) return;
+
+  currentDictWord = raw;
+  speakWordUS(raw);
+
+  const modal = document.getElementById('dictModal');
+  document.getElementById('dWord').textContent = raw;
+  const entry = LOCAL_DICT[key] || LOCAL_DICT[key.replace(/s$/, '')] || LOCAL_DICT[key.replace(/ed$/, '')] || LOCAL_DICT[key.replace(/ing$/, '')];
+
+  if (entry) {
+    document.getElementById('dMeta').textContent = `${entry.ipa}  •  (${entry.pos})`;
+    document.getElementById('dVi').textContent = `🇻🇳 ${entry.vi}`;
+    document.getElementById('dExtra').innerHTML = `
+      <div><b>Đồng nghĩa (TOEIC):</b> ${entry.syn}</div>
+      <div><b>Trái nghĩa:</b> ${entry.ant}</div>
+    `;
+    modal.classList.add('show');
+  } else {
+    document.getElementById('dMeta').textContent = 'Đang tra từ điển mở rộng...';
+    document.getElementById('dVi').textContent = '⏳ Đang tải nghĩa tiếng Việt...';
+    document.getElementById('dExtra').innerHTML = '';
+    modal.classList.add('show');
+    try {
+      const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(key)}&langpair=en|vi`);
+      const data = await res.json();
+      const trans = data?.responseData?.translatedText || 'Không tìm thấy nghĩa (chế độ ngoại tuyến).';
+      document.getElementById('dMeta').textContent = 'Tra tự động (Online Fallback)';
+      document.getElementById('dVi').textContent = `🇻🇳 ${trans}`;
+      document.getElementById('dExtra').innerHTML = `<div style="color:#64748b;">Mẹo: Bấm nút 🔊 Phát âm để nghe lại giọng đọc chuẩn.</div>`;
+    } catch {
+      document.getElementById('dMeta').textContent = 'Chế độ ngoại tuyến (Offline)';
+      document.getElementById('dVi').textContent = 'Từ cơ bản chưa có trong từ điển nội bộ — hãy xem bản dịch tiếng Việt của cả câu bên dưới nhé!';
+    }
+  }
+});
+
+document.getElementById('dSpeak').addEventListener('click', () => {
+  if (currentDictWord) speakWordUS(currentDictWord);
+});
+document.getElementById('dictClose').addEventListener('click', () => {
+  document.getElementById('dictModal').classList.remove('show');
+});
+document.getElementById('dictModal').addEventListener('click', (e) => {
+  if (e.target.id === 'dictModal') e.currentTarget.classList.remove('show');
+});
+
+// Init
+renderFilters();
+renderNav();
+renderQuestions();
+</script>
+</body>
+</html>
