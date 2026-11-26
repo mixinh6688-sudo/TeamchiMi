@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeamChiMimi — Học một ngoại ngữ, sống thêm một cuộc đời</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-ocean-soft: #F0F9FF;
+      --bg-ocean-tint: #E0F2FE;
+      --ocean-primary: #0284C7;
+      --ocean-bright: #0EA5E9;
+      --ocean-deep: #0369A1;
+      --text-main: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #64748B;
+      --border-subtle: #E2E8F0;
+      --border-ocean: #BAE6FD;
+      --shadow-card: 0 4px 20px -4px rgba(2, 132, 199, 0.08);
+      --shadow-hover: 0 14px 30px -8px rgba(2, 132, 199, 0.16);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 280px, #F8FAFC 100%);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-ocean);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 76px;
+      flex-wrap: wrap;
+    }
+
+    .brand-link { display: flex; align-items: center; padding: 6px 0; }
+    .brand-link svg { height: 54px; width: auto; display: block; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-ocean-soft);
+      padding: 5px;
+      border-radius: 999px;
+      border: 1px solid var(--border-ocean);
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover { color: var(--ocean-primary); }
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--ocean-primary), var(--ocean-bright));
+      color: #FFFFFF;
+      box-shadow: 0 6px 16px -4px rgba(2, 132, 199, 0.4);
+    }
+
+    .admin-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--border-ocean);
+      background: var(--bg-ocean-soft);
+      color: var(--ocean-deep);
+      transition: all 0.2s ease;
+    }
+
+    .admin-pill:hover { background: var(--bg-ocean-tint); }
+    .admin-pill.active-admin {
+      background: #0284C7;
+      color: #FFFFFF;
+      border-color: #0284C7;
+    }
+
+    .hero { padding: 36px 0 24px; }
+
+    .hero-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-ocean);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-ocean-soft);
+      color: var(--ocean-deep);
+      border: 1px solid var(--border-ocean);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: clamp(25px, 3.5vw, 36px);
+      font-weight: 800;
+      line-height: 1.22;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span { color: var(--ocean-primary); }
+
+    .hero-quote {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ocean-deep);
+      background: var(--bg-ocean-soft);
+      border-left: 4px solid var(--ocean-bright);
+      padding: 10px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 12px;
+    }
+
+    .hero p.lead { color: var(--text-secondary); font-size: 14.5px; }
+
+    .pillar-summary { display: grid; gap: 10px; }
+
+    .pillar-mini {
+      background: var(--bg-ocean-soft);
+      border: 1px solid var(--border-ocean);
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .pillar-mini:hover {
+      border-color: var(--ocean-bright);
+      transform: translateY(-2px);
+      background: #FFFFFF;
+    }
+
+    .pillar-mini-title { font-size: 14px; font-weight: 700; color: var(--ocean-deep); margin-bottom: 2px; }
+    .pillar-mini-desc { font-size: 12.8px; color: var(--text-secondary); }
+
+    .section-wrap { padding: 14px 0 64px; }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 { font-size: 22px; font-weight: 800; }
+    .section-head p { font-size: 14px; color: var(--text-secondary); }
+
+    /* Nhánh cấp 2 & cấp 3 */
+    .branch-stack {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .sub-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 8px 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .sub-tabs.level-3 {
+      background: var(--bg-ocean-soft);
+      border-color: var(--border-ocean);
+    }
+
+    .branch-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .sub-tab-btn {
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      transition: all 0.18s ease;
+    }
+
+    .sub-tab-btn:hover { background: var(--bg-ocean-soft); color: var(--ocean-primary); }
+    .sub-tab-btn.active {
+      background: var(--bg-ocean-tint);
+      color: var(--ocean-deep);
+      border: 1px solid var(--border-ocean);
+    }
+
+    .sub-tabs.level-3 .sub-tab-btn.active {
+      background: var(--ocean-primary);
+      color: #FFFFFF;
+      border-color: var(--ocean-primary);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: all 0.22s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-ocean);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #E0F2FE;
+      border: 1px solid var(--border-ocean);
+      margin-bottom: 12px;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-ocean-soft);
+      color: var(--ocean-deep);
+      border: 1px solid var(--border-ocean);
+    }
+
+    .tag.branch-tag {
+      background: #E0F2FE;
+      color: #0369A1;
+    }
+
+    .card-meta { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .card h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+    .card p { font-size: 13.5px; color: var(--text-secondary); }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px solid #F1F5F9;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--ocean-primary), var(--ocean-bright));
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-ocean);
+      background: var(--bg-ocean-soft);
+      color: var(--ocean-deep);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .btn-delete {
+      padding: 7px 11px;
+      border-radius: var(--radius-sm);
+      background: #FEF2F2;
+      color: #DC2626;
+      border: 1px solid #FECACA;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Admin Panel */
+    .admin-panel {
+      display: none;
+      background: #FFFFFF;
+      border: 1px solid var(--border-ocean);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .admin-panel.open { display: block; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group.span-2 { grid-column: span 2; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 12.5px; font-weight: 700; color: var(--text-secondary); }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      color: var(--text-main);
+      background: #FFFFFF;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--ocean-bright);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.52);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-ocean);
+      border-radius: var(--radius-lg);
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 26px;
+      box-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.25);
+    }
+
+    .modal-box.small { max-width: 430px; }
+
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--bg-ocean-soft);
+      color: var(--ocean-deep);
+      font-weight: 700;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .article-body p {
+      margin-bottom: 14px;
+      color: var(--text-main);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .status-msg {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ocean-deep);
+    }
+
+    footer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-ocean);
+      padding: 24px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13.5px;
+    }
+
+    footer strong { color: var(--ocean-deep); }
+
+    @media (max-width: 900px) {
+      .hero-card { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-group.span-2 { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 600px) {
+      .cards-grid, .form-grid { grid-template-columns: 1fr; }
+      .main-nav { width: 100%; justify-content: center; flex-wrap: wrap; border-radius: var(--radius-md); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="#top" class="brand-link" onclick="switchMainTab('toeic'); return false;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 110" role="img" aria-label="TeamChiMimi Logo">
+          <defs>
+            <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0284C7" />
+              <stop offset="100%" stop-color="#0EA5E9" />
+            </linearGradient>
+            <linearGradient id="badgeBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F0F9FF" />
+              <stop offset="100%" stop-color="#E0F2FE" />
+            </linearGradient>
+          </defs>
+          <rect x="8" y="10" width="88" height="88" rx="24" fill="url(#badgeBg)" stroke="#BAE6FD" stroke-width="1.5" />
+          <path
+            d="M 24 72 L 24 38 C 24 31, 33 30, 36 37 L 52 60 L 68 37 C 71 30, 80 31, 80 38 L 80 63 C 80 71, 73 76, 66 75 C 59 74, 56 68, 57 62 C 58 56, 64 53, 70 55 C 76 57, 79 63, 77 69 C 74 77, 64 81, 55 79"
+            fill="none"
+            stroke="url(#oceanGrad)"
+            stroke-width="6.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <text x="112" y="48" font-family="'Be Vietnam Pro', system-ui, sans-serif" font-size="25" font-weight="800" fill="#0F172A" letter-spacing="-0.4">
+            Team<tspan fill="#0284C7">ChiMimi</tspan>
+          </text>
+          <line x1="112" y1="58" x2="396" y2="58" stroke="#E0F2FE" stroke-width="1.5" />
+          <text x="112" y="79" font-family="'Be Vietnam Pro', system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#334155">
+            Học một ngoại ngữ, sống thêm một cuộc đời
+          </text>
+        </svg>
+      </a>
+
+      <div class="header-right">
+        <nav class="main-nav" aria-label="Danh mục chính">
+          <button id="nav-toeic" class="nav-btn active" onclick="switchMainTab('toeic')">TOEIC</button>
+          <button id="nav-tocfl" class="nav-btn" onclick="switchMainTab('tocfl')">TOCFL</button>
+          <button id="nav-mentor" class="nav-btn" onclick="switchMainTab('mentor')">Mentor Du học</button>
+        </nav>
+        <button id="admin-action-btn" class="admin-pill" onclick="handleAdminButton()">Quản trị</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <div>
+          <div class="hero-badge">TeamChiMimi • Trang mở cho tất cả mọi người</div>
+          <h1>Không gian học tập &amp; chia sẻ cho <span>TOEIC, TOCFL</span> &amp; <span>Du học</span></h1>
+          <div class="hero-quote">“Học một ngoại ngữ, sống thêm một cuộc đời”</div>
+          <p class="lead">
+            Truy cập tự do toàn bộ bài luyện tập HTML TOEIC theo từng bộ đề &amp; từng Part, tài liệu – video YouTube – game TOCFL cùng các bài viết Blog và video YouTube du học.
+          </p>
+        </div>
+
+        <div class="pillar-summary">
+          <button class="pillar-mini" onclick="switchMainTab('toeic')">
+            <div class="pillar-mini-title">01. TOEIC</div>
+            <div class="pillar-mini-desc">ETS_2026 • ETS_2025 • Lọc chi tiết theo Part 1 đến Part 7.</div>
+          </button>
+          <button class="pillar-mini" onclick="switchMainTab('tocfl')">
+            <div class="pillar-mini-title">02. TOCFL</div>
+            <div class="pillar-mini-desc">PPT • Bài Tập • Chữa bài tập chi tiết (YouTube) • Bài Giảng (YouTube) • Game.</div>
+          </button>
+          <button class="pillar-mini" onclick="switchMainTab('mentor')">
+            <div class="pillar-mini-title">03. Mentor Du học</div>
+            <div class="pillar-mini-desc">Bài viết chia sẻ du học dạng Blog và video YouTube.</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrap">
+      <!-- Bảng thêm nội dung cho Admin -->
+      <div id="admin-panel" class="admin-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div>
+            <h3 style="font-size:18px; font-weight:800; color:var(--ocean-deep);">Thêm nội dung mới vào TeamChiMimi</h3>
+            <p style="font-size:13px; color:var(--text-secondary);">Chọn đúng nhánh chính và nhánh nhỏ để bài hiển thị đúng bộ lọc.</p>
+          </div>
+          <button class="btn-outline" onclick="logoutAdmin()">Đăng xuất</button>
+        </div>
+
+        <form id="add-content-form" onsubmit="saveContent(event)" class="form-grid">
+          <div class="form-group">
+            <label for="f-main">1. Chuyên mục chính</label>
+            <select id="f-main" onchange="toggleSubSectionField()" required>
+              <option value="toeic">TOEIC</option>
+              <option value="tocfl">TOCFL</option>
+              <option value="mentor">Mentor Du học</option>
+            </select>
+          </div>
+
+          <div id="sub-group" class="form-group">
+            <label id="f-sub-label" for="f-sub">2. Bộ đề / Nhánh cấp 2</label>
+            <select id="f-sub"></select>
+          </div>
+
+          <div id="branch-group" class="form-group">
+            <label id="f-branch-label" for="f-branch">3. Nhánh con (Part / Tag nhỏ)</label>
+            <select id="f-branch"></select>
+          </div>
+
+          <div class="form-group span-2">
+            <label for="f-title">Tiêu đề bài</label>
+            <input id="f-title" type="text" placeholder="Ví dụ: TOEIC ETS 2026 – Test 1 (Part 1–3)" required />
+          </div>
+
+          <div class="form-group">
+            <label for="f-meta">Nhãn / Ghi chú ngắn</label>
+            <input id="f-meta" type="text" placeholder="Ví dụ: Luyện nghe tương tác / Test 1" />
+          </div>
+
+          <div id="url-group" class="form-group full">
+            <label for="f-url">Tên tệp .html hoặc link tài liệu/game</label>
+            <input id="f-url" type="text" placeholder="Ví dụ: TOEIC_ETS2026_Test1_Part1-3_Interactive.html" />
+          </div>
+
+          <div id="yt-group" class="form-group full">
+            <label for="f-yt">Link video YouTube (nếu có — sẽ tự động nhúng video trên trang)</label>
+            <input id="f-yt" type="url" placeholder="https://www.youtube.com/watch?v=..." />
+          </div>
+
+          <div class="form-group full">
+            <label for="f-desc">Mô tả ngắn</label>
+            <textarea id="f-desc" rows="2" placeholder="Mô tả ngắn gọn nội dung hiển thị trên thẻ..."></textarea>
+          </div>
+
+          <div id="blog-group" class="form-group full" style="display:none;">
+            <label for="f-blog">Nội dung bài viết Blog du học (mỗi đoạn xuống dòng 1 lần)</label>
+            <textarea id="f-blog" rows="5" placeholder="Đoạn 1...&#10;&#10;Đoạn 2..."></textarea>
+          </div>
+
+          <div class="form-group full">
+            <button type="submit" class="btn-primary">Lưu lên trang web</button>
+            <div id="form-status" class="status-msg"></div>
+          </div>
+        </form>
+      </div>
+
+      <div id="section-header" class="section-head"></div>
+      <div id="sub-tabs-container"></div>
+      <div id="cards-container" class="cards-grid"></div>
+    </section>
+  </main>
+
+  <!-- Modal đọc Blog Mentor Du học -->
+  <div id="blog-modal" class="modal-backdrop" onclick="closeBlogModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-top">
+        <div>
+          <span id="modal-tag" class="tag">Blog Du học</span>
+          <h3 id="modal-title" style="font-size: 21px; font-weight: 800; margin-top: 8px;"></h3>
+          <div id="modal-meta" class="card-meta" style="margin-top: 4px;"></div>
+        </div>
+        <button class="modal-close" onclick="closeBlogModal()" aria-label="Đóng">✕</button>
+      </div>
+      <div id="modal-body" class="article-body"></div>
+    </div>
+  </div>
+
+  <!-- Modal đăng nhập Admin -->
+  <div id="login-modal" class="modal-backdrop" onclick="closeLoginModal(event)">
+    <div class="modal-box small" onclick="event.stopPropagation()">
+      <div class="modal-top">
+        <div>
+          <h3 style="font-size: 18px; font-weight: 800; color: var(--ocean-deep);">Đăng nhập quản trị TeamChiMimi</h3>
+          <p style="font-size: 12.5px; color: var(--text-secondary);">Dành cho tài khoản quản trị viên thêm/xóa bài.</p>
+        </div>
+        <button class="modal-close" onclick="closeLoginModal()" aria-label="Đóng">✕</button>
+      </div>
+      <form onsubmit="loginAdmin(event)" style="display:grid; gap:12px;">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" value="huongmi.et2019@gmail.com" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Mật khẩu</label>
+          <input id="login-password" type="password" required />
+        </div>
+        <button type="submit" class="btn-primary">Đăng nhập</button>
+        <div id="login-status" class="status-msg"></div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <strong>TeamChiMimi</strong> — Học một ngoại ngữ, sống thêm một cuộc đời.
+    </div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://pqgarsgezwqiiflpwazx.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_ZOIRPXBgM754S8WyHGIRvQ_ttnIQSI_";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Cấu hình nhánh TOEIC: Bộ đề -> Part 1 đến Part 7
+    const TOEIC_SETS = [
+      { key: "ALL", label: "Tất cả bộ đề" },
+      { key: "ETS_2026", label: "ETS_2026" },
+      { key: "ETS_2025", label: "ETS_2025" }
+    ];
+
+    const TOEIC_PARTS = [
+      { key: "ALL", label: "Tất cả Part" },
+      { key: "Part 1", label: "Part 1" },
+      { key: "Part 2", label: "Part 2" },
+      { key: "Part 3", label: "Part 3" },
+      { key: "Part 4", label: "Part 4" },
+      { key: "Part 5", label: "Part 5" },
+      { key: "Part 6", label: "Part 6" },
+      { key: "Part 7", label: "Part 7" }
+    ];
+
+    // Cấu hình nhánh TOCFL
+    const TOCFL_SUBTABS = [
+      { key: "ppt", label: "PPT" },
+      { key: "bai-tap", label: "Bài Tập" },
+      { key: "chua-bai-tap", label: "Chữa bài tập chi tiết (YouTube)" },
+      { key: "bai-giang", label: "Bài Giảng (YouTube)" },
+      { key: "game", label: "Game" }
+    ];
+
+    const TOCFL_LEVELS = [
+      { key: "ALL", label: "Tất cả cấp độ" },
+      { key: "Band A (A1-A2)", label: "Band A (A1–A2)" },
+      { key: "Band B (B1-B2)", label: "Band B (B1–B2)" },
+      { key: "Band C (C1-C2)", label: "Band C (C1–C2)" }
+    ];
+
+    // Cấu hình nhánh Mentor Du học
+    const MENTOR_SUBTABS = [
+      { key: "blog", label: "Bài viết chia sẻ (Blog)" },
+      { key: "youtube", label: "YouTube" }
+    ];
+
+    let allItems = [];
+    let currentMainTab = "toeic";
+    let currentToeicSet = "ALL";
+    let currentToeicPart = "ALL";
+    let currentTocflTab = "ppt";
+    let currentTocflLevel = "ALL";
+    let currentMentorTab = "blog";
+    let isLoggedIn = false;
+
+    function getYouTubeId(url) {
+      if (!url) return "";
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/,
+        /youtu\.be\/([A-Za-z0-9_-]{11})/
+      ];
+      for (const regex of patterns) {
+        const match = url.match(regex);
+        if (match && match[1]) return match[1];
+      }
+      return "";
+    }
+
+    async function loadContents() {
+      const { data, error } = await db
+        .from("team_contents")
+        .select("*")
+        .order("id", { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        allItems = data;
+      }
+      renderContent();
+    }
+
+    function renderCardItem(item) {
+      const ytId = getYouTubeId(item.youtube_url);
+      const embedHtml = ytId
+        ? `
+          <div class="video-frame">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/${ytId}"
+              title="${item.title}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        `
+        : "";
+
+      const isBlog = item.main_section === "mentor" && item.sub_section === "blog";
+      const linkHref = item.youtube_url || item.url || "#";
+      const isExternal = Boolean(item.youtube_url || /^https?:\/\//.test(linkHref));
+      const targetAttr = isExternal ? `target="_blank" rel="noopener noreferrer"` : "";
+
+      const primaryTag = item.sub_section || item.main_section.toUpperCase();
+      const branchBadge = item.sub_branch
+        ? `<span class="tag branch-tag">${item.sub_branch}</span>`
+        : "";
+
+      const actionBtn = isBlog
+        ? `<button class="btn-primary" onclick="openBlogModalById(${item.id})">Đọc bài viết →</button>`
+        : `<a class="${ytId ? "btn-outline" : "btn-primary"}" href="${linkHref}" ${targetAttr}>Mở nội dung →</a>`;
+
+      const deleteBtn = isLoggedIn
+        ? `<button class="btn-delete" onclick="deleteItem(${item.id})">Xóa</button>`
+        : "";
+
+      return `
+        <article class="card">
+          <div>
+            ${embedHtml}
+            <div class="card-top">
+              <div class="tag-group">
+                <span class="tag">${primaryTag}</span>
+                ${branchBadge}
+              </div>
+              <span class="card-meta">${item.meta || ""}</span>
+            </div>
+            <h3>${item.title}</h3>
+            <p>${item.description || ""}</p>
+          </div>
+          <div class="card-actions">
+            ${actionBtn}
+            ${deleteBtn}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderEmptyState(text) {
+      return `
+        <div class="card" style="grid-column: 1 / -1; text-align:center; padding: 36px;">
+          <p style="color:var(--text-secondary);">${text}</p>
+        </div>
+      `;
+    }
+
+    function switchMainTab(tab) {
+      currentMainTab = tab;
+      document.querySelectorAll(".nav-btn").forEach((btn) => btn.classList.remove("active"));
+      document.getElementById(`nav-${tab}`).classList.add("active");
+      renderContent();
+    }
+
+    function switchToeicSet(setKey) {
+      currentToeicSet = setKey;
+      renderContent();
+    }
+
+    function switchToeicPart(partKey) {
+      currentToeicPart = partKey;
+      renderContent();
+    }
+
+    function switchTocflTab(subKey) {
+      currentTocflTab = subKey;
+      renderContent();
+    }
+
+    function switchTocflLevel(lvlKey) {
+      currentTocflLevel = lvlKey;
+      renderContent();
+    }
+
+    function switchMentorTab(subKey) {
+      currentMentorTab = subKey;
+      renderContent();
+    }
+
+    function renderContent() {
+      const headerEl = document.getElementById("section-header");
+      const subTabsEl = document.getElementById("sub-tabs-container");
+      const cardsEl = document.getElementById("cards-container");
+
+      if (currentMainTab === "toeic") {
+        headerEl.innerHTML = `
+          <div>
+            <h2>Chuyên mục TOEIC</h2>
+            <p>Chọn bộ đề (ETS_2026, ETS_2025) và lọc nhanh theo từng Part 1 đến Part 7.</p>
+          </div>
+        `;
+
+        subTabsEl.innerHTML = `
+          <div class="branch-stack">
+            <div class="sub-tabs">
+              <span class="branch-label">Bộ đề:</span>
+              ${TOEIC_SETS.map((s) => `
+                <button class="sub-tab-btn ${currentToeicSet === s.key ? "active" : ""}" onclick="switchToeicSet('${s.key}')">
+                  ${s.label}
+                </button>
+              `).join("")}
+            </div>
+            <div class="sub-tabs level-3">
+              <span class="branch-label">Kỹ năng / Part:</span>
+              ${TOEIC_PARTS.map((p) => `
+                <button class="sub-tab-btn ${currentToeicPart === p.key ? "active" : ""}" onclick="switchToeicPart('${p.key}')">
+                  ${p.label}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `;
+
+        const items = allItems.filter((i) => {
+          if (i.main_section !== "toeic") return false;
+          if (currentToeicSet !== "ALL" && (i.sub_section || "") !== currentToeicSet) return false;
+          if (currentToeicPart !== "ALL" && (i.sub_branch || "") !== currentToeicPart) return false;
+          return true;
+        });
+
+        cardsEl.innerHTML = items.length
+          ? items.map(renderCardItem).join("")
+          : renderEmptyState("Chưa có bài học nào trong nhánh TOEIC đang chọn.");
+        return;
+      }
+
+      if (currentMainTab === "tocfl") {
+        headerEl.innerHTML = `
+          <div>
+            <h2>Chuyên mục TOCFL</h2>
+            <p>PPT • Bài Tập • Chữa bài tập chi tiết (YouTube) • Bài Giảng (YouTube) • Game.</p>
+          </div>
+        `;
+        subTabsEl.innerHTML = `
+          <div class="branch-stack">
+            <div class="sub-tabs">
+              <span class="branch-label">Danh mục:</span>
+              ${TOCFL_SUBTABS.map((t) => `
+                <button class="sub-tab-btn ${currentTocflTab === t.key ? "active" : ""}" onclick="switchTocflTab('${t.key}')">
+                  ${t.label}
+                </button>
+              `).join("")}
+            </div>
+            <div class="sub-tabs level-3">
+              <span class="branch-label">Cấp độ:</span>
+              ${TOCFL_LEVELS.map((l) => `
+                <button class="sub-tab-btn ${currentTocflLevel === l.key ? "active" : ""}" onclick="switchTocflLevel('${l.key}')">
+                  ${l.label}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `;
+        const items = allItems.filter((i) => {
+          if (i.main_section !== "tocfl") return false;
+          if (i.sub_section !== currentTocflTab) return false;
+          if (currentTocflLevel !== "ALL" && (i.sub_branch || "") !== currentTocflLevel) return false;
+          return true;
+        });
+        cardsEl.innerHTML = items.length
+          ? items.map(renderCardItem).join("")
+          : renderEmptyState("Chưa có nội dung trong nhánh TOCFL đang chọn.");
+        return;
+      }
+
+      if (currentMainTab === "mentor") {
+        headerEl.innerHTML = `
+          <div>
+            <h2>Mentor Du học</h2>
+            <p>Các bài viết chia sẻ kinh nghiệm du học dạng Blog và video YouTube.</p>
+          </div>
+        `;
+        subTabsEl.innerHTML = `
+          <div class="branch-stack">
+            <div class="sub-tabs">
+              ${MENTOR_SUBTABS.map((t) => `
+                <button class="sub-tab-btn ${currentMentorTab === t.key ? "active" : ""}" onclick="switchMentorTab('${t.key}')">
+                  ${t.label}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `;
+        const items = allItems.filter((i) => i.main_section === "mentor" && i.sub_section === currentMentorTab);
+        cardsEl.innerHTML = items.length
+          ? items.map(renderCardItem).join("")
+          : renderEmptyState("Chưa có bài viết hoặc video nào trong mục này.");
+      }
+    }
+
+    function openBlogModalById(id) {
+      const post = allItems.find((i) => i.id === id);
+      if (!post) return;
+      document.getElementById("modal-tag").textContent = "Blog Du học";
+      document.getElementById("modal-title").textContent = post.title;
+      document.getElementById("modal-meta").textContent = post.meta || "";
+      const paragraphs = (post.blog_content || "")
+        .split(/\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+      document.getElementById("modal-body").innerHTML = paragraphs.length
+        ? paragraphs.map((p) => `<p>${p}</p>`).join("")
+        : `<p>${post.description || ""}</p>`;
+      document.getElementById("blog-modal").classList.add("open");
+    }
+
+    function closeBlogModal(event) {
+      if (!event || event.target.id === "blog-modal") {
+        document.getElementById("blog-modal").classList.remove("open");
+      }
+    }
+
+    function handleAdminButton() {
+      if (isLoggedIn) {
+        document.getElementById("admin-panel").classList.toggle("open");
+      } else {
+        document.getElementById("login-modal").classList.add("open");
+      }
+    }
+
+    function closeLoginModal(event) {
+      if (!event || event.target.id === "login-modal") {
+        document.getElementById("login-modal").classList.remove("open");
+      }
+    }
+
+    async function loginAdmin(event) {
+      event.preventDefault();
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      const statusEl = document.getElementById("login-status");
+      statusEl.textContent = "Đang đăng nhập...";
+
+      const { error } = await db.auth.signInWithPassword({ email, password });
+      if (error) {
+        statusEl.textContent = "Đăng nhập thất bại: " + error.message;
+        return;
+      }
+
+      isLoggedIn = true;
+      statusEl.textContent = "";
+      document.getElementById("login-modal").classList.remove("open");
+      document.getElementById("admin-panel").classList.add("open");
+      const btn = document.getElementById("admin-action-btn");
+      btn.textContent = "+ Thêm bài";
+      btn.classList.add("active-admin");
+      toggleSubSectionField();
+      renderContent();
+    }
+
+    async function logoutAdmin() {
+      await db.auth.signOut();
+      isLoggedIn = false;
+      document.getElementById("admin-panel").classList.remove("open");
+      const btn = document.getElementById("admin-action-btn");
+      btn.textContent = "Quản trị";
+      btn.classList.remove("active-admin");
+      renderContent();
+    }
+
+    function toggleSubSectionField() {
+      const mainVal = document.getElementById("f-main").value;
+      const subGroup = document.getElementById("sub-group");
+      const subLabel = document.getElementById("f-sub-label");
+      const subSelect = document.getElementById("f-sub");
+      const branchGroup = document.getElementById("branch-group");
+      const branchLabel = document.getElementById("f-branch-label");
+      const branchSelect = document.getElementById("f-branch");
+      const blogGroup = document.getElementById("blog-group");
+      const urlGroup = document.getElementById("url-group");
+      const ytGroup = document.getElementById("yt-group");
+
+      if (mainVal === "toeic") {
+        subGroup.style.display = "flex";
+        subLabel.textContent = "2. Bộ đề TOEIC";
+        subSelect.innerHTML = TOEIC_SETS.filter((s) => s.key !== "ALL")
+          .map((s) => `<option value="${s.key}">${s.label}</option>`)
+          .join("");
+
+        branchGroup.style.display = "flex";
+        branchLabel.textContent = "3. Part (Part 1 → Part 7)";
+        branchSelect.innerHTML = TOEIC_PARTS.filter((p) => p.key !== "ALL")
+          .map((p) => `<option value="${p.key}">${p.label}</option>`)
+          .join("");
+
+        blogGroup.style.display = "none";
+        urlGroup.style.display = "flex";
+        ytGroup.style.display = "none";
+      } else if (mainVal === "tocfl") {
+        subGroup.style.display = "flex";
+        subLabel.textContent = "2. Danh mục TOCFL";
+        subSelect.innerHTML = TOCFL_SUBTABS.map((t) => `<option value="${t.key}">${t.label}</option>`).join("");
+
+        branchGroup.style.display = "flex";
+        branchLabel.textContent = "3. Cấp độ TOCFL";
+        branchSelect.innerHTML = `<option value="">Chung (không phân cấp)</option>` +
+          TOCFL_LEVELS.filter((l) => l.key !== "ALL")
+            .map((l) => `<option value="${l.key}">${l.label}</option>`)
+            .join("");
+
+        blogGroup.style.display = "none";
+        urlGroup.style.display = "flex";
+        ytGroup.style.display = "flex";
+      } else {
+        subGroup.style.display = "flex";
+        subLabel.textContent = "2. Loại nội dung Du học";
+        subSelect.innerHTML = MENTOR_SUBTABS.map((t) => `<option value="${t.key}">${t.label}</option>`).join("");
+
+        branchGroup.style.display = "none";
+        branchSelect.innerHTML = `<option value=""></option>`;
+        toggleMentorFields();
+      }
+    }
+
+    function toggleMentorFields() {
+      const mainVal = document.getElementById("f-main").value;
+      const subVal = document.getElementById("f-sub").value;
+      const blogGroup = document.getElementById("blog-group");
+      const urlGroup = document.getElementById("url-group");
+      const ytGroup = document.getElementById("yt-group");
+
+      if (mainVal === "mentor") {
+        const isBlog = subVal === "blog";
+        blogGroup.style.display = isBlog ? "flex" : "none";
+        urlGroup.style.display = "none";
+        ytGroup.style.display = isBlog ? "none" : "flex";
+      }
+    }
+
+    document.getElementById("f-sub").addEventListener("change", toggleMentorFields);
+
+    async function saveContent(event) {
+      event.preventDefault();
+      const statusEl = document.getElementById("form-status");
+      statusEl.textContent = "Đang lưu...";
+
+      const mainSection = document.getElementById("f-main").value;
+      const subSection = document.getElementById("f-sub").value;
+      const subBranch = document.getElementById("f-branch").value;
+
+      const payload = {
+        main_section: mainSection,
+        sub_section: subSection,
+        sub_branch: subBranch,
+        title: document.getElementById("f-title").value.trim(),
+        meta: document.getElementById("f-meta").value.trim(),
+        description: document.getElementById("f-desc").value.trim(),
+        url: document.getElementById("f-url").value.trim(),
+        youtube_url: document.getElementById("f-yt").value.trim(),
+        blog_content: document.getElementById("f-blog").value.trim()
+      };
+
+      const { error } = await db.from("team_contents").insert([payload]);
+      if (error) {
+        statusEl.textContent = "Lỗi lưu dữ liệu: " + error.message;
+        return;
+      }
+
+      document.getElementById("add-content-form").reset();
+      toggleSubSectionField();
+      statusEl.textContent = "Đã lưu thành công!";
+      await loadContents();
+    }
+
+    async function deleteItem(id) {
+      const { error } = await db.from("team_contents").delete().eq("id", id);
+      if (!error) {
+        await loadContents();
+      }
+    }
+
+    toggleSubSectionField();
+
+    db.auth.getSession().then(({ data }) => {
+      if (data && data.session) {
+        isLoggedIn = true;
+        const btn = document.getElementById("admin-action-btn");
+        btn.textContent = "+ Thêm bài";
+        btn.classList.add("active-admin");
+        toggleSubSectionField();
+      }
+      loadContents();
+    });
+  </script>
+</body>
+</html>
