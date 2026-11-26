@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 6: Chúng tôi ở trên núi (第六課：我們學校在山上) - TOCFL A1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                        zh: ['Noto Sans TC', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            font-size: 16px;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            min-width: 0;
+        }
+        .zh-word {
+            display: inline-block;
+            border-bottom: 1.5px dotted #0284c7;
+            cursor: pointer;
+            padding: 0 1px;
+            border-radius: 2px;
+            transition: all 0.15s ease;
+        }
+        .zh-word:hover {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        .speaking-active {
+            background-color: #fef3c7 !important;
+            border-left: 4px solid #f59e0b !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        /* Custom scrollbar for clean aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col antialiased selection:bg-sky-200 selection:text-sky-900">
+
+    <!-- STICKY TOP TOOLBAR (2 ROWS) -->
+    <header class="sticky top-0 z-40 bg-white shadow-md border-b border-slate-200 flex-none">
+        <!-- ROW 1: HEADER & AUDIO & VISIBILITY CONTROLS -->
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2 border-b border-slate-100">
+            <!-- Left: Badge + Lesson Title -->
+            <div class="flex items-center gap-2 min-w-0">
+                <span class="bg-sky-600 text-white font-bold text-xs px-2.5 py-1 rounded-full shrink-0 shadow-sm">TOCFL A1</span>
+                <h1 class="text-base sm:text-lg font-bold text-slate-800 truncate">
+                    第六課：我們學校在山上 <span class="text-xs sm:text-sm font-normal text-slate-500 hidden md:inline">(Bài 6: Trường học của chúng tôi ở trên núi)</span>
+                </h1>
+            </div>
+
+            <!-- Right: Controls -->
+            <div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+                <!-- TTS Speed -->
+                <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-md border border-slate-200">
+                    <span class="text-slate-500 hidden sm:inline">⚡ Tốc độ:</span>
+                    <select id="tts-rate" class="bg-transparent font-medium text-slate-700 outline-none cursor-pointer">
+                        <option value="0.75">0.75x (Chậm)</option>
+                        <option value="0.9" selected>0.9x (Vừa)</option>
+                        <option value="1.0">1.0x (Chuẩn thời sự)</option>
+                        <option value="1.15">1.15x (Nhanh)</option>
+                    </select>
+                </div>
+
+                <!-- Voice Selector -->
+                <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-md border border-slate-200 max-w-[140px] sm:max-w-[200px]">
+                    <span class="text-slate-500 hidden sm:inline">🗣️ Giọng:</span>
+                    <select id="tts-voice" class="bg-transparent font-medium text-slate-700 outline-none cursor-pointer truncate w-full">
+                        <option value="">Tự động chọn zh-TW</option>
+                    </select>
+                </div>
+
+                <!-- Global Display Toggles -->
+                <button id="toggle-pinyin" onclick="togglePinyin()" class="bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 px-2.5 py-1 rounded-md font-medium transition-colors">
+                    🔤 Pinyin: <span id="pinyin-status">Hiện</span>
+                </button>
+                <button id="toggle-trans" onclick="toggleTrans()" class="bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 px-2.5 py-1 rounded-md font-medium transition-colors">
+                    🌐 Dịch: <span id="trans-status">Hiện</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ROW 2: TABS & ZOOM CONTROL -->
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 flex flex-wrap items-center justify-between gap-2">
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">
+                <button id="tab-btn-1" onclick="switchTab(1)" class="px-3 py-1.5 rounded-lg transition-all bg-sky-600 text-white font-semibold shadow-sm">
+                    Phần 1: Bài khóa 1 & 23 Từ vựng
+                </button>
+                <button id="tab-btn-2" onclick="switchTab(2)" class="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-all">
+                    Phần 2: Bài khóa 2 & 17 Từ vựng
+                </button>
+                <button id="tab-btn-3" onclick="switchTab(3)" class="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-all">
+                    Ngữ pháp trọng tâm (8 điểm)
+                </button>
+            </nav>
+
+            <!-- Page-Wide Zoom Control -->
+            <div class="flex items-center gap-1.5 bg-slate-100 px-2 py-1 rounded-lg border border-slate-200 text-xs">
+                <span class="text-slate-500 font-medium hidden lg:inline">Phóng to text:</span>
+                <button onclick="adjustZoom(-10)" class="w-6 h-6 flex items-center justify-center font-bold bg-white rounded border border-slate-300 hover:bg-slate-50 active:bg-slate-200 text-slate-700">A-</button>
+                <input type="range" id="zoom-slider" min="80" max="300" step="10" value="100" oninput="setZoom(this.value)" class="w-16 sm:w-24 accent-sky-600 cursor-pointer">
+                <span id="zoom-val" class="w-10 text-center font-bold text-sky-700">100%</span>
+                <button onclick="adjustZoom(10)" class="w-6 h-6 flex items-center justify-center font-bold bg-white rounded border border-slate-300 hover:bg-slate-50 active:bg-slate-200 text-slate-700">A+</button>
+                <!-- Quick Preset Badges -->
+                <div class="hidden sm:flex gap-1 ml-1">
+                    <button onclick="setZoom(100)" class="px-1.5 py-0.5 bg-white border border-slate-300 hover:bg-sky-50 hover:text-sky-600 rounded text-[10px] font-semibold">100%</button>
+                    <button onclick="setZoom(150)" class="px-1.5 py-0.5 bg-white border border-slate-300 hover:bg-sky-50 hover:text-sky-600 rounded text-[10px] font-semibold">150%</button>
+                    <button onclick="setZoom(200)" class="px-1.5 py-0.5 bg-white border border-slate-300 hover:bg-sky-50 hover:text-sky-600 rounded text-[10px] font-semibold">200%</button>
+                    <button onclick="setZoom(300)" class="px-1.5 py-0.5 bg-white border border-slate-300 hover:bg-sky-50 hover:text-sky-600 rounded text-[10px] font-semibold">300%</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- INSTRUCTION BANNER -->
+    <div class="bg-gradient-to-r from-sky-600 to-sky-700 text-white py-2.5 px-4 text-center text-xs sm:text-sm font-medium shadow-inner flex-none">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-x-6 gap-y-1">
+            <span>🔊 Bấm nút <b class="bg-sky-800/60 px-1.5 py-0.5 rounded">▶</b> để nghe phát âm chuẩn Đài Loan</span>
+            <span>💡 Bấm vào <b>bất kỳ từ Hán nào</b> để xem từ điển tra cứu nhanh</span>
+            <span>🔍 Sử dụng <b>A- / A+ / Thanh trượt Zoom</b> để tùy chỉnh kích thước chữ (80% - 300%)</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 space-y-8">
+
+        <!-- =================================================================== -->
+        <!-- TAB 1: PHẦN 1 - BÀI KHÓA 1 & 23 TỪ VỰNG -->
+        <!-- =================================================================== -->
+        <div id="tab-content-1" class="tab-page space-y-8">
+            
+            <!-- DIALOGUE 1 SECTION -->
+            <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-sky-600 uppercase tracking-wider bg-sky-50 px-2.5 py-1 rounded-md">Bài khóa (一)</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">在花蓮的山上 (Trường học trên núi ở Hoa Liên)</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="playDialogue('dialogue-1')" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-sm transition-colors">
+                            ▶ Nghe cả bài khóa 1
+                        </button>
+                        <button onclick="stopAudio()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl font-semibold text-sm transition-colors">
+                            ⏹️ Dừng
+                        </button>
+                    </div>
+                </div>
+
+                <div id="dialogue-1" class="space-y-4">
+                    <!-- Line 1 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="聽說怡君的學校很漂亮。">
+                        <button onclick="speakSentence(this.parentElement, '聽說怡君的學校很漂亮。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Tīngshuō Yíjūn de xuéxiào hěn piàoliang.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Nghe nói trường của Di Quân rất đẹp.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 2 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="他們學校在哪裡？遠不遠？">
+                        <button onclick="speakSentence(this.parentElement, '他們學校在哪裡？遠不遠？')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-emerald-800 text-sm sm:text-base">如玉 (Như Ngọc)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Tāmen xuéxiào zài nǎlǐ? Yuǎn bù yuǎn?</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Trường của họ ở đâu? Có xa không?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 3 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="有一點遠。他們學校在花蓮的山上。">
+                        <button onclick="speakSentence(this.parentElement, '有一點遠。他們學校在花蓮的山上。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Yǒu yìdiǎn yuǎn. Tāmen xuéxiào zài Huālián de shānshàng.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Hơi xa một chút. Trường của họ ở trên núi tại Hoa Liên.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 4 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="山上？那裡的風景一定很美。">
+                        <button onclick="speakSentence(this.parentElement, '山上？那裡的風景一定很美。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-emerald-800 text-sm sm:text-base">如玉 (Như Ngọc)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Shānshàng? Nàlǐ de fēngjǐng yídìng hěn měi.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Trên núi à? Phong cảnh ở đó nhất định rất đẹp.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 5 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="是的。他們學校前面有海，後面有山，那裡真的是一個很漂亮的地方。">
+                        <button onclick="speakSentence(this.parentElement, '是的。他們學校前面有海，後面有山，那裡真的是一個很漂亮的地方。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Shì de. Tāmen xuéxiào qiánmiàn yǒu hǎi, hòumiàn yǒu shān, nàlǐ zhēn de shì yí ge hěn piàoliang de dìfāng.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Đúng vậy. Phía trước trường họ có biển, phía sau có núi, nơi đó thật sự là một nơi rất đẹp.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 6 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="我想去看看。我們這個週末一起去吧！">
+                        <button onclick="speakSentence(this.parentElement, '我想去看看。我們這個週末一起去吧！')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-emerald-800 text-sm sm:text-base">如玉 (Như Ngọc)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Wǒ xiǎng qù kànkan. Wǒmen zhège zhōumò yìqǐ qù ba!</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Mình muốn đi xem thử. Cuối tuần này chúng ta cùng đi nhé!</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 7 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="好啊！我現在要去學校附近的咖啡店買咖啡。妳呢？">
+                        <button onclick="speakSentence(this.parentElement, '好啊！我現在要去學校附近的咖啡店買咖啡。妳呢？')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Hǎo a! Wǒ xiànzài yào qù xuéxiào fùjìn de kāfēidiàn mǎi kāfēi. Nǐ ne?</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Được thôi! Bây giờ mình phải đến quán cà phê gần trường mua cà phê. Còn bạn thì sao?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 8 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="我去樓下找朋友，我們要一起去上課。">
+                        <button onclick="speakSentence(this.parentElement, '我去樓下找朋友，我們要一起去上課。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-emerald-800 text-sm sm:text-base">如玉 (Như Ngọc)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Wǒ qù lóuxià zhǎo péngyǒu, wǒmen yào yìqǐ qù shàngkè.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Mình xuống tầng dưới tìm bạn, chúng mình sắp cùng nhau đi lên lớp.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VOCABULARY PART 1 SECTION -->
+            <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="mb-6 pb-4 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-sky-600 uppercase tracking-wider bg-sky-50 px-2.5 py-1 rounded-md">Từ vựng (一)</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">生詞（一） (23 Từ vựng Phần 1)</h2>
+                    </div>
+                    <span class="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">Trình độ TOCFL A1</span>
+                </div>
+
+                <div id="vocab-grid-1" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS for perfection & maintainability -->
+                </div>
+            </section>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- TAB 2: PHẦN 2 - BÀI KHÓA 2 & 17 TỪ VỰNG -->
+        <!-- =================================================================== -->
+        <div id="tab-content-2" class="tab-page hidden space-y-8">
+            
+            <!-- DIALOGUE 2 SECTION -->
+            <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-sky-600 uppercase tracking-wider bg-sky-50 px-2.5 py-1 rounded-md">Bài khóa (二)</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">參觀校園 (Tham quan khuôn viên trường)</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="playDialogue('dialogue-2')" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-sm transition-colors">
+                            ▶ Nghe cả bài khóa 2
+                        </button>
+                        <button onclick="stopAudio()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl font-semibold text-sm transition-colors">
+                            ⏹️ Dừng
+                        </button>
+                    </div>
+                </div>
+
+                <div id="dialogue-2" class="space-y-4">
+                    <!-- Line 1 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="歡迎你們來。">
+                        <button onclick="speakSentence(this.parentElement, '歡迎你們來。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-purple-800 text-sm sm:text-base">怡君 (Di Quân)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Huānyíng nǐmen lái.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Chào mừng các bạn đến.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 2 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="你們學校真遠！">
+                        <button onclick="speakSentence(this.parentElement, '你們學校真遠！')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Nǐmen xuéxiào zhēn yuǎn!</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Trường của các bạn thật xa!</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 3 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="是啊，不是很近，有一點不方便。">
+                        <button onclick="speakSentence(this.parentElement, '是啊，不是很近，有一點不方便。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-purple-800 text-sm sm:text-base">怡君 (Di Quân)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Shì a, bú shì hěn jìn, yǒu yìdiǎn bù fāngbiàn.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Đúng vậy, không gần lắm, hơi bất tiện một chút.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 4 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="這裡的學生在哪裡買東西？">
+                        <button onclick="speakSentence(this.parentElement, '這裡的學生在哪裡買東西？')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-emerald-800 text-sm sm:text-base">如玉 (Như Ngọc)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Zhèlǐ de xuéshēng zài nǎlǐ mǎi dōngxi?</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Sinh viên ở đây mua đồ ở đâu?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 5 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="在學校外面。學校裡面沒有商店。">
+                        <button onclick="speakSentence(this.parentElement, '在學校外面。學校裡面沒有商店。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-purple-800 text-sm sm:text-base">怡君 (Di Quân)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Zài xuéxiào wàimiàn. Xuéxiào lǐmiàn méiyǒu shāngdiàn.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Ở bên ngoài trường. Trong trường không có cửa hàng.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 6 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="吃飯呢？學校裡面沒有餐廳？">
+                        <button onclick="speakSentence(this.parentElement, '吃飯呢？學校裡面沒有餐廳？')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Chīfàn ne? Xuéxiào lǐmiàn méiyǒu cāntīng?</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Thế còn ăn cơm? Trong trường không có nhà ăn sao?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 7 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="有，餐廳在學生宿舍的一樓。">
+                        <button onclick="speakSentence(this.parentElement, '有，餐廳在學生宿舍的一樓。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-purple-800 text-sm sm:text-base">怡君 (Di Quân)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Yǒu, cāntīng zài xuéshēng sùshè de yì lóu.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Có, nhà ăn ở tầng một của ký túc xá sinh viên.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 8 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="前面這棟大樓很漂亮。">
+                        <button onclick="speakSentence(this.parentElement, '前面這棟大樓很漂亮。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-sky-800 text-sm sm:text-base">安同 (An Đồng)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Qiánmiàn zhè dòng dàlóu hěn piàoliang.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Tòa nhà phía trước này rất đẹp.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 9 -->
+                    <div class="dialogue-line p-3 rounded-xl transition-all flex items-start gap-3 bg-slate-50/50 hover:bg-slate-50" data-text="這是圖書館，旁邊的那棟大樓是教室，圖書館後面有游泳池。">
+                        <button onclick="speakSentence(this.parentElement, '這是圖書館，旁邊的那棟大樓是教室，圖書館後面有游泳池。')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold transition-colors">▶</button>
+                        <div class="flex-1">
+                            <div class="font-bold text-purple-800 text-sm sm:text-base">怡君 (Di Quân)</div>
+                            <div class="zh-text font-zh text-lg sm:text-xl font-medium text-slate-800 leading-relaxed"></div>
+                            <div class="pinyin-text text-sm text-sky-700 font-mono mt-0.5">Zhè shì túshūguǎn, pángbiān de nà dòng dàlóu shì jiàoshì, túshūguǎn hòumiàn yǒu yóuyǒngchí.</div>
+                            <div class="trans-text text-sm text-slate-600 mt-0.5">Đây là thư viện, tòa nhà bên cạnh là phòng học, phía sau thư viện có hồ bơi.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VOCABULARY PART 2 SECTION -->
+            <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="mb-6 pb-4 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-sky-600 uppercase tracking-wider bg-sky-50 px-2.5 py-1 rounded-md">Từ vựng (二)</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">生詞（二） (17 Từ vựng Phần 2)</h2>
+                    </div>
+                    <span class="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">Trình độ TOCFL A1</span>
+                </div>
+
+                <div id="vocab-grid-2" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS for perfection -->
+                </div>
+            </section>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- TAB 3: NGỮ PHÁP TRỌNG TÂM (8 ĐIỂM) -->
+        <!-- =================================================================== -->
+        <div id="tab-content-3" class="tab-page hidden space-y-8">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider bg-sky-50 px-2.5 py-1 rounded-md">Ngữ pháp trọng tâm</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">8 Điểm Ngữ Pháp Bài 6 (TOCFL A1 Standard)</h2>
+                    <p class="text-sm text-slate-500 mt-1">Nắm vững cấu trúc biểu thị vị trí, phương hướng, sự tồn tại và động từ chỉ mục đích trong tiếng Trung Đài Loan.</p>
+                </div>
+
+                <div id="grammar-container" class="space-y-8">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- DICTIONARY MODAL -->
+    <div id="dict-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm hidden transition-opacity">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-lg w-full p-6 space-y-4 relative transform transition-all scale-95" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between border-b border-slate-100 pb-3">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <span id="modal-word" class="font-zh text-3xl font-bold text-slate-800"></span>
+                        <button id="modal-audio-btn" class="w-9 h-9 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center font-bold text-base transition-colors">▶</button>
+                    </div>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span id="modal-pinyin" class="text-sky-700 font-mono font-semibold text-lg"></span>
+                        <span id="modal-pos" class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded font-medium"></span>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1">✕</button>
+            </div>
+
+            <!-- Modal Content: Vietnamese Meanings -->
+            <div class="space-y-3">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nghĩa tiếng Việt:</h4>
+                <div id="modal-meanings" class="space-y-2 text-slate-700 text-sm sm:text-base leading-relaxed font-medium"></div>
+            </div>
+
+            <!-- Taiwan Culture & Usage Note Box -->
+            <div id="modal-note-box" class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-xs sm:text-sm text-amber-900 space-y-1">
+                <div class="font-bold flex items-center gap-1.5 text-amber-800">
+                    <span>🇹🇼 Ghi chú văn hóa & Cách dùng tại Đài Loan:</span>
+                </div>
+                <div id="modal-note" class="leading-relaxed text-amber-900/90"></div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="pt-2 text-right">
+                <button onclick="closeModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-4 py-2 rounded-xl text-sm transition-colors">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* --------------------------------------------------------------------- */
+        /* 1. DICTIONARY DATABASE (Lesson 6 + Cumulative Lessons 1-5)            */
+        /* --------------------------------------------------------------------- */
+        const dictionary = {
+            // LESSON 6 PART 1 VOCABULARY
+            "他們": { pinyin: "tāmen", pos: "Đại từ", meanings: ["1. Họ, bọn họ, chúng nó (chỉ nhóm người từ 2 người trở lên, hoặc nhóm có cả nam lẫn nữ)."], note: "Tại Đài Loan, 他們 dùng chung cho cả nam lẫn nữ; nếu toàn bộ là nữ giới có thể dùng 她們 trong văn viết." },
+            "學校": { pinyin: "xuéxiào", pos: "Danh từ", meanings: ["1. Trường học, cơ sở giáo dục."], note: "Ở Đài Loan, các đại học thường được gọi tắt như 臺灣大學 -> 臺大 (Tài-dà), 政治大學 -> 政大 (Zhèng-dà)." },
+            "在": { pinyin: "zài", pos: "Giới từ / Động từ / Phó từ", meanings: ["1. Ở, tại (chỉ vị trí, địa điểm).", "2. Đang (phó từ biểu thị hành động đang diễn ra)."], note: "Vị trí trong câu: 主語 + 在 + 地點 + 動詞 (Làm gì ở đâu). Đừng nhầm lẫn với tiếng Việt (Làm gì + ở đâu)." },
+            "山上": { pinyin: "shānshàng", pos: "Danh từ phương vị", meanings: ["1. Trên núi, đỉnh núi, khu vực miền núi."], note: "Ví dụ nổi tiếng tại Đài Loan: 陽明山上 (Trên núi Dương Minh), 東華大學 (Đại học Đông Hoa ở Hoa Liên có khuôn viên nằm tựa lưng vào núi)." },
+            "那裡": { pinyin: "nàlǐ", pos: "Đại từ", meanings: ["1. Ở đó, nơi đó, chỗ đó (vị trí xa người nói)."], note: "Người Đài Loan cũng hay viết và phát âm là 那兒 (nàr) hoặc 那邊 (nàbiān). Nhớ phân biệt với 哪裡 (nǎlǐ - ở đâu)." },
+            "風景": { pinyin: "fēngjǐng", pos: "Danh từ", meanings: ["1. Phong cảnh, cảnh trí, cảnh quan thiên nhiên."], note: "Đài Loan có rất nhiều scenic spots được gọi là 風景區 (Khu danh thắng phong cảnh)." },
+            "美": { pinyin: "měi", pos: "Tính từ", meanings: ["1. Đẹp, mỹ lệ, xinh đẹp, tuyệt vời."], note: "Thường đi kèm phó từ 很 (hěn měi) hoặc 真 (zhēn měi). Trong khẩu ngữ Đài Loan hay nói 美好的 (đẹp đẽ) hoặc 美極了 (cực kỳ đẹp)." },
+            "前面": { pinyin: "qiánmiàn", pos: "Danh từ phương vị", meanings: ["1. Phía trước, đằng trước, phía mặt tiền."], note: "Trong khẩu ngữ Đài Loan thường nói 前面 (qiánmiàn) hoặc 前邊 (qiánbiān). Cấu trúc: A 在 B 前面 (A ở phía trước B)." },
+            "海": { pinyin: "hǎi", pos: "Danh từ", meanings: ["1. Biển, đại dương."], note: "Đài Loan là đảo quốc surrounded by sea. Hoa Liên (花蓮) giáp Thái Bình Dương (太平洋) nổi tiếng với biển xanh đẹp tuyệt vời." },
+            "後面": { pinyin: "hòumiàn", pos: "Danh từ phương vị", meanings: ["1. Phía sau, đằng sau, mặt sau."], note: "Cấu trúc: A 在 B 後面 (A ở phía sau B). Đối lập với 前面." },
+            "山": { pinyin: "shān", pos: "Danh từ", meanings: ["1. Núi, ngọn núi."], note: "Đài Loan có 2/3 diện tích là núi, nổi tiếng nhất là 玉山 (Núi Ngọc/Yushan - đỉnh núi cao nhất Đông Bắc Á)." },
+            "真的": { pinyin: "zhēn de", pos: "Phó từ / Tính từ", meanings: ["1. Thật sự, quả thật, đúng là (dùng nhấn mạnh tính chân thực của tính từ/động từ)."], note: "Rất phổ biến trong đáp lời: 真的嗎？ (Thật sao?), 真的！ (Thật đấy!)." },
+            "地方": { pinyin: "dìfāng", pos: "Danh từ", meanings: ["1. Nơi, chỗ, địa phương, địa điểm."], note: "Đó là lượng từ 個 (yí ge dìfāng). Ví dụ: 好地方 (Nơi tốt / chốn lý tưởng)." },
+            "現在": { pinyin: "xiànzài", pos: "Danh từ thời gian", meanings: ["1. Bây giờ, hiện tại, lúc này."], note: "Thường đứng trước chủ ngữ hoặc ngay sau chủ ngữ để làm trạng ngữ chỉ thời gian." },
+            "附近": { pinyin: "fùjìn", pos: "Danh từ phương vị / Tính từ", meanings: ["1. Lân cận, gần đây, khu vực xung quanh."], note: "Cấu trúc: A 附近 (Xung quanh A/ Gần A). Ví dụ: 學校附近 (Gần trường học)." },
+            "樓下": { pinyin: "lóuxià", pos: "Danh từ phương vị", meanings: ["1. Tầng dưới, dưới nhà, dưới lầu."], note: "Tương tự có 樓上 (lóushàng - tầng trên). Tại Đài Loan, tầng dưới của chung cư thường là shop house hoặc tiện ích." },
+            "找": { pinyin: "zhǎo", pos: "Động từ", meanings: ["1. Tìm, tìm kiếm.", "2. Gặp, tìm gặp ai đó.", "3. Thối lại (tiền thừa khi mua sắm)."], note: "Ý nghĩa thối tiền rất phổ biến tại các cửa hàng Đài Loan: 找你五十塊 (Thối lại bạn 50 đài tệ)." },
+            "朋友": { pinyin: "péngyǒu", pos: "Danh từ", meanings: ["1. Bạn, bạn bè."], note: "Lượng từ: 位 (wèi - lịch sự) hoặc 個 (gè). 男朋友 (bạn trai), 女朋友 (bạn gái)." },
+            "上課": { pinyin: "shàngkè", pos: "Động từ ly hợp", meanings: ["1. Đi học, lên lớp, bắt đầu tiết học.", "2. Giảng bài, dạy học (đối với giáo viên)."], note: "Là động từ ly hợp: 上第一節課 (học tiết đầu tiên). Khi tan học dùng 下課 (xiàkè)." },
+            "花蓮": { pinyin: "Huālián", pos: "Danh từ riêng", meanings: ["1. Hoa Liên (Tỉnh/Thành phố phía Đông Đài Loan, nổi tiếng với Hẻm núi Thái Lỗ Các - Taroko Gorge)."], note: "Nơi có phong cảnh sơn thủy hữu tình nổi tiếng thế giới, được mệnh danh là hậu hoa viên của Đài Loan." },
+            "聽說": { pinyin: "tīngshuō", pos: "Động từ", meanings: ["1. Nghe nói, nghe người ta nói là..."], note: "Đứng đầu câu để dẫn lại tin tức hoặc thông tin chưa tự mình kiểm chứng." },
+            "遠": { pinyin: "yuǎn", pos: "Tính từ", meanings: ["1. Xa, khoảng cách xa."], note: "Phủ định: 不遠 (không xa). Phản nghĩa với 近 (gần)." },
+            "哪裡": { pinyin: "nǎlǐ", pos: "Đại từ nghi vấn", meanings: ["1. Ở đâu, chỗ nào (hỏi vị trí).", "2. Đâu có / Không dám (đáp lại lời khen ngợi một cách khiêm tốn)."], note: "Văn hóa Đài Loan: Khi được khen (như 'Tiếng Trung của bạn giỏi quá!'), đáp 哪裡，哪裡！ biểu thị sự khiêm tốn chân thành." },
+
+            // LESSON 6 PART 2 VOCABULARY
+            "近": { pinyin: "jìn", pos: "Tính từ", meanings: ["1. Gần (khoảng cách không xa)."], note: "Phản nghĩa với 遠 (yuǎn). Phủ định: 不近 (không gần)." },
+            "方便": { pinyin: "fāngbiàn", pos: "Tính từ", meanings: ["1. Tiện lợi, thuận tiện, dễ dàng."], note: "Tại Đài Loan, 便利商店 (cửa hàng tiện lợi 7-Eleven, FamilyMart) cực kỳ 方便!" },
+            "這裡": { pinyin: "zhèlǐ", pos: "Đại từ", meanings: ["1. Ở đây, nơi này, chỗ này (vị trí gần người nói)."], note: "Trong khẩu ngữ Đài Loan cũng hay dùng 這邊 (zhèbiān) hoặc 這兒 (zhèr)." },
+            "學生": { pinyin: "xuéshēng", pos: "Danh từ", meanings: ["1. Học sinh, sinh viên."], note: "Đại học sinh: 大學生 (dàxuéshēng). Học sinh cấp 3: 高中生 (gāozhōngshēng)." },
+            "外面": { pinyin: "wàimiàn", pos: "Danh từ phương vị", meanings: ["1. Phía ngoài, bên ngoài, đằng ngoài."], note: "Đối lập với 裡面 (lǐmiàn). Cấu trúc: A 外面 (Phía ngoài A)." },
+            "東西": { pinyin: "dōngxi", pos: "Danh từ", meanings: ["1. Đồ đạc, vật phẩm, hàng hóa, thức ăn."], note: "Chú ý phát âm: dōngxi (thanh nhẹ = đồ đạc). Nếu đọc dōngxī (thanh 1 + thanh 1) có nghĩa là hướng Đông và Tây." },
+            "裡面": { pinyin: "lǐmiàn", pos: "Danh từ phương vị", meanings: ["1. Bên trong, phía trong, đằng trong."], note: "Khi đứng sau danh từ, 面 có thể lược bỏ: 學校裡 (trong trường), 房間裡 (trong phòng)." },
+            "商店": { pinyin: "shāngdiàn", pos: "Danh từ", meanings: ["1. Cửa hàng, tiệm buôn bán."], note: "Ở Đài Loan, cửa hàng tiện lợi 24/7 được gọi là 便利商店 (biànlì shāngdiàn)." },
+            "吃飯": { pinyin: "chīfàn", pos: "Động từ ly hợp", meanings: ["1. Ăn cơm, ăn uống, dùng bữa."], note: "Động từ ly hợp: 吃一頓飯 (ăn một bữa cơm). Chữ 飯 ngoài nghĩa là cơm trắng còn chỉ chung các món ăn." },
+            "宿舍": { pinyin: "sùshè", pos: "Danh từ", meanings: ["1. Ký túc xá (trường học hoặc công ty)."], note: "Ký túc xá sinh viên ở Đài Loan thường trang bị máy giặt tự động, phòng tự học và mạng tốc độ cao." },
+            "樓": { pinyin: "lóu", pos: "Danh từ / Lượng từ", meanings: ["1. Tầng, lầu.", "2. Tòa nhà nhiều tầng."], note: "Cách đếm tầng tại Đài Loan: 一樓 (yì lóu) = Tầng 1 / Tầng trệt. 二樓 (èr lóu) = Tầng 2. Khác với kiểu Châu Âu (Tầng trệt là Ground Floor, tầng 1 là First Floor)." },
+            "棟": { pinyin: "dòng", pos: "Lượng từ", meanings: ["1. Tòa, ngôi (lượng từ dùng cho các tòa nhà, chung cư, đại lâu)."], note: "Ví dụ: 一棟大樓 (một tòa nhà cao tầng), 一棟房子 (ngôi nhà)." },
+            "大樓": { pinyin: "dàlóu", pos: "Danh từ", meanings: ["1. Tòa nhà lớn, tòa nhà cao tầng, cao ốc."], note: "Ví dụ nổi tiếng: 台北101大樓 (Tòa nhà Taipei 101), 教學大樓 (Tòa nhà giảng đường)." },
+            "圖書館": { pinyin: "túshūguǎn", pos: "Danh từ", meanings: ["1. Thư viện."], note: "Thư viện các đại học Đài Loan là nơi học tập vô cùng hiện đại, mở cửa cho sinh viên tra cứu tài liệu." },
+            "旁邊": { pángbiān: "pángbiān", pos: "Danh từ phương vị", meanings: ["1. Bên cạnh, kế bên, bên hông."], note: "Cấu trúc: A 在 B 旁邊 (A ở bên cạnh B)." },
+            "教室": { pinyin: "jiàoshì", pos: "Danh từ", meanings: ["1. Phòng học, lớp học."], note: "Chú ý thanh điệu: 教室 (jiàoshì - phòng học) đọc thanh 4." },
+            "游泳池": { pinyin: "yóuyǒngchí", pos: "Danh từ", meanings: ["1. Hồ bơi, bể bơi."], note: "Các trường đại học lớn ở Đài Loan thường có 溫水游泳池 (hồ bơi nước ấm) hoạt động 4 mùa." },
+
+            // CUMULATIVE VOCABULARY FROM LESSONS 1-5 & DIALOGUE CHARACTERS
+            "安同": { pinyin: "Āntóng", pos: "Danh từ riêng", meanings: ["1. An Đồng (Tên riêng nhân vật nam người nước ngoài trong giáo trình TOCFL)."], note: "Nhân vật du học sinh trong giáo trình 當代中文課程." },
+            "如玉": { pinyin: "Rúyù", pos: "Danh từ riêng", meanings: ["1. Như Ngọc (Tên riêng nhân vật nữ người Đài Loan/du học sinh)."], note: "Nhân vật nữ quen thuộc trong hệ thống bài học TOCFL." },
+            "怡君": { pinyin: "Yíjūn", pos: "Danh từ riêng", meanings: ["1. Di Quân (Tên riêng phổ biến của nữ giới tại Đài Loan)."], note: "怡君 là một trong những 'tên quốc dân' (菜市場名) cực kỳ phổ biến tại Đài Loan." },
+            "好啊": { pinyin: "hǎo a", pos: "Thán từ / Cụm từ", meanings: ["1. Được thôi, ok nhé (biểu thị đồng ý vui vẻ, nhiệt tình)."], note: "Thêm trợ từ 啊 (a) làm cho giọng điệu mềm mại, thân thiện đặc trưng của tiếng Trung Đài Loan." },
+            "咖啡店": { pinyin: "kāfēidiàn", pos: "Danh từ", meanings: ["1. Quán cà phê, tiệm cà phê."], note: "Đài Loan nổi tiếng với văn hóa quán cà phê độc đáo và phong phú." },
+            "買": { pinyin: "mǎi", pos: "Động từ", meanings: ["1. Mua."], note: "Phản nghĩa với 賣 (mài - bán)." },
+            "咖啡": { pinyin: "kāfēi", pos: "Danh từ", meanings: ["1. Cà phê."], note: "Phổ biến: 美式咖啡 (Americano), 拿鐵 (Latte)." },
+            "妳": { pinyin: "nǐ", pos: "Đại từ", meanings: ["1. Bạn, cậu, cô (dùng riêng cho xưng hô với nữ giới trong chữ Phồn thể)."], note: "Chữ 妳 có bộ Nữ (女), dùng chỉ người nghe là nữ giới." },
+            "呢": { pinyin: "ne", pos: "Trợ từ", meanings: ["1. Còn... thì sao? (câu hỏi rút gọn).", "2. Trợ từ ngữ khí đứng cuối câu."], note: "Ví dụ: 妳呢？ (Còn bạn thì sao?)." },
+            "我想": { pinyin: "wǒ xiǎng", pos: "Cụm động từ", meanings: ["1. Tôi muốn, tôi nghĩ là..."], note: "Diễn tả nguyện vọng hoặc dự định nhẹ nhàng." },
+            "去": { pinyin: "qù", pos: "Động từ", meanings: ["1. Đi, đi đến."], note: "Phản nghĩa với 來 (lái - đến)." },
+            "看看": { pinyin: "kànkan", pos: "Động từ lặp lại", meanings: ["1. Xem thử, nhìn một chút."], note: "Hình thức lặp lại của 看, làm nhẹ giọng điệu." },
+            "我們": { pinyin: "wǒmen", pos: "Đại từ", meanings: ["1. Chúng tôi, chúng ta."], note: "Chỉ nhóm có bản thân người nói." },
+            "這個": { pinyin: "zhège", pos: "Đại từ chỉ định", meanings: ["1. Cái này, điều này, tuần này."], note: "Phát âm chuẩn Đài Loan: zhège hoặc zhège." },
+            "週末": { pinyin: "zhōumò", pos: "Danh từ", meanings: ["1. Cuối tuần (thứ 7 và chủ nhật)."], note: "Thường dùng: 這個週末 (cuối tuần này)." },
+            "一起": { pinyin: "yìqǐ", pos: "Phó từ", meanings: ["1. Cùng nhau, cùng làm gì."], note: "Cấu trúc: 一起 + Động từ." },
+            "吧": { pinyin: "ba", pos: "Trợ từ ngữ khí", meanings: ["1. Đi, nhé, chứ (rủ rê, đề nghị, suy đoán)."], note: "Đứng cuối câu đề nghị: 我們去吧！ (Chúng ta đi thôi!)." },
+            "好": { pinyin: "hǎo", pos: "Tính từ / Thán từ", meanings: ["1. Tốt, hay, đẹp.", "2. Được, đồng ý."], note: "Dùng rất đa năng trong giao tiếp." },
+            "我": { pinyin: "wǒ", pos: "Đại từ", meanings: ["1. Tôi, mình, ta."], note: "Đại từ nhân xưng ngôi thứ nhất." },
+            "要": { pinyin: "yào", pos: "Động từ năng nguyện", meanings: ["1. Phải, muốn, cần (diễn tả dự định chắc chắn)."], note: "Ví dụ: 我要去 (Tôi muốn/phải đi)." },
+            "歡迎": { pinyin: "huānyíng", pos: "Động từ", meanings: ["1. Chào mừng, hoan nghênh."], note: "Thường dùng: 歡迎光臨 (Chào mừng quý khách)." },
+            "你們": { pinyin: "nǐmen", pos: "Đại từ", meanings: ["1. Các bạn, các anh/chị."], note: "Ngôi thứ hai số nhiều." },
+            "來": { pinyin: "lái", pos: "Động từ", meanings: ["1. Đến, tới."], note: "Hướng về phía người nói." },
+            "真": { pinyin: "zhēn", pos: "Phó từ", meanings: ["1. Thật là, quả là (nhấn mạnh cảm xúc)."], note: "Cấu trúc: 真 + Tính từ!" },
+            "是啊": { pinyin: "shì a", pos: "Cụm từ thán từ", meanings: ["1. Đúng vậy đấy, đúng thế."], note: "Tạo cảm giác thân thiện trong hội thoại." },
+            "不是": { pinyin: "bú shì", pos: "Cụm từ phủ định", meanings: ["1. Không phải là, không..."], note: "Dùng phủ định tính chất hoặc danh từ." },
+            "有一點": { pinyin: "yǒu yìdiǎn", pos: "Phó từ", meanings: ["1. Hơi... một chút (thường dùng cho cảm xúc không hài lòng)."], note: "Tại Đài Loan nói 有一點 (yǒu yìdiǎn) hoặc 有點 (yǒudiǎn)." },
+            "不方便": { pinyin: "bù fāngbiàn", pos: "Tính từ", meanings: ["1. Bất tiện, không thuận lợi."], note: "Phủ định của 方便." },
+            "餐廳": { pinyin: "cāntīng", pos: "Danh từ", meanings: ["1. Nhà ăn, nhà hàng, quán ăn."], note: "Trong trường đại học gọi là 學生餐廳 (Nhà ăn sinh viên)." },
+            "一樓": { pinyin: "yì lóu", pos: "Danh từ", meanings: ["1. Tầng một, tầng trệt."], note: "Đài Loan gọi tầng trệt là 一樓." },
+            "這棟": { pinyin: "zhè dòng", pos: "Cụm đại từ lượng từ", meanings: ["1. Tòa nhà này, căn nhà này."], note: "這 + 棟 (lượng từ tòa nhà)." },
+            "這是": { pinyin: "zhè shì", pos: "Cụm từ", meanings: ["1. Đây là..."], note: "Giới thiệu vật thể ở gần." },
+            "那棟": { pinyin: "nà dòng", pos: "Cụm đại từ lượng từ", meanings: ["1. Tòa nhà đó, tòa nhà kia."], note: "那 + 棟." },
+            "是": { pinyin: "shì", pos: "Động từ liên kết", meanings: ["1. Là, đúng."], note: "A 是 B." },
+            "一定": { pinyin: "yídìng", pos: "Phó từ", meanings: ["1. Nhất định, chắc chắn."], note: "Ví dụ: 一定很美 (Nhất định rất đẹp)." },
+            "是的": { pinyin: "shì de", pos: "Cụm từ", meanings: ["1. Vâng, đúng vậy."], note: "Đáp lại xác nhận." },
+            "一個": { pinyin: "yí ge", pos: "Số lượng từ", meanings: ["1. Một cái, một con, một người."], note: "Lượng từ chung phổ biến nhất." },
+            "有": { pinyin: "yǒu", pos: "Động từ", meanings: ["1. Có (sở hữu hoặc tồn tại)."], note: "Phủ định là 沒有." },
+            "沒有": { pinyin: "méiyǒu", pos: "Động từ phủ định", meanings: ["1. Không có."], note: "Dùng phủ định sự tồn tại hoặc sở hữu." }
+        };
+
+        /* Add Single-character fallbacks to dictionary for complete coverage */
+        const singleCharFallbacks = {
+            "看": { pinyin: "kàn", pos: "Động từ", meanings: ["1. Nhìn, xem, đọc."] },
+            "個": { pinyin: "ge", pos: "Lượng từ", meanings: ["1. Cái, con, người (lượng từ chung)."] },
+            "一": { pinyin: "yī", pos: "Số từ", meanings: ["1. Số 1."] },
+            "這": { pinyin: "zhè", pos: "Đại từ", meanings: ["1. Đây, này."] },
+            "那": { pinyin: "nà", pos: "Đại từ", meanings: ["1. Đó, kia."] },
+            "不": { pinyin: "bù", pos: "Phó từ", meanings: ["1. Không."] },
+            "很": { pinyin: "hěn", pos: "Phó từ", meanings: ["1. Rất."] },
+            "的": { pinyin: "de", pos: "Trợ từ", meanings: ["1. Của (sở hữu), từ nối định ngữ."] }
+        };
+        Object.assign(dictionary, singleCharFallbacks);
+
+        /* --------------------------------------------------------------------- */
+        /* 2. VOCABULARY ARRAYS WITH CUMULATIVE EXAMPLES                          */
+        /* --------------------------------------------------------------------- */
+        
+        // VOCABULARY PART 1 DATA (23 items)
+        const vocabPart1 = [
+            {
+                stt: 1, word: "他們", pinyin: "tāmen", pos: "Đại từ",
+                meaning: "Họ, bọn họ (chỉ nhóm người)",
+                examples: [
+                    { zh: "他們都是越南學生。", py: "Tāmen dōu shì Yuènán xuéshēng.", vi: "Họ đều là sinh viên Việt Nam." },
+                    { zh: "他們去學校上課。", py: "Tāmen qù xuéxiào shàngkè.", vi: "Họ đi đến trường lên lớp." },
+                    { zh: "聽說他們很忙。", py: "Tīngshuō tāmen hěn máng.", vi: "Nghe nói họ rất bận." }
+                ]
+            },
+            {
+                stt: 2, word: "學校", pinyin: "xuéxiào", pos: "Danh từ",
+                meaning: "Trường học",
+                examples: [
+                    { zh: "我們的學校很大。", py: "Wǒmen de xuéxiào hěn dà.", vi: "Trường học của chúng tôi rất lớn." },
+                    { zh: "怡君在學校買咖啡。", py: "Yíjūn zài xuéxiào mǎi kāfēi.", vi: "Di Quân mua cà phê ở trường." },
+                    { zh: "這個學校真漂亮！", py: "Zhège xuéxiào zhēn piàoliang!", vi: "Trường học này thật đẹp!" }
+                ]
+            },
+            {
+                stt: 3, word: "在", pinyin: "zài", pos: "Giới từ / Động từ",
+                meaning: "Ở, tại",
+                examples: [
+                    { zh: "安同在學校樓下。", py: "Āntóng zài xuéxiào lóuxià.", vi: "An Đồng ở tầng dưới của trường." },
+                    { zh: "老師在哪裡？", py: "Lǎoshī zài nǎlǐ?", vi: "Thầy giáo ở đâu?" },
+                    { zh: "如玉在花蓮買東西。", py: "Rúyù zài Huālián mǎi dōngxi.", vi: "Như Ngọc mua đồ ở Hoa Liên." }
+                ]
+            },
+            {
+                stt: 4, word: "山上", pinyin: "shānshàng", pos: "Danh từ phương vị",
+                meaning: "Trên núi",
+                examples: [
+                    { zh: "這家咖啡店在山上。", py: "Zhè jiā kāfēidiàn zài shānshàng.", vi: "Quán cà phê này ở trên núi." },
+                    { zh: "山上有很多漂亮的地方。", py: "Shānshàng yǒu hěn duō piàoliang de dìfāng.", vi: "Trên núi có rất nhiều nơi đẹp." },
+                    { zh: "我們週末去山上吧！", py: "Wǒmen zhōumò qù shānshàng ba!", vi: "Cuối tuần chúng mình đi lên núi nhé!" }
+                ]
+            },
+            {
+                stt: 5, word: "那裡", pinyin: "nàlǐ", pos: "Đại từ",
+                meaning: "Ở đó, nơi đó, chỗ đó",
+                examples: [
+                    { zh: "那裡有海，也有山。", py: "Nàlǐ yǒu hǎi, yě yǒu shān.", vi: "Nơi đó có biển, cũng có núi." },
+                    { zh: "那裡的東西很貴嗎？", py: "Nàlǐ de dōngxi hěn guì ma?", vi: "Đồ đạc ở đó có đắt không?" },
+                    { zh: "我想去那裡看風景。", py: "Wǒ xiǎng qù nàlǐ kàn fēngjǐng.", vi: "Mình muốn đến đó ngắm phong cảnh." }
+                ]
+            },
+            {
+                stt: 6, word: "風景", pinyin: "fēngjǐng", pos: "Danh từ",
+                meaning: "Phong cảnh, cảnh trí",
+                examples: [
+                    { zh: "花蓮的風景很美。", py: "Huālián de fēngjǐng hěn měi.", vi: "Phong cảnh ở Hoa Liên rất đẹp." },
+                    { zh: "山上的風景真好！", py: "Shānshàng de fēngjǐng zhēn hǎo!", vi: "Phong cảnh trên núi thật là tốt!" },
+                    { zh: "那裡的風景一定很漂亮。", py: "Nàlǐ de fēngjǐng yídìng hěn piàoliang.", vi: "Phong cảnh ở đó nhất định rất đẹp." }
+                ]
+            },
+            {
+                stt: 7, word: "美", pinyin: "měi", pos: "Tính từ",
+                meaning: "Đẹp, mỹ lệ",
+                examples: [
+                    { zh: "這裡的海真美！", py: "Zhèlǐ de hǎi zhēn měi!", vi: "Biển ở đây thật đẹp!" },
+                    { zh: "花蓮風景很美。", py: "Huālián fēngjǐng hěn měi.", vi: "Phong cảnh Hoa Liên rất đẹp." },
+                    { zh: "那個地方美不美？", py: "Nàge dìfāng měi bù měi?", vi: "Nơi đó có đẹp không?" }
+                ]
+            },
+            {
+                stt: 8, word: "前面", pinyin: "qiánmiàn", pos: "Danh từ phương vị",
+                meaning: "Phía trước, đằng trước",
+                examples: [
+                    { zh: "學校前面有一家咖啡店。", py: "Xuéxiào qiánmiàn yǒu yì jiā kāfēidiàn.", vi: "Phía trước trường học có một quán cà phê." },
+                    { zh: "老師在前面。", py: "Lǎoshī zài qiánmiàn.", vi: "Thầy giáo ở phía trước." },
+                    { zh: "我家前面有山。", py: "Wǒ jiā qiánmiàn yǒu shān.", vi: "Phía trước nhà tôi có núi." }
+                ]
+            },
+            {
+                stt: 9, word: "海", pinyin: "hǎi", pos: "Danh từ",
+                meaning: "Biển, đại dương",
+                examples: [
+                    { zh: "花蓮的海很漂亮。", py: "Huālián de hǎi hěn piàoliang.", vi: "Biển ở Hoa Liên rất đẹp." },
+                    { zh: "學校後面是海。", py: "Xuéxiào hòumiàn shì hǎi.", vi: "Phía sau trường học là biển." },
+                    { zh: "我想去海邊看海。", py: "Wǒ xiǎng qù hǎibiān kàn hǎi.", vi: "Tôi muốn ra bờ biển ngắm biển." }
+                ]
+            },
+            {
+                stt: 10, word: "後面", pinyin: "hòumiàn", pos: "Danh từ phương vị",
+                meaning: "Phía sau, đằng sau",
+                examples: [
+                    { zh: "學校後面有山。", py: "Xuéxiào hòumiàn yǒu shān.", vi: "Phía sau trường học có núi." },
+                    { zh: "如玉在安同後面。", py: "Rúyù zài Āntóng hòumiàn.", vi: "Như Ngọc ở phía sau An Đồng." },
+                    { zh: "咖啡店後面是我的學校。", py: "Kāfēidiàn hòumiàn shì wǒ de xuéxiào.", vi: "Phía sau quán cà phê là trường của tôi." }
+                ]
+            },
+            {
+                stt: 11, word: "山", pinyin: "shān", pos: "Danh từ",
+                meaning: "Núi, ngọn núi",
+                examples: [
+                    { zh: "這座山很高很美。", py: "Zhè zuò shān hěn gāo hěn měi.", vi: "Ngọn núi này rất cao rất đẹp." },
+                    { zh: "臺灣有很多山。", py: "Táiwān yǒu hěn duō shān.", vi: "Đài Loan có rất nhiều núi." },
+                    { zh: "我們去山上看風景吧！", py: "Wǒmen qù shānshàng kàn fēngjǐng ba!", vi: "Chúng mình lên núi ngắm phong cảnh đi!" }
+                ]
+            },
+            {
+                stt: 12, word: "真的", pinyin: "zhēn de", pos: "Phó từ / Tính từ",
+                meaning: "Thật sự, quả thật",
+                examples: [
+                    { zh: "那裡真的是一個好地方。", py: "Nàlǐ zhēn de shì yí ge hǎo dìfāng.", vi: "Nơi đó thật sự là một nơi tốt." },
+                    { zh: "聽說花蓮真的很漂亮。", py: "Tīngshuō Huālián zhēn de hěn piàoliang.", vi: "Nghe nói Hoa Liên thật sự rất đẹp." },
+                    { zh: "這是真的嗎？", py: "Zhè shì zhēn de ma?", vi: "Điều này là thật sao?" }
+                ]
+            },
+            {
+                stt: 13, word: "地方", pinyin: "dìfāng", pos: "Danh từ",
+                meaning: "Nơi, chỗ, địa điểm",
+                examples: [
+                    { zh: "這是我喜歡的地方。", py: "Zhè shì wǒ xǐhuān de dìfāng.", vi: "Đây là nơi tôi thích." },
+                    { zh: "花蓮是一個很美的地方。", py: "Huālián shì yí ge hěn měi de dìfāng.", vi: "Hoa Liên là một nơi rất đẹp." },
+                    { zh: "你家在什麼地方？", py: "Nǐ jiā zài shénme dìfāng?", vi: "Nhà bạn ở chỗ nào?" }
+                ]
+            },
+            {
+                stt: 14, word: "現在", pinyin: "xiànzài", pos: "Danh từ thời gian",
+                meaning: "Bây giờ, hiện tại",
+                examples: [
+                    { zh: "我現在要去上課。", py: "Wǒ xiànzài yào qù shàngkè.", vi: "Bây giờ tôi phải đi lên lớp." },
+                    { zh: "怡君現在在樓下。", py: "Yíjūn xiànzài zài lóuxià.", vi: "Di Quân bây giờ đang ở tầng dưới." },
+                    { zh: "現在幾點了？", py: "Xiànzài jǐ diǎn le?", vi: "Bây giờ là mấy giờ rồi?" }
+                ]
+            },
+            {
+                stt: 15, word: "附近", pinyin: "fùjìn", pos: "Danh từ phương vị",
+                meaning: "Lân cận, gần đây, xung quanh",
+                examples: [
+                    { zh: "學校附近有咖啡店。", py: "Xuéxiào fùjìn yǒu kāfēidiàn.", vi: "Gần trường học có quán cà phê." },
+                    { zh: "我家附近很漂亮。", py: "Wǒ jiā fùjìn hěn piàoliang.", vi: "Gần nhà tôi rất đẹp." },
+                    { zh: "這附近有商店嗎？", py: "Zhè fùjìn yǒu shāngdiàn ma?", vi: "Xung quanh đây có cửa hàng không?" }
+                ]
+            },
+            {
+                stt: 16, word: "樓下", pinyin: "lóuxià", pos: "Danh từ phương vị",
+                meaning: "Tầng dưới, dưới lầu",
+                examples: [
+                    { zh: "我在樓下等你。", py: "Wǒ zài lóuxià děng nǐ.", vi: "Tôi ở tầng dưới chờ bạn." },
+                    { zh: "如玉去樓下找朋友。", py: "Rúyù qù lóuxià zhǎo péngyǒu.", vi: "Như Ngọc xuống tầng dưới tìm bạn." },
+                    { zh: "樓下有咖啡店。", py: "Lóuxià yǒu kāfēidiàn.", vi: "Tầng dưới có quán cà phê." }
+                ]
+            },
+            {
+                stt: 17, word: "找", pinyin: "zhǎo", pos: "Động từ",
+                meaning: "Tìm, tìm gặp, thối tiền thừa",
+                examples: [
+                    { zh: "我去樓下找朋友。", py: "Wǒ qù lóuxià zhǎo péngyǒu.", vi: "Tôi xuống tầng dưới tìm bạn." },
+                    { zh: "你在找什麼東西？", py: "Nǐ zài zhǎo shénme dōngxi?", vi: "Bạn đang tìm món đồ gì vậy?" },
+                    { zh: "找你五十塊錢。", py: "Zhǎo nǐ wǔshí kuài qián.", vi: "Thối lại bạn 50 đài tệ." }
+                ]
+            },
+            {
+                stt: 18, word: "朋友", pinyin: "péngyǒu", pos: "Danh từ",
+                meaning: "Bạn, bạn bè",
+                examples: [
+                    { zh: "安同是我的好朋友。", py: "Āntóng shì wǒ de hǎo péngyǒu.", vi: "An Đồng là bạn tốt của tôi." },
+                    { zh: "我和朋友一起去上課。", py: "Wǒ hé péngyǒu yìqǐ qù shàngkè.", vi: "Tôi và bạn cùng nhau đi lên lớp." },
+                    { zh: "怡君有很多台灣朋友。", py: "Yíjūn yǒu hěn duō Táiwān péngyǒu.", vi: "Di Quân có rất nhiều bạn Đài Loan." }
+                ]
+            },
+            {
+                stt: 19, word: "上課", pinyin: "shàngkè", pos: "Động từ ly hợp",
+                meaning: "Đi học, lên lớp, dạy học",
+                examples: [
+                    { zh: "我們現在去上課。", py: "Wǒmen xiànzài qù shàngkè.", vi: "Chúng ta bây giờ đi lên lớp." },
+                    { zh: "老師八點上課。", py: "Lǎoshī bā diǎn shàngkè.", vi: "Thầy giáo 8 giờ lên lớp giảng bài." },
+                    { zh: "今天不上課。", py: "Jīntiān bú shàngkè.", vi: "Hôm nay không đi học." }
+                ]
+            },
+            {
+                stt: 20, word: "花蓮", pinyin: "Huālián", pos: "Danh từ riêng",
+                meaning: "Hoa Liên (Thành phố miền Đông Đài Loan)",
+                examples: [
+                    { zh: "怡君的學校在花蓮。", py: "Yíjūn de xuéxiào zài Huālián.", vi: "Trường của Di Quân ở Hoa Liên." },
+                    { zh: "花蓮的風景真美！", py: "Huālián de fēngjǐng zhēn měi!", vi: "Phong cảnh Hoa Liên thật đẹp!" },
+                    { zh: "我們這個週末去花蓮吧！", py: "Wǒmen zhège zhōumò qù Huālián ba!", vi: "Cuối tuần này chúng mình đi Hoa Liên nhé!" }
+                ]
+            },
+            {
+                stt: 21, word: "聽說", pinyin: "tīngshuō", pos: "Động từ",
+                meaning: "Nghe nói...",
+                examples: [
+                    { zh: "聽說怡君的學校很漂亮。", py: "Tīngshuō Yíjūn de xuéxiào hěn piàoliang.", vi: "Nghe nói trường của Di Quân rất đẹp." },
+                    { zh: "聽說這裡的海很美。", py: "Tīngshuō zhèlǐ de hǎi hěn měi.", vi: "Nghe nói biển ở đây rất đẹp." },
+                    { zh: "聽說他明天去花蓮。", py: "Tīngshuō tā míngtiān qù Huālián.", vi: "Nghe nói ngày mai anh ấy đi Hoa Liên." }
+                ]
+            },
+            {
+                stt: 22, word: "遠", pinyin: "yuǎn", pos: "Tính từ",
+                meaning: "Xa",
+                examples: [
+                    { zh: "他們的學校有一點遠。", py: "Tāmen de xuéxiào yǒu yìdiǎn yuǎn.", vi: "Trường của họ hơi xa một chút." },
+                    { zh: "花蓮遠不遠？", py: "Huālián yuǎn bù yuǎn?", vi: "Hoa Liên có xa không?" },
+                    { zh: "我家不遠，在學校附近。", py: "Wǒ jiā bù yuǎn, zài xuéxiào fùjìn.", vi: "Nhà tôi không xa, ở gần trường." }
+                ]
+            },
+            {
+                stt: 23, word: "哪裡", pinyin: "nǎlǐ", pos: "Đại từ nghi vấn",
+                meaning: "Ở đâu; (Đài Loan) Đâu có / Không dám",
+                examples: [
+                    { zh: "你們學校在哪裡？", py: "Nǐmen xuéxiào zài nǎlǐ?", vi: "Trường của các bạn ở đâu?" },
+                    { zh: "你想去哪裡買東西？", py: "Nǐ xiǎng qù nǎlǐ mǎi dōngxi?", vi: "Bạn muốn đi đâu mua đồ?" },
+                    { zh: "「你中文很好！」「哪裡，哪裡！」", py: "“Nǐ Zhōngwén hěn hǎo!” “Nǎlǐ, nǎlǐ!”", vi: "“Tiếng Trung của bạn giỏi quá!” “Đâu có, đâu có!”" }
+                ]
+            }
+        ];
+
+        // VOCABULARY PART 2 DATA (17 items)
+        const vocabPart2 = [
+            {
+                stt: 1, word: "近", pinyin: "jìn", pos: "Tính từ",
+                meaning: "Gần (khoảng cách)",
+                examples: [
+                    { zh: "這家咖啡店很近。", py: "Zhè jiā kāfēidiàn hěn jìn.", vi: "Quán cà phê này rất gần." },
+                    { zh: "學校不是很近，有一點遠。", py: "Xuéxiào bú shì hěn jìn, yǒu yìdiǎn yuǎn.", vi: "Trường học không gần lắm, hơi xa một chút." },
+                    { zh: "你家近不近？", py: "Nǐ jiā jìn bú jìn?", vi: "Nhà bạn có gần không?" }
+                ]
+            },
+            {
+                stt: 2, word: "方便", pinyin: "fāngbiàn", pos: "Tính từ",
+                meaning: "Tiện lợi, thuận tiện",
+                examples: [
+                    { zh: "學校裡面有商店，很方便。", py: "Xuéxiào lǐmiàn yǒu shāngdiàn, hěn fāngbiàn.", vi: "Trong trường có cửa hàng, rất tiện lợi." },
+                    { zh: "這裡買東西很不方便。", py: "Zhèlǐ mǎi dōngxi bù fāngbiàn.", vi: "Ở đây mua đồ rất bất tiện." },
+                    { zh: "你現在方便說話嗎？", py: "Nǐ xiànzài fāngbiàn shuōhuà ma?", vi: "Bây giờ bạn có tiện nói chuyện không?" }
+                ]
+            },
+            {
+                stt: 3, word: "這裡", pinyin: "zhèlǐ", pos: "Đại từ",
+                meaning: "Ở đây, chỗ này",
+                examples: [
+                    { zh: "這裡的學生在哪裡吃飯？", py: "Zhèlǐ de xuéshēng zài nǎlǐ chīfàn?", vi: "Sinh viên ở đây ăn cơm ở đâu?" },
+                    { zh: "這裡的風景真美！", py: "Zhèlǐ de fēngjǐng zhēn měi!", vi: "Phong cảnh ở đây thật đẹp!" },
+                    { zh: "請在這裡買咖啡。", py: "Qǐng zài zhèlǐ mǎi kāfēi.", vi: "Xin vui lòng mua cà phê ở đây." }
+                ]
+            },
+            {
+                stt: 4, word: "學生", pinyin: "xuéshēng", pos: "Danh từ",
+                meaning: "Học sinh, sinh viên",
+                examples: [
+                    { zh: "我們都是大同學校的學生。", py: "Wǒmen dōu shì Dàtóng xuéxiào de xuéshēng.", vi: "Chúng tôi đều là sinh viên của trường Đại Đồng." },
+                    { zh: "學生宿舍在圖書館後面。", py: "Xuéshēng sùshè zài túshūguǎn hòumiàn.", vi: "Ký túc xá sinh viên ở phía sau thư viện." },
+                    { zh: "這個學校有很多學生。", py: "Zhège xuéxiào yǒu hěn duō xuéshēng.", vi: "Trường này có rất nhiều sinh viên." }
+                ]
+            },
+            {
+                stt: 5, word: "外面", pinyin: "wàimiàn", pos: "Danh từ phương vị",
+                meaning: "Bên ngoài, phía ngoài",
+                examples: [
+                    { zh: "商店在學校外面。", py: "Shāngdiàn zài xuéxiào wàimiàn.", vi: "Cửa hàng ở bên ngoài trường học." },
+                    { zh: "外面在下雨嗎？", py: "Wàimiàn zài xiàyǔ ma?", vi: "Bên ngoài đang mưa sao?" },
+                    { zh: "我們去外面吃飯吧！", py: "Wǒmen qù wàimiàn chīfàn ba!", vi: "Chúng mình ra bên ngoài ăn cơm đi!" }
+                ]
+            },
+            {
+                stt: 6, word: "東西", pinyin: "dōngxi", pos: "Danh từ",
+                meaning: "Đồ đạc, hàng hóa, vật phẩm",
+                examples: [
+                    { zh: "你想買什麼東西？", py: "Nǐ xiǎng mǎi shénme dōngxi?", vi: "Bạn muốn mua đồ gì?" },
+                    { zh: "這家商店的東西很便宜。", py: "Zhè jiā shāngdiàn de dōngxi hěn piányi.", vi: "Đồ của cửa hàng này rất rẻ." },
+                    { zh: "我有很多東西要買。", py: "Wǒ yǒu hěn duō dōngxi yào mǎi.", vi: "Tôi có rất nhiều đồ cần mua." }
+                ]
+            },
+            {
+                stt: 7, word: "裡面", pinyin: "lǐmiàn", pos: "Danh từ phương vị",
+                meaning: "Bên trong, phía trong",
+                examples: [
+                    { zh: "學校裡面沒有商店。", py: "Xuéxiào lǐmiàn méiyǒu shāngdiàn.", vi: "Bên trong trường học không có cửa hàng." },
+                    { zh: "圖書館裡面很大。", py: "Túshūguǎn lǐmiàn hěn dà.", vi: "Bên trong thư viện rất rộng." },
+                    { zh: "宿舍裡面有餐廳。", py: "Sùshè lǐmiàn yǒu cāntīng.", vi: "Bên trong ký túc xá có nhà ăn." }
+                ]
+            },
+            {
+                stt: 8, word: "商店", pinyin: "shāngdiàn", pos: "Danh từ",
+                meaning: "Cửa hàng, tiệm",
+                examples: [
+                    { zh: "學校外面有一家商店。", py: "Xuéxiào wàimiàn yǒu yì jiā shāngdiàn.", vi: "Bên ngoài trường học có một cửa hàng." },
+                    { zh: "這家商店賣很多東西。", py: "Zhè jiā shāngdiàn mài hěn duō dōngxi.", vi: "Cửa hàng này bán rất nhiều đồ." },
+                    { zh: "附近有沒有便利商店？", py: "Fùjìn yǒu méiyǒu biànlì shāngdiàn?", vi: "Gần đây có cửa hàng tiện lợi không?" }
+                ]
+            },
+            {
+                stt: 9, word: "吃飯", pinyin: "chīfàn", pos: "Động từ ly hợp",
+                meaning: "Ăn cơm, ăn uống",
+                examples: [
+                    { zh: "我們一起去餐廳吃飯。", py: "Wǒmen yìqǐ qù cāntīng chīfàn.", vi: "Chúng mình cùng nhau đi nhà ăn ăn cơm." },
+                    { zh: "你幾點吃飯？", py: "Nǐ jǐ diǎn chīfàn?", vi: "Mấy giờ bạn ăn cơm?" },
+                    { zh: "這家餐廳吃飯很不方便。", py: "Zhè jiā cāntīng chīfàn hěn bù fāngbiàn.", vi: "Ăn cơm ở nhà hàng này rất bất tiện." }
+                ]
+            },
+            {
+                stt: 10, word: "宿舍", pinyin: "sùshè", pos: "Danh từ",
+                meaning: "Ký túc xá",
+                examples: [
+                    { zh: "餐廳在學生宿舍的一樓。", py: "Cāntīng zài xuéshēng sùshè de yì lóu.", vi: "Nhà ăn ở tầng một của ký túc xá sinh viên." },
+                    { zh: "我的宿舍在圖書館旁邊。", py: "Wǒ de sùshè zài túshūguǎn pángbiān.", vi: "Ký túc xá của tôi ở bên cạnh thư viện." },
+                    { zh: "宿舍裡面沒有教室。", py: "Sùshè lǐmiàn méiyǒu jiàoshì.", vi: "Bên trong ký túc xá không có phòng học." }
+                ]
+            },
+            {
+                stt: 11, word: "樓", pinyin: "lóu", pos: "Danh từ / Lượng từ",
+                meaning: "Tầng, lầu (Đài Loan: 一樓 = tầng 1/trệt)",
+                examples: [
+                    { zh: "餐廳在宿舍的一樓。", py: "Cāntīng zài sùshè de yì lóu.", vi: "Nhà ăn ở tầng một của ký túc xá." },
+                    { zh: "我的教室在三樓。", py: "Wǒ de jiàoshì zài sān lóu.", vi: "Phòng học của tôi ở tầng ba." },
+                    { zh: "安同去樓下找朋友。", py: "Āntóng qù lóuxià zhǎo péngyǒu.", vi: "An Đồng xuống tầng dưới tìm bạn." }
+                ]
+            },
+            {
+                stt: 12, word: "棟", pinyin: "dòng", pos: "Lượng từ",
+                meaning: "Tòa, ngôi (dùng cho tòa nhà)",
+                examples: [
+                    { zh: "前面這棟大樓很漂亮。", py: "Qiánmiàn zhè dòng dàlóu hěn piàoliang.", vi: "Tòa nhà phía trước này rất đẹp." },
+                    { zh: "旁邊的那棟大樓是教室。", py: "Pángbiān de nà dòng dàlóu shì jiàoshì.", vi: "Tòa nhà bên cạnh đó là phòng học." },
+                    { zh: "學校有三棟大樓。", py: "Xuéxiào yǒu sān dòng dàlóu.", vi: "Trường học có ba tòa nhà lớn." }
+                ]
+            },
+            {
+                stt: 13, word: "大樓", pinyin: "dàlóu", pos: "Danh từ",
+                meaning: "Tòa nhà lớn, cao ốc",
+                examples: [
+                    { zh: "這棟大樓是圖書館。", py: "Zhè dòng dàlóu shì túshūguǎn.", vi: "Tòa nhà lớn này là thư viện." },
+                    { zh: "台北101大樓很高。", py: "Táiběi 101 dàlóu hěn gāo.", vi: "Tòa nhà Taipei 101 rất cao." },
+                    { zh: "大樓後面有游泳池。", py: "Dàlóu hòumiàn yǒu yóuyǒngchí.", vi: "Phía sau tòa nhà lớn có hồ bơi." }
+                ]
+            },
+            {
+                stt: 14, word: "圖書館", pinyin: "túshūguǎn", pos: "Danh từ",
+                meaning: "Thư viện",
+                examples: [
+                    { zh: "我常去圖書館看書。", py: "Wǒ cháng qù túshūguǎn kàn shū.", vi: "Tôi thường đến thư viện đọc sách." },
+                    { zh: "圖書館後面有游泳池。", py: "Túshūguǎn hòumiàn yǒu yóuyǒngchí.", vi: "Phía sau thư viện có hồ bơi." },
+                    { zh: "圖書館在教室旁邊。", py: "Túshūguǎn zài jiàoshì pángbiān.", vi: "Thư viện ở bên cạnh phòng học." }
+                ]
+            },
+            {
+                stt: 15, word: "旁邊", pinyin: "pángbiān", pos: "Danh từ phương vị",
+                meaning: "Bên cạnh, kế bên",
+                examples: [
+                    { zh: "圖書館旁邊是大樓。", py: "Túshūguǎn pángbiān shì dàlóu.", vi: "Bên cạnh thư viện là tòa nhà lớn." },
+                    { zh: "如玉坐在安同旁邊。", py: "Rúyù zuò zài Āntóng pángbiān.", vi: "Như Ngọc ngồi ở bên cạnh An Đồng." },
+                    { zh: "宿舍旁邊有餐廳。", py: "Sùshè pángbiān yǒu cāntīng.", vi: "Bên cạnh ký túc xá có nhà ăn." }
+                ]
+            },
+            {
+                stt: 16, word: "教室", pinyin: "jiàoshì", pos: "Danh từ",
+                meaning: "Phòng học, lớp học",
+                examples: [
+                    { zh: "我們的教室很大很漂亮。", py: "Wǒmen de jiàoshì hěn dà hěn piàoliang.", vi: "Phòng học của chúng tôi rất rộng rất đẹp." },
+                    { zh: "學生都在教室裡面。", py: "Xuéshēng dōu zài jiàoshì lǐmiàn.", vi: "Học sinh đều ở bên trong phòng học." },
+                    { zh: "這棟大樓有幾間教室？", py: "Zhè dòng dàlóu yǒu jǐ jiān jiàoshì?", vi: "Tòa nhà này có mấy phòng học?" }
+                ]
+            },
+            {
+                stt: 17, word: "游泳池", pinyin: "yóuyǒngchí", pos: "Danh từ",
+                meaning: "Hồ bơi, bể bơi",
+                examples: [
+                    { zh: "圖書館後面有游泳池。", py: "Túshūguǎn hòumiàn yǒu yóuyǒngchí.", vi: "Phía sau thư viện có hồ bơi." },
+                    { zh: "學校的游泳池很大。", py: "Xuéxiào de yóuyǒngchí hěn dà.", vi: "Hồ bơi của trường học rất rộng." },
+                    { zh: "週末我想去游泳池游泳。", py: "Zhōumò wǒ xiǎng qù yóuyǒngchí yóuyǒng.", vi: "Cuối tuần tôi muốn đến hồ bơi bơi lội." }
+                ]
+            }
+        ];
+
+        /* --------------------------------------------------------------------- */
+        /* 3. GRAMMAR DATA (8 POINTS)                                            */
+        /* --------------------------------------------------------------------- */
+        const grammarPoints = [
+            {
+                id: 1,
+                title: "1. Động từ / Giới từ chỉ vị trí「在」(Zài)",
+                explain: "Trong tiếng Trung, 「在」 vừa có thể làm Động từ chính (Ở/Tại), vừa làm Giới từ chỉ địa điểm cho hành động. Cấu trúc hành động: 「Chủ ngữ + 在 + Địa điểm + Động từ」 (Làm gì ở đâu). Cần chú ý trật tự từ này ngược với tiếng Việt!",
+                structures: [
+                    "A 在 + Địa điểm (A ở địa điểm...)",
+                    "Chủ ngữ + 在 + Địa điểm + Động từ (Ai làm gì ở đâu)"
+                ],
+                examples: [
+                    { zh: "我們學校在山上。", py: "Wǒmen xuéxiào zài shānshàng.", vi: "Trường học của chúng tôi ở trên núi." },
+                    { zh: "安同在咖啡店買咖啡。", py: "Āntóng zài kāfēidiàn mǎi kāfēi.", vi: "An Đồng mua cà phê ở quán cà phê." },
+                    { zh: "怡君在學生宿舍吃飯。", py: "Yíjūn zài xuéshēng sùshè chīfàn.", vi: "Di Quân ăn cơm ở ký túc xá sinh viên." }
+                ]
+            },
+            {
+                id: 2,
+                title: "2. Phương vị từ (Locative Nouns) & Cấu trúc chỉ vị trí",
+                explain: "Các từ chỉ phương hướng/vị trí như 前面 (phía trước), 後面 (phía sau), 裡面 (bên trong), 外面 (bên ngoài), 旁邊 (bên cạnh), 附近 (gần đây), 山上 (trên núi), 樓下 (tầng dưới). Kết hợp với danh từ theo công thức: 「Danh từ + (的) + Phương vị từ」.",
+                structures: [
+                    "Danh từ + (的) + 前面 / 後面 / 裡面 / 外面 / 旁邊 / 附近"
+                ],
+                examples: [
+                    { zh: "學校前面有海，後面有山。", py: "Xuéxiào qiánmiàn yǒu hǎi, hòumiàn yǒu shān.", vi: "Phía trước trường học có biển, phía sau có núi." },
+                    { zh: "圖書館旁邊的那棟大樓是教室。", py: "Túshūguǎn pángbiān de nà dòng dàlóu shì jiàoshì.", vi: "Tòa nhà bên cạnh thư viện là phòng học." },
+                    { zh: "我去樓下找朋友。", py: "Wǒ qù lóuxià zhǎo péngyǒu.", vi: "Tôi xuống tầng dưới tìm bạn." }
+                ]
+            },
+            {
+                id: 3,
+                title: "3. Câu tồn tại với「有」(Yǒu) & Phủ định「沒有」(Méiyǒu)",
+                explain: "Dùng để diễn đạt sự hiện diện/tồn tại của người hoặc vật tại một vị trí địa điểm nhất định. Thường dùng mẫu: 「Địa điểm + 有 + N/Vật」 (Ở đâu có cái gì). Khi phủ định, dùng 「Địa điểm + 沒有 + N/Vật」 (không dùng 不有).",
+                structures: [
+                    "Địa điểm + 有 + Người / Vật",
+                    "Địa điểm + 沒有 + Người / Vật"
+                ],
+                examples: [
+                    { zh: "學校裡面沒有商店。", py: "Xuéxiào lǐmiàn méiyǒu shāngdiàn.", vi: "Bên trong trường học không có cửa hàng." },
+                    { zh: "圖書館後面有游泳池。", py: "Túshūguǎn hòumiàn yǒu yóuyǒngchí.", vi: "Phía sau thư viện có hồ bơi." },
+                    { zh: "學生宿舍的一樓有餐廳。", py: "Xuéshēng sùshè de yì lóu yǒu cāntīng.", vi: "Tầng 1 của ký túc xá sinh viên có nhà ăn." }
+                ]
+            },
+            {
+                id: 4,
+                title: "4. Lặp lại động từ「V + V」(Biểu thị thử nghiệm/nhẹ nhàng)",
+                explain: "Lặp lại động từ đơn âm tiết (như 看 -> 看看) biểu thị hành động diễn ra trong thời gian ngắn, mang tính chất làm thử, xem thử hoặc làm cho giọng điệu câu trở nên nhẹ nhàng, thân mật hơn.",
+                structures: [
+                    "Chủ ngữ + 想 + V + V (Thử làm gì đó...)"
+                ],
+                examples: [
+                    { zh: "我想去看看。", py: "Wǒ xiǎng qù kànkan.", vi: "Mình muốn đi xem thử." },
+                    { zh: "你聽聽，這是什麼聲音？", py: "Nǐ tīngting, zhè shì shénme shēngyīn?", vi: "Bạn nghe thử xem, đây là âm thanh gì?" },
+                    { zh: "我們去附近走走吧！", py: "Wǒmen qù fùjìn zǒuzou ba!", vi: "Chúng mình ra gần đây đi dạo chút đi!" }
+                ]
+            },
+            {
+                id: 5,
+                title: "5. Động từ「聽說」(Tīngshuō - Nghe nói)",
+                explain: "「聽說」 đặt ở đầu câu hoặc ngay sau chủ ngữ để dẫn lại thông tin mà người nói nghe được từ người khác hay đọc được từ báo chí, chưa tự mình trực tiếp trải nghiệm.",
+                structures: [
+                    "聽說 + Mệnh đề (Nghe nói là...)"
+                ],
+                examples: [
+                    { zh: "聽說怡君的學校很漂亮。", py: "Tīngshuō Yíjūn de xuéxiào hěn piàoliang.", vi: "Nghe nói trường của Di Quân rất đẹp." },
+                    { zh: "聽說那裡的游泳池很大。", py: "Tīngshuō nàlǐ de yóuyǒngchí hěn dà.", vi: "Nghe nói hồ bơi ở đó rất rộng." },
+                    { zh: "聽說這棟大樓是宿舍。", py: "Tīngshuō zhè dòng dàlóu shì sùshè.", vi: "Nghe nói tòa nhà này là ký túc xá." }
+                ]
+            },
+            {
+                id: 6,
+                title: "6. Phó từ nhấn mạnh「真的」& Phủ định nhẹ「不是 + 很 + Tính từ」",
+                explain: "「真的」(thật sự) dùng nhấn mạnh mức độ chân thật của tính từ/động từ. Mẫu câu 「不是 + 很 + Tính từ」 dùng để giảm nhẹ mức độ phủ định (không... lắm), biểu thị sự lịch sự hoặc miêu tả khách quan.",
+                structures: [
+                    "Chủ ngữ + 真的 + 很 + Tính từ (Thật sự rất...)",
+                    "Chủ ngữ + 不是 + 很 + Tính từ (Không... lắm)"
+                ],
+                examples: [
+                    { zh: "那裡真的是一個很漂亮的地方。", py: "Nàlǐ zhēn de shì yí ge hěn piàoliang de dìfāng.", vi: "Nơi đó thật sự là một nơi rất đẹp." },
+                    { zh: "不是很近，有一點不方便。", py: "Bú shì hěn jìn, yǒu yìdiǎn bù fāngbiàn.", vi: "Không gần lắm, hơi bất tiện một chút." },
+                    { zh: "這家商店的東西不是很貴。", py: "Zhè jiā shāngdiàn de dōngxi bú shì hěn guì.", vi: "Đồ của cửa hàng này không đắt lắm." }
+                ]
+            },
+            {
+                id: 7,
+                title: "7. Chuỗi động từ chỉ mục đích「去 + Địa điểm + Làm gì」",
+                explain: "Khi hai động từ đi liên tiếp với nhau trong đó động từ thứ nhất là 「去」 (đi) hoặc 「來」 (đến), mục đích của việc đi/đến sẽ do động từ thứ hai đảm nhiệm.",
+                structures: [
+                    "Chủ ngữ + 去 / 來 + Địa điểm + Động từ (Đi/Đến đâu làm gì)"
+                ],
+                examples: [
+                    { zh: "我現在要去學校附近的咖啡店買咖啡。", py: "Wǒ xiànzài yào qù xuéxiào fùjìn de kāfēidiàn mǎi kāfēi.", vi: "Bây giờ tôi phải đến quán cà phê gần trường mua cà phê." },
+                    { zh: "我去樓下找朋友。", py: "Wǒ qù lóuxià zhǎo péngyǒu.", vi: "Tôi xuống tầng dưới tìm bạn." },
+                    { zh: "我們一起去上課吧！", py: "Wǒmen yìqǐ qù shàngkè ba!", vi: "Chúng mình cùng nhau đi lên lớp nhé!" }
+                ]
+            },
+            {
+                id: 8,
+                title: "8. Lượng từ「棟」(Dòng) và cách gọi số tầng tại Đài Loan",
+                explain: "「棟」(dòng) là lượng từ chuẩn dùng cho các tòa nhà, chung cư, đại lâu (一棟大樓). Ngoài ra, tại Đài Loan, tầng trệt được gọi là 一樓 (yì lóu), tầng 2 là 二樓 (èr lóu), khác với cách gọi tầng của một số quốc gia Châu Âu.",
+                structures: [
+                    "Số từ + 棟 + 大樓 / 建築 (Mấy tòa nhà...)",
+                    "Số từ + 樓 (Tầng mấy...)"
+                ],
+                examples: [
+                    { zh: "前面這棟大樓很漂亮。", py: "Qiánmiàn zhè dòng dàlóu hěn piàoliang.", vi: "Tòa nhà phía trước này rất đẹp." },
+                    { zh: "旁邊的那棟大樓是教室。", py: "Pángbiān de nà dòng dàlóu shì jiàoshì.", vi: "Tòa nhà bên cạnh đó là phòng học." },
+                    { zh: "餐廳在學生宿舍的一樓。", py: "Cāntīng zài xuéshēng sùshè de yì lóu.", vi: "Nhà ăn ở tầng 1 của ký túc xá sinh viên." }
+                ]
+            }
+        ];
+
+        /* --------------------------------------------------------------------- */
+        /* 4. LONGEST-MATCH-FIRST DICTIONARY TOKENIZER                           */
+        /* --------------------------------------------------------------------- */
+        // Sort dictionary keys by length descending to match compound words first
+        const dictKeys = Object.keys(dictionary).sort((a, b) => b.length - a.length);
+
+        function tokenizeToHTML(text) {
+            let result = "";
+            let i = 0;
+            while (i < text.length) {
+                let matched = false;
+                // Check if current position matches any Chinese compound in dictionary
+                for (const key of dictKeys) {
+                    if (text.substr(i, key.length) === key) {
+                        result += `<span class="zh-word" onclick="openDictModal('${key}')">${key}</span>`;
+                        i += key.length;
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched) {
+                    const char = text[i];
+                    // If it's Chinese character but not in dict, wrap in fallback span
+                    if (/[\u4e00-\u9fa5]/.test(char)) {
+                        result += `<span class="zh-word" onclick="openDictModal('${char}')">${char}</span>`;
+                    } else {
+                        result += char;
+                    }
+                    i++;
+                }
+            }
+            return result;
+        }
+
+        /* Render Tokenized Text into Dialogue elements */
+        function renderDialogues() {
+            document.querySelectorAll('.dialogue-line').forEach(line => {
+                const text = line.getAttribute('data-text');
+                const zhContainer = line.querySelector('.zh-text');
+                if (zhContainer) {
+                    zhContainer.innerHTML = tokenizeToHTML(text);
+                }
+            });
+        }
+
+        /* Render Vocabulary Cards into Part 1 & Part 2 Grids */
+        function renderVocabCards(vocabList, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = vocabList.map(item => `
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 hover:border-sky-300 transition-colors">
+                    <div class="flex items-start justify-between border-b border-slate-200/60 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-xs font-bold text-slate-400">#${item.stt}</span>
+                            <span class="font-zh text-2xl font-bold text-slate-800">${tokenizeToHTML(item.word)}</span>
+                            <button onclick="speakText('${item.word}')" class="w-7 h-7 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center font-bold text-xs transition-colors">🔊</button>
+                        </div>
+                        <span class="bg-sky-100 text-sky-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">${item.pos}</span>
+                    </div>
+
+                    <div>
+                        <div class="text-sky-700 font-mono text-sm font-semibold">${item.pinyin}</div>
+                        <div class="text-slate-700 font-medium text-sm mt-0.5">${item.meaning}</div>
+                    </div>
+
+                    <!-- 3 Cumulative Example Sentences -->
+                    <div class="space-y-2 pt-2 border-t border-slate-200/50 text-xs sm:text-sm">
+                        ${item.examples.map(ex => `
+                            <div class="flex items-start gap-2 group">
+                                <button onclick="speakSentence(this.parentElement, '${ex.zh}')" class="mt-0.5 text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="font-zh text-slate-800 leading-snug">${tokenizeToHTML(ex.zh)}</div>
+                                    <div class="pinyin-text text-sky-700 font-mono text-[11px]">${ex.py}</div>
+                                    <div class="trans-text text-slate-500 text-[12px]">${ex.vi}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* Render Grammar Points */
+        function renderGrammar() {
+            const container = document.getElementById('grammar-container');
+            container.innerHTML = grammarPoints.map(g => `
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-6 space-y-4 hover:border-sky-200 transition-colors">
+                    <h3 class="text-lg sm:text-xl font-bold text-sky-800 flex items-center gap-2">
+                        <span>${g.title}</span>
+                    </h3>
+                    
+                    <p class="text-sm text-slate-700 leading-relaxed">${g.explain}</p>
+
+                    <div class="bg-sky-50/70 border border-sky-100 rounded-xl p-3 text-xs sm:text-sm font-mono text-sky-900 space-y-1">
+                        <div class="font-bold text-sky-700 uppercase tracking-wider text-[10px]">Cấu trúc:</div>
+                        ${g.structures.map(s => `<div>• ${s}</div>`).join('')}
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ví dụ mẫu:</div>
+                        ${g.examples.map(ex => `
+                            <div class="bg-white border border-slate-200/80 rounded-xl p-3 flex items-start gap-3 shadow-2xs">
+                                <button onclick="speakSentence(this.parentElement, '${ex.zh}')" class="mt-1 w-7 h-7 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center shrink-0 font-bold text-xs transition-colors">▶</button>
+                                <div class="flex-1">
+                                    <div class="font-zh text-base sm:text-lg font-medium text-slate-800">${tokenizeToHTML(ex.zh)}</div>
+                                    <div class="pinyin-text text-xs sm:text-sm text-sky-700 font-mono">${ex.py}</div>
+                                    <div class="trans-text text-xs sm:text-sm text-slate-600 mt-0.5">${ex.vi}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* --------------------------------------------------------------------- */
+        /* 5. TEXT-TO-SPEECH (TTS) SYSTEM WITH TAIWAN VOICE DETECTION           */
+        /* --------------------------------------------------------------------- */
+        let synth = window.speechSynthesis;
+        let voices = [];
+        let currentDialogueTimeout = null;
+        let isDialoguePlaying = false;
+
+        function populateVoiceList() {
+            if (!synth) return;
+            voices = synth.getVoices();
+            const voiceSelect = document.getElementById('tts-voice');
+            voiceSelect.innerHTML = '<option value="">Tự động chọn zh-TW (Đài Loan)</option>';
+
+            // Filter for Chinese voices
+            const zhVoices = voices.filter(v => v.lang.startsWith('zh'));
+
+            // Sort so zh-TW / Taiwanese voices come first
+            zhVoices.sort((a, b) => {
+                const aTW = a.lang.includes('TW') || a.name.includes('Taiwan') || a.name.includes('Meijia') || a.name.includes('HsiaoChen');
+                const bTW = b.lang.includes('TW') || b.name.includes('Taiwan') || b.name.includes('Meijia') || b.name.includes('HsiaoChen');
+                if (aTW && !bTW) return -1;
+                if (!aTW && bTW) return 1;
+                return 0;
+            });
+
+            zhVoices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                if (voice.lang.includes('TW') || voice.name.includes('Taiwan') || voice.name.includes('Meijia')) {
+                    option.selected = true;
+                }
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        if (synth) {
+            populateVoiceList();
+            if (synth.onvoiceschanged !== undefined) {
+                synth.onvoiceschanged = populateVoiceList;
+            }
+        }
+
+        function speakText(text, callback) {
+            if (!synth) return;
+            synth.cancel(); // Stop any active playback
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            const rate = parseFloat(document.getElementById('tts-rate').value) || 0.9;
+            utterance.rate = rate;
+
+            const selectedVoiceName = document.getElementById('tts-voice').value;
+            if (selectedVoiceName) {
+                const selectedVoice = voices.find(v => v.name === selectedVoiceName);
+                if (selectedVoice) utterance.voice = selectedVoice;
+            } else {
+                // Auto detect Taiwan voice
+                const twVoice = voices.find(v => (v.lang === 'zh-TW' || v.name.includes('Taiwan') || v.name.includes('Meijia') || v.name.includes('HsiaoChen')) && v.lang.startsWith('zh'));
+                const anyZh = voices.find(v => v.lang.startsWith('zh'));
+                if (twVoice) utterance.voice = twVoice;
+                else if (anyZh) utterance.voice = anyZh;
+            }
+
+            utterance.onend = () => {
+                if (callback) callback();
+            };
+            utterance.onerror = () => {
+                if (callback) callback();
+            };
+
+            synth.speak(utterance);
+        }
+
+        function clearSpeakingHighlights() {
+            document.querySelectorAll('.speaking-active').forEach(el => {
+                el.classList.remove('speaking-active');
+            });
+        }
+
+        function speakSentence(containerEl, text) {
+            stopAudio();
+            clearSpeakingHighlights();
+            if (containerEl) {
+                containerEl.classList.add('speaking-active');
+            }
+            speakText(text, () => {
+                clearSpeakingHighlights();
+            });
+        }
+
+        function playDialogue(dialogueId) {
+            stopAudio();
+            isDialoguePlaying = true;
+            const lines = Array.from(document.querySelectorAll(`#${dialogueId} .dialogue-line`));
+            let index = 0;
+
+            function playNextLine() {
+                if (!isDialoguePlaying || index >= lines.length) {
+                    isDialoguePlaying = false;
+                    clearSpeakingHighlights();
+                    return;
+                }
+
+                clearSpeakingHighlights();
+                const currentLine = lines[index];
+                currentLine.classList.add('speaking-active');
+                currentLine.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                const text = currentLine.getAttribute('data-text');
+                index++;
+                speakText(text, () => {
+                    if (isDialoguePlaying) {
+                        currentDialogueTimeout = setTimeout(playNextLine, 400);
+                    }
+                });
+            }
+
+            playNextLine();
+        }
+
+        function stopAudio() {
+            isDialoguePlaying = false;
+            if (currentDialogueTimeout) clearTimeout(currentDialogueTimeout);
+            if (synth) synth.cancel();
+            clearSpeakingHighlights();
+        }
+
+        /* --------------------------------------------------------------------- */
+        /* 6. DICTIONARY MODAL INTERACTION                                       */
+        /* --------------------------------------------------------------------- */
+        function openDictModal(word) {
+            stopAudio();
+            const modal = document.getElementById('dict-modal');
+            const data = dictionary[word] || {
+                pinyin: "",
+                pos: "Từ đơn",
+                meanings: ["Từ Hán Nôm / Từ vựng trong bài."],
+                note: "Từ vựng thuộc giáo trình TOCFL A1 Đài Loan."
+            };
+
+            document.getElementById('modal-word').textContent = word;
+            document.getElementById('modal-pinyin').textContent = data.pinyin || "";
+            document.getElementById('modal-pos').textContent = data.pos || "Danh từ";
+
+            const meaningsContainer = document.getElementById('modal-meanings');
+            meaningsContainer.innerHTML = data.meanings.map(m => `<div>${m}</div>`).join('');
+
+            const noteBox = document.getElementById('modal-note-box');
+            const noteEl = document.getElementById('modal-note');
+            if (data.note) {
+                noteEl.textContent = data.note;
+                noteBox.classList.remove('hidden');
+            } else {
+                noteBox.classList.add('hidden');
+            }
+
+            const audioBtn = document.getElementById('modal-audio-btn');
+            audioBtn.onclick = () => speakText(word);
+
+            modal.classList.remove('hidden');
+            // Auto play audio on open modal
+            speakText(word);
+        }
+
+        function closeModal() {
+            document.getElementById('dict-modal').classList.add('hidden');
+            stopAudio();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        /* --------------------------------------------------------------------- */
+        /* 7. GLOBAL DISPLAY & ZOOM CONTROLS                                     */
+        /* --------------------------------------------------------------------- */
+        let pinyinVisible = true;
+        let transVisible = true;
+
+        function togglePinyin() {
+            pinyinVisible = !pinyinVisible;
+            document.getElementById('pinyin-status').textContent = pinyinVisible ? "Hiện" : "Ẩn";
+            document.querySelectorAll('.pinyin-text').forEach(el => {
+                el.style.display = pinyinVisible ? 'block' : 'none';
+            });
+        }
+
+        function toggleTrans() {
+            transVisible = !transVisible;
+            document.getElementById('trans-status').textContent = transVisible ? "Hiện" : "Ẩn";
+            document.querySelectorAll('.trans-text').forEach(el => {
+                el.style.display = transVisible ? 'block' : 'none';
+            });
+        }
+
+        function setZoom(value) {
+            const zoomVal = Math.min(Math.max(parseInt(value) || 100, 80), 300);
+            document.documentElement.style.fontSize = (16 * zoomVal / 100) + 'px';
+            document.getElementById('zoom-slider').value = zoomVal;
+            document.getElementById('zoom-val').textContent = zoomVal + '%';
+            localStorage.setItem('tocfl_lesson6_zoom', zoomVal);
+        }
+
+        function adjustZoom(delta) {
+            const current = parseInt(document.getElementById('zoom-slider').value) || 100;
+            setZoom(current + delta);
+        }
+
+        /* --------------------------------------------------------------------- */
+        /* 8. TAB NAVIGATION SYSTEM                                              */
+        /* --------------------------------------------------------------------- */
+        function switchTab(tabIndex) {
+            stopAudio();
+            document.querySelectorAll('.tab-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(`tab-content-${tabIndex}`).classList.remove('hidden');
+
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`tab-btn-${i}`);
+                if (i === tabIndex) {
+                    btn.className = "px-3 py-1.5 rounded-lg transition-all bg-sky-600 text-white font-semibold shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-all font-medium";
+                }
+            }
+        }
+
+        /* --------------------------------------------------------------------- */
+        /* 9. APPLICATION INITIALIZATION                                         */
+        /* --------------------------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            // Load saved text zoom
+            const savedZoom = localStorage.getItem('tocfl_lesson6_zoom');
+            if (savedZoom) setZoom(savedZoom);
+
+            // Render all dynamic HTML elements
+            renderDialogues();
+            renderVocabCards(vocabPart1, 'vocab-grid-1');
+            renderVocabCards(vocabPart2, 'vocab-grid-2');
+            renderGrammar();
+        });
+    </script>
+</body>
+</html>
