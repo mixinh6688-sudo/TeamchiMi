@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 5: 第五課：牛肉麵真好吃 (Mì bò thật ngon!) - TOCFL A1</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sky: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .zh-word {
+      cursor: pointer;
+      border-bottom: 2px dashed #0284c7;
+      transition: all 0.2s ease;
+      display: inline-block;
+      padding: 0 1px;
+    }
+    .zh-word:hover {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border-bottom-style: solid;
+      border-radius: 4px;
+    }
+
+    .speaking-active {
+      background-color: #fef08a !important;
+      border-left: 4px solid #eab308;
+      transition: all 0.2s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col antialiased selection:bg-sky-200 selection:text-sky-900">
+
+  <!-- ================= TOP STICKY TOOLBAR (2 ROWS) ================= -->
+  <header class="sticky top-0 z-40 bg-white shadow-md border-b border-sky-100 min-w-0">
+    <!-- Hàng 1: Info, TTS Controls, Global Toggles -->
+    <div class="max-w-7xl mx-auto px-3 py-2 sm:px-6 flex flex-wrap items-center justify-between gap-2 border-b border-slate-100">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="bg-sky-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm shrink-0">TOCFL A1</span>
+        <h1 class="text-base sm:text-lg font-bold text-sky-900 truncate">
+          第五課：牛肉麵真好吃 <span class="text-xs sm:text-sm font-normal text-slate-500 hidden md:inline">(Bài 5: Mì bò thật ngon!)</span>
+        </h1>
+      </div>
+
+      <!-- TTS & View Controls -->
+      <div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+        <!-- Speed selector -->
+        <div class="flex items-center gap-1 bg-slate-100 rounded-lg p-1 border border-slate-200">
+          <span class="text-slate-500 pl-1 font-medium hidden sm:inline">Tốc độ:</span>
+          <select id="speedSelect" class="bg-white text-slate-700 font-semibold rounded px-1.5 py-0.5 border border-slate-300 focus:outline-none focus:ring-1 focus:ring-sky-500">
+            <option value="0.75">0.75x</option>
+            <option value="0.9" selected>0.9x (Khuyên dùng)</option>
+            <option value="1.0">1.0x (Thời sự)</option>
+            <option value="1.15">1.15x</option>
+          </select>
+        </div>
+
+        <!-- Voice selector -->
+        <div class="flex items-center gap-1 bg-slate-100 rounded-lg p-1 border border-slate-200 max-w-[150px] sm:max-w-none">
+          <span class="text-slate-500 pl-1 font-medium hidden sm:inline">Giọng:</span>
+          <select id="voiceSelect" class="bg-white text-slate-700 font-medium rounded px-1.5 py-0.5 border border-slate-300 text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 truncate w-full sm:w-auto">
+            <option value="">Mặc định (zh-TW)</option>
+          </select>
+        </div>
+
+        <!-- Global Toggle Pinyin & Trans -->
+        <button id="togglePinyinBtn" onclick="toggleGlobalPinyin()" class="bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold px-2.5 py-1 rounded-lg border border-sky-200 transition">
+          🔤 Pinyin: <span id="pinyinStatus">Hiện</span>
+        </button>
+        <button id="toggleTransBtn" onclick="toggleGlobalTrans()" class="bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold px-2.5 py-1 rounded-lg border border-sky-200 transition">
+          🌐 Dịch: <span id="transStatus">Hiện</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hàng 2: Navigation Tabs & Font Scaling Controls -->
+    <div class="max-w-7xl mx-auto px-3 py-1.5 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-2 min-w-0">
+      <!-- 3 Main Tabs -->
+      <nav class="flex space-x-1 sm:space-x-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0" aria-label="Tabs">
+        <button onclick="switchTab('tab1')" id="tabBtn1" class="tab-btn px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition whitespace-nowrap bg-sky-600 text-white shadow">
+          Phần 1: Bài khóa 1 & 21 Từ vựng
+        </button>
+        <button onclick="switchTab('tab2')" id="tabBtn2" class="tab-btn px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition whitespace-nowrap text-slate-600 hover:bg-slate-100">
+          Phần 2: Bài khóa 2 & 16 Từ vựng
+        </button>
+        <button onclick="switchTab('tab3')" id="tabBtn3" class="tab-btn px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition whitespace-nowrap text-slate-600 hover:bg-slate-100">
+          Ngữ pháp trọng tâm (8 điểm)
+        </button>
+      </nav>
+
+      <!-- Font Zoom Controls (80% - 300%) -->
+      <div class="flex items-center gap-1 sm:gap-2 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 shrink-0 w-full md:w-auto justify-end">
+        <span class="text-xs font-semibold text-slate-600">Cỡ chữ:</span>
+        <button onclick="changeFontSize(-10)" class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs font-bold text-slate-700 hover:bg-slate-50">A-</button>
+        <input type="range" id="fontSizeSlider" min="80" max="300" step="5" value="100" oninput="setFontSize(this.value)" class="w-16 sm:w-24 accent-sky-600 cursor-pointer">
+        <button onclick="changeFontSize(10)" class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs font-bold text-slate-700 hover:bg-slate-50">A+</button>
+        <span id="fontBadge" class="text-xs font-bold text-sky-700 w-10 text-center">100%</span>
+        
+        <div class="h-4 w-[1px] bg-slate-300 mx-0.5"></div>
+        <button onclick="setFontSize(100)" class="px-1 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-600 hover:bg-slate-50">100%</button>
+        <button onclick="setFontSize(150)" class="px-1 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-600 hover:bg-slate-50">150%</button>
+        <button onclick="setFontSize(200)" class="px-1 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-600 hover:bg-slate-50">200%</button>
+        <button onclick="setFontSize(300)" class="px-1 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-600 hover:bg-slate-50">300%</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-3 py-6 sm:px-6">
+    
+    <!-- ================= TAB 1: BÀI KHÓA 1 & TỪ VỰNG PHẦN 1 ================= -->
+    <div id="tab1" class="tab-content space-y-8">
+      
+      <!-- Dialogue 1 Section -->
+      <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Bài khóa 1</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">課文一：臺灣有名的小吃</h2>
+            <p class="text-sm text-slate-500">Đặc sản nổi tiếng của Đài Loan</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="playFullDialogue('d1')" class="flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm px-4 py-2 rounded-xl shadow transition">
+              <span>▶</span> Nghe cả bài khóa 1
+            </button>
+            <button onclick="stopTTS()" class="flex items-center gap-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-sm px-3 py-2 rounded-xl transition">
+              ⏹️ Dừng
+            </button>
+          </div>
+        </div>
+
+        <!-- Dialogue 1 Sentences List -->
+        <div id="d1-container" class="space-y-3">
+          <!-- Sentences populated dynamically -->
+        </div>
+      </section>
+
+      <!-- Vocabulary Part 1 (21 words) -->
+      <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+        <div class="pb-4 mb-6 border-b border-slate-100">
+          <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Từ vựng Phần 1</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">生詞一 (21 Từ vựng)</h2>
+          <p class="text-sm text-slate-500">Nhấp vào từ chữ Hán bất kỳ để xem tra cứu nhanh hoặc bấm 🔊 để nghe phát âm chuẩn.</p>
+        </div>
+
+        <div id="vocab1-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ================= TAB 2: BÀI KHÓA 2 & TỪ VỰNG PHẦN 2 ================= -->
+    <div id="tab2" class="tab-content hidden space-y-8">
+      
+      <!-- Dialogue 2 Section -->
+      <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Bài khóa 2</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">課文二：自己做飯與甜點</h2>
+            <p class="text-sm text-slate-500">Tự nấu ăn và món tráng miệng</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="playFullDialogue('d2')" class="flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm px-4 py-2 rounded-xl shadow transition">
+              <span>▶</span> Nghe cả bài khóa 2
+            </button>
+            <button onclick="stopTTS()" class="flex items-center gap-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-sm px-3 py-2 rounded-xl transition">
+              ⏹️ Dừng
+            </button>
+          </div>
+        </div>
+
+        <!-- Dialogue 2 Sentences List -->
+        <div id="d2-container" class="space-y-3">
+          <!-- Sentences populated dynamically -->
+        </div>
+      </section>
+
+      <!-- Vocabulary Part 2 (16 words) -->
+      <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+        <div class="pb-4 mb-6 border-b border-slate-100">
+          <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Từ vựng Phần 2</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">生詞二 (16 Từ vựng)</h2>
+          <p class="text-sm text-slate-500">Từ vựng tích lũy và ứng dụng thực hành thực tế.</p>
+        </div>
+
+        <div id="vocab2-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ================= TAB 3: NGỮ PHÁP TRỌNG TÂM (8 ĐIỂM) ================= -->
+    <div id="tab3" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+        <div class="pb-4 mb-6 border-b border-slate-100">
+          <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Ngữ pháp Bài 5</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">第五課核心語法 (8 Điểm Ngữ Pháp Trọng Tâm)</h2>
+          <p class="text-sm text-slate-500">Phân tích chi tiết công thức, cách dùng thực tế tại Đài Loan kèm ví dụ trực quan.</p>
+        </div>
+
+        <div id="grammar-container" class="space-y-6">
+          <!-- 8 Grammar points dynamically inserted -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-medium text-slate-700 mb-1">Giáo trình Tiếng Trung Phồn thể Chuẩn Đài Loan (TOCFL A1) - Bài 5</p>
+      <p>© 2026 Interactive Learning Hub. Hỗ trợ phát âm giọng zh-TW tự động.</p>
+    </div>
+  </footer>
+
+  <!-- ================= DICTIONARY LOOKUP MODAL ================= -->
+  <div id="dictModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-5 sm:p-6 relative border border-sky-100 animate-in fade-in zoom-in duration-200">
+      <button onclick="closeDictModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none p-1">&times;</button>
+      
+      <div class="flex items-start gap-4 pb-4 border-b border-slate-100">
+        <div class="bg-sky-50 border border-sky-100 p-3 rounded-xl text-center shrink-0">
+          <div id="modalHanzi" class="text-3xl sm:text-4xl font-bold text-sky-800 font-serif">牛肉</div>
+          <button id="modalTTSBtn" class="mt-2 text-xs bg-sky-600 hover:bg-sky-700 text-white px-2.5 py-1 rounded-lg flex items-center gap-1 mx-auto shadow-sm">
+            <span>▶</span> Phát âm
+          </button>
+        </div>
+
+        <div class="flex-grow min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="modalPinyin" class="text-lg font-bold text-slate-700">niú ròu</span>
+            <span id="modalPos" class="bg-sky-100 text-sky-800 text-xs font-semibold px-2 py-0.5 rounded">Danh từ</span>
+          </div>
+          <p id="modalMeaning" class="text-base font-semibold text-slate-800 mt-2">Thịt bò</p>
+        </div>
+      </div>
+
+      <div class="mt-4 space-y-3">
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Ghi chú & Cách dùng tại Đài Loan</h4>
+          <p id="modalNote" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+            牛肉麵 (Mì bò) là món ăn quốc phục nổi tiếng khắp Đài Loan. Người Đài Loan thường chia thành 兩大類: 紅燒 (Hồng xíu - vị đậm đà, hơi cay) và 清燉 (Thanh đốn - nước dùng trong, thanh ngọt).
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Ví dụ minh họa</h4>
+          <div id="modalExamples" class="space-y-2 text-sm text-slate-700 max-h-40 overflow-y-auto pr-1">
+            <!-- Examples filled dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 text-right">
+        <button onclick="closeDictModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-xl text-sm transition">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    /* -------------------------------------------------------------------------
+       1. DATA DEFINITIONS (Lesson 5 Dialogue & Vocab & Dict)
+       ------------------------------------------------------------------------- */
+    
+    // Dictionary Data (Bài 1-5 + key characters)
+    const dictionary = {
+      "牛肉麵": {
+        pinyin: "niú ròu miàn",
+        pos: "Danh từ",
+        meaning: "Mì bò (món ăn biểu tượng của Đài Loan)",
+        note: "Món ăn nổi tiếng nhất Đài Loan, có 2 phong cách chính: 紅燒 (Hồng xíu) và 清燉 (Thanh đốn). Khi gọi món thường được chọn sợi mì (細麵/寬麵).",
+        examples: ["臺灣的牛肉麵非常好吃。", "你想吃大碗的牛肉麵嗎？"]
+      },
+      "牛肉": {
+        pinyin: "niú ròu",
+        pos: "Danh từ",
+        meaning: "Thịt bò",
+        note: "Các món liên quan: 牛肉湯 (Canh bò), 牛肉飯 (Cơm bò).",
+        examples: ["這家店的牛肉很多。"]
+      },
+      "麵": {
+        pinyin: "miàn",
+        pos: "Danh từ",
+        meaning: "Mì, bột mì",
+        note: "Ở Đài Loan, 麵 chỉ các loại món mì.",
+        examples: ["你喜歡吃麵還是吃飯？"]
+      },
+      "真": {
+        pinyin: "zhēn",
+        pos: "Phó từ",
+        meaning: "Thật, quả là, vô cùng",
+        note: "Dùng biểu thị cảm thán: 真 + Tính từ. Ví dụ: 真好吃 (Ngon thật!).",
+        examples: ["這道菜真好吃！", "今天天氣真好。"]
+      },
+      "好吃": {
+        pinyin: "hǎo chī",
+        pos: "Tính từ",
+        meaning: "Ngon (đối với đồ ăn)",
+        note: "Dùng cho thức ăn. Ngược lại với 不好吃.",
+        examples: ["臺灣的小吃都很好吃。"]
+      },
+      "說": {
+        pinyin: "shuō",
+        pos: "Động từ",
+        meaning: "Nói, cho rằng, bảo",
+        note: "Cấu trúc: 大家人都說... (Mọi người đều nói...).",
+        examples: ["大家都說那家餐廳很好。"]
+      },
+      "少": {
+        pinyin: "shǎo",
+        pos: "Tính từ / Phó từ",
+        meaning: "Ít, làm gì đó ít đi (shǎo); (Đa âm: shào trong 年輕 người trẻ)",
+        note: "Mang nghĩa ít về số lượng hoặc khuyên giảm bớt hành động (少吃辣: ăn ít cay lại).",
+        examples: ["我不吃辣，所以吃得很少。"]
+      },
+      "有名": {
+        pinyin: "yǒu míng",
+        pos: "Tính từ",
+        meaning: "Nổi tiếng",
+        note: "Cấu trúc: A 在 B 很有名 (A rất nổi tiếng ở B).",
+        examples: ["這家牛肉麵店在臺灣很有名。"]
+      },
+      "小吃": {
+        pinyin: "xiǎo chī",
+        pos: "Danh từ",
+        meaning: "Món ăn vặt, đặc sản địa phương",
+        note: "Văn hóa Chợ đêm (夜市) Đài Loan nổi tiếng với hàng trăm món 小吃.",
+        examples: ["臺灣的小吃種類很多。"]
+      },
+      "最": {
+        pinyin: "zuì",
+        pos: "Phó từ",
+        meaning: "Nhất (so sánh bậc nhất)",
+        note: "Cấu trúc: 最 + Tính từ / Động từ tâm lý (最喜歡, 最好吃).",
+        examples: ["我最喜歡吃牛肉麵。"]
+      },
+      "湯": {
+        pinyin: "tāng",
+        pos: "Danh từ",
+        meaning: "Canh, súp, nước dùng",
+        note: "Ví dụ: 牛肉湯 (Canh bò), 魚湯 (Canh cá). Ngon miệng dùng 好喝 (Hảo ha).",
+        examples: ["這家店的牛肉麵湯非常好喝。"]
+      },
+      "這麼": {
+        pinyin: "zhèm e",
+        pos: "Phó từ",
+        meaning: "Thế này, như thế này",
+        note: "Dùng để nhấn mạnh mức độ cao: 這麼 + Tính từ (這麼好吃).",
+        examples: ["這道菜這麼辣，你敢吃嗎？"]
+      },
+      "知道": {
+        pinyin: "zhī dào",
+        pos: "Động từ",
+        meaning: "Biết, nhận biết thông tin",
+        note: "Biết thông tin sự việc. Phân biệt với 會 (biết qua học tập kỹ năng).",
+        examples: ["你知道哪家店的牛肉麵最好吃嗎？"]
+      },
+      "家": {
+        pinyin: "jiā",
+        pos: "Lượng từ / Danh từ",
+        meaning: "Lượng từ (cửa hàng, nhà hàng, công ty) / Nhà, gia đình",
+        note: "Khi làm lượng từ: 這家店 (cửa hàng này), 這家餐廳 (nhà hàng này).",
+        examples: ["那家餐廳的菜很好吃。"]
+      },
+      "店": {
+        pinyin: "diàn",
+        pos: "Danh từ",
+        meaning: "Cửa hàng, quán ăn",
+        note: "Thường đi kèm loại hình: 書店 (tiệm sách), 麵店 (quán mì).",
+        examples: ["我們去那家店吃午飯吧。"]
+      },
+      "一定": {
+        pinyin: "yí dìng",
+        pos: "Phó từ",
+        meaning: "Nhất định, chắc chắn",
+        note: "Thể hiện sự quyết tâm hoặc suy đoán chắc chắn (一定好吃).",
+        examples: ["我們一定要點大碗的！"]
+      },
+      "點": {
+        pinyin: "diǎn",
+        pos: "Động từ / Lượng từ",
+        meaning: "Gọi món, đặt đồ ăn / Giờ (thời gian)",
+        note: "點菜 (Gọi món). 點大碗的 (Gọi tô lớn).",
+        examples: ["請問你們想點什麼？"]
+      },
+      "碗": {
+        pinyin: "wǎn",
+        pos: "Lượng từ / Danh từ",
+        meaning: "Bát, tô (lượng từ & danh từ)",
+        note: "一碗麵 (Một tô mì), 大碗 (Tô lớn), 小碗 (Tô nhỏ).",
+        examples: ["請給我一碗牛肉麵。"]
+      },
+      "是啊": {
+        pinyin: "shì a",
+        pos: "Thán từ",
+        meaning: "Đúng vậy, phải rồi",
+        note: "Dùng để đồng tình tán thành ý kiến của đối phương trong giao tiếp.",
+        examples: ["A: 這家店很有名吧？ B: 是啊！"]
+      },
+      "小籠包": {
+        pinyin: "xiǎo lóng bāo",
+        pos: "Danh từ",
+        meaning: "Bánh tiểu long bao (bánh bao hấp lồng nhỏ)",
+        note: "Đặc sản trứ danh Đài Loan (tiêu biểu như Din Tai Fung - 鼎泰豐). Có nước súp bên trong.",
+        examples: ["這家店的小籠包很便宜。"]
+      },
+      "臭豆腐": {
+        pinyin: "chòu dòu fu",
+        pos: "Danh từ",
+        meaning: "Đậu phụ thối",
+        note: "Món ăn đường phố Đài Loan nổi tiếng, thường ăn kèm 泡菜 (dưa góp bắp cải).",
+        examples: ["很多人喜歡吃臺灣的臭豆腐。"]
+      },
+      "太好了": {
+        pinyin: "tài hǎo le",
+        pos: "Cụm thán từ",
+        meaning: "Tốt quá rồi! Tuyệt quá!",
+        note: "Dùng bày tỏ sự vui mừng, hào hứng trước tin tốt.",
+        examples: ["明天不用上班，太好了！"]
+      },
+      "昨天": {
+        pinyin: "zuó tiān",
+        pos: "Danh từ thời gian",
+        meaning: "Hôm qua",
+        note: "Đứng trước động từ hoặc đầu câu: 昨天晚上 (Tối hôm qua).",
+        examples: ["昨天晚上我們去吃了牛肉麵。"]
+      },
+      "餐廳": {
+        pinyin: "cān tīng",
+        pos: "Danh từ",
+        meaning: "Nhà hàng, quán ăn, nhà ăn",
+        note: "Nhà hàng có quy mô trang trọng hơn 店 (quán ăn nhỏ).",
+        examples: ["那家餐廳的菜非常有名。"]
+      },
+      "可是": {
+        pinyin: "kě shì",
+        pos: "Liên từ",
+        meaning: "Nhưng, nhưng mà",
+        note: "Dùng chuyển ngoặt ý kiến, tương tự 但是 (dànshì).",
+        examples: ["這家店很大，可是人很多。"]
+      },
+      "辣": {
+        pinyin: "là",
+        pos: "Tính từ",
+        meaning: "Cay",
+        note: "Vị cay. 不辣 (không cay), 微辣 (cay nhẹ), 中辣 (cay vừa), 大辣 (cay nhiều).",
+        examples: ["我不喜歡吃太辣的菜。"]
+      },
+      "怕": {
+        pinyin: "pà",
+        pos: "Động từ",
+        meaning: "Sợ, e rằng, không chịu được",
+        note: "怕辣 (Sợ cay/không ăn được cay), 怕冷 (Sợ lạnh).",
+        examples: ["我很怕辣，所以不吃臭豆腐。"]
+      },
+      "所以": {
+        pinyin: "suǒ yǐ",
+        pos: "Liên từ",
+        meaning: "Cho nên, vì vậy",
+        note: "Cấu trúc nguyên nhân - kết quả: 因為...所以... (Vì... cho nên...).",
+        examples: ["因為很辣，所以我不吃。"]
+      },
+      "自己": {
+        pinyin: "zì jǐ",
+        pos: "Đại từ",
+        meaning: "Tự mình, bản thân",
+        note: "Đứng trước động từ: 自己做飯 (tự nấu ăn), 自己去 (tự đi).",
+        examples: ["你喜歡自己做飯嗎？"]
+      },
+      "做飯": {
+        pinyin: "zuò fàn",
+        pos: "Động từ ly hợp",
+        meaning: "Nấu ăn, làm cơm",
+        note: "Tương đương 做菜. 做飯做得好 (Nấu ăn giỏi).",
+        examples: ["我媽媽做飯做得非常好吃。"]
+      },
+      "得": {
+        pinyin: "de / děi",
+        pos: "Trợ từ / Động từ",
+        meaning: "Trợ từ bổ ngữ trình độ (de); Phải (děi); Nhận được (dé)",
+        note: "Cấu trúc bổ ngữ trình độ: V + 得 + Adj (Ví dụ: 做得好, 吃得多). Khi đọc děi có nghĩa là 'phải'.",
+        examples: ["你做飯做得怎麼樣？", "我得去了。"]
+      },
+      "會": {
+        pinyin: "huì",
+        pos: "Động từ năng nguyện",
+        meaning: "Biết (qua rèn luyện/học tập) / Sẽ",
+        note: "Phân biệt với 可以 (có thể/được phép). 我會做飯 (Tôi biết nấu ăn).",
+        examples: ["你會做臺灣菜嗎？"]
+      },
+      "甜點": {
+        pinyin: "tián diǎn",
+        pos: "Danh từ",
+        meaning: "Món tráng miệng, bánh ngọt",
+        note: "Gồm bánh ngọt, chè, kem... 珍珠奶茶 (trà sữa trân châu) cũng hay ăn cùng 甜點.",
+        examples: ["這家餐廳 provide/的甜點很好吃。"]
+      },
+      "不錯": {
+        pinyin: "bú cuò",
+        pos: "Tính từ",
+        meaning: "Khá tốt, không tồi, hay",
+        note: "Khen ngợi mức độ khá: 這家店不錯 (Quán này khá ổn).",
+        examples: ["這家的甜點很不錯！"]
+      },
+      "可以": {
+        pinyin: "kě yǐ",
+        pos: "Động từ năng nguyện",
+        meaning: "Có thể, được phép",
+        note: "Biểu thị sự cho phép hoặc khả năng điều kiện: 你可以來我家 (Bạn có thể đến nhà tôi).",
+        examples: ["週末你可以來我家做甜點。"]
+      },
+      "教": {
+        pinyin: "jiāo / jiào",
+        pos: "Động từ",
+        meaning: "Dạy, truyền thụ (jiāo); Giáo dục/Giáo phái (jiào)",
+        note: "Cấu trúc: A 教 B + Động từ (A dạy B làm gì). Ví dụ: 我教你 (Tôi dạy bạn).",
+        examples: ["我教你做甜點，好嗎？"]
+      },
+      "到": {
+        pinyin: "dào",
+        pos: "Động từ / Giới từ",
+        meaning: "Đến, tới",
+        note: "Cấu trúc di chuyển: 到 + Địa điểm + 來/去 (Đến địa điểm nào đó).",
+        examples: ["歡迎到臺灣來玩！"]
+      },
+      "有一點": {
+        pinyin: "yǒu yì diǎn",
+        pos: "Phó từ",
+        meaning: "Hơi... một chút (thường mang sắc thái tiêu cực/không hài lòng)",
+        note: "Cấu trúc: 有一點 + Tính từ (有一點辣, 有一點貴).",
+        examples: ["這道菜有一點辣，可是很好吃。"]
+      },
+      "臺灣": { pinyin: "Tái wān", pos: "Danh từ", meaning: "Đài Loan", note: "Đảo Đài Loan", examples: ["臺灣有很多小吃。"] },
+      "月美": { pinyin: "Yuè měi", pos: "Tên riêng", meaning: "Nguyệt Mỹ (Tên người)", note: "Tên nhân vật nữ trong giáo trình.", examples: [] },
+      "明華": { pinyin: "Míng huá", pos: "Tên riêng", meaning: "Minh Hoa (Tên người)", note: "Tên nhân vật nam trong giáo trình.", examples: [] },
+      "安同": { pinyin: "Ān tóng", pos: "Tên riêng", meaning: "An Đồng (Tên người)", note: "Tên nhân vật nam trong giáo trình.", examples: [] }
+    };
+
+    // Dialogue 1 Data
+    const dialogue1 = [
+      { speaker: "月美", text: "明華，你看，大家都說這家店的牛肉麵很好吃。", pinyin: "Mínghuá, nǐ kàn, dàjiā dōu shuō zhè jiā diàn de niúròumiàn hěn hǎochī.", trans: "Minh Hoa, anh xem kìa, mọi người đều nói mì bò của quán này rất ngon." },
+      { speaker: "明華", text: "是啊，這家店在臺灣很有名，牛肉麵和牛肉湯都很好吃。", pinyin: "Shì a, zhè jiā diàn zài Táiwān hěn yǒumíng, niúròumiàn hé niúròutāng dōu hěn hǎochī.", trans: "Đúng vậy, quán này ở Đài Loan rất nổi tiếng, mì bò và canh bò đều rất ngon." },
+      { speaker: "月美", text: "臺灣的小吃很多，你最喜歡吃什麼？", pinyin: "Táiwān de xiǎochī hěn duō, nǐ zuì xǐhuān chī shénme?", trans: "Món ăn vặt Đài Loan rất nhiều, anh thích ăn món gì nhất?" },
+      { speaker: "明華", text: "我最喜歡牛肉麵。你呢？你知道哪家店的牛肉麵最好吃嗎？", pinyin: "Wǒ zuì xǐhuān niúròumiàn. Nǐ ne? Nǐ zhīdào nǎ jiā diàn de niúròumiàn zuì hǎochī ma?", trans: "Tôi thích ăn mì bò nhất. Còn cô? Cô có biết mì bò quán nào ngon nhất không?" },
+      { speaker: "月美", text: "我知道這家的牛肉麵湯非常好喝，牛肉也很多。", pinyin: "Wǒ zhīdào zhè jiā de niúròumiàn tāng fēicháng hǎo hē, niúròu yě hěn duō.", trans: "Tôi biết nước dùng mì bò của quán này cực kỳ ngon, thịt bò cũng rất nhiều." },
+      { speaker: "明華", text: "真的嗎？這麼好吃，那我們一定要點大碗的！", pinyin: "Zhēn de ma? Zhèm e hǎochī, nà wǒmen yídìng yào diǎn dà wǎn de!", trans: "Thật sao? Ngon như thế này thì chúng ta nhất định phải gọi tô lớn rồi!" },
+      { speaker: "月美", text: "這家店也有小籠包和臭豆腐，你想吃嗎？", pinyin: "Zhè jiā diàn yě yǒu xiǎo lóng bāo hé chòu dòu fu, nǐ xiǎng chī ma?", trans: "Quán này cũng có bánh tiểu long bao và đậu phụ thối, anh có muốn ăn không?" },
+      { speaker: "明華", text: "小籠包和臭豆腐我也很喜歡，太好了，我們一起點吧！", pinyin: "Xiǎo lóng bāo hé chòu dòu fu wǒ yě hěn xǐhuān, tài hǎo le, wǒmen yì qǐ diǎn ba!", trans: "Bánh tiểu long bao và đậu phụ thối tôi cũng rất thích, tuyệt quá, chúng ta cùng gọi nhé!" }
+    ];
+
+    // Dialogue 2 Data
+    const dialogue2 = [
+      { speaker: "月美", text: "昨天晚上那家餐廳的菜很好吃，可是有一點辣。", pinyin: "Zuótiān wǎnshàng nà jiā cān tīng de cài hěn hǎochī, kěshì yǒu yì diǎn là.", trans: "Tối hôm qua thức ăn ở nhà hàng đó rất ngon, nhưng mà hơi cay một chút." },
+      { speaker: "安同", text: "我很怕辣，所以昨天吃得很少。", pinyin: "Wǒ hěn pà là, suǒyǐ zuótiān chī de hěn shǎo.", trans: "Tôi rất sợ cay, cho nên hôm qua ăn rất ít." },
+      { speaker: "月美", text: "你平時都自己做飯嗎？你做飯做得怎麼樣？", pinyin: "Nǐ píngshí dōu zìjǐ zuò fàn ma? Nǐ zuò fàn zuò de zěnme yàng?", trans: "Bình thường anh đều tự mình nấu ăn à? Anh nấu ăn thế nào?" },
+      { speaker: "安同", text: "我會做飯，可是做得不好。你呢？你會做臺灣菜嗎？", pinyin: "Wǒ huì zuò fàn, kěshì zuò de bù hǎo. Nǐ ne? Nǐ huì zuò Táiwān cài ma?", trans: "Tôi biết nấu ăn, nhưng làm không tốt. Còn cô? Cô biết nấu món Đài Loan không?" },
+      { speaker: "月美", text: "我會做幾道臺灣菜，我也很會做甜點。", pinyin: "Wǒ huì zuò jǐ dào Táiwān cài, wǒ yě hěn huì zuò tiándiǎn.", trans: "Tôi biết làm vài món Đài Loan, tôi cũng rất biết làm món tráng miệng/bánh ngọt." },
+      { speaker: "安同", text: "真的嗎？你做的甜點一定很好吃！", pinyin: "Zhēn de ma? Nǐ zuò de tiándiǎn yídìng hěn hǎochī!", trans: "Thật sao? Món tráng miệng cô làm nhất định rất ngon!" },
+      { speaker: "月美", text: "不錯！這週末你可以到我家來，我教你做甜點。", pinyin: "Búcuò! Zhè zhōumò nǐ kěyǐ dào wǒ jiā lái, wǒ jiāo nǐ zuò tiándiǎn.", trans: "Khá tốt đấy! Cuối tuần này anh có thể đến nhà tôi, tôi dạy anh làm món tráng miệng." },
+      { speaker: "安同", text: "好啊！謝謝妳。那我帶一些水果去妳家。", pinyin: "Hǎo a! Xièxie nǐ. Nà wǒ dài yìxiē shuǐguǒ qù nǐ jiā.", trans: "Được chứ! Cảm ơn cô. Vậy tôi sẽ mang một ít trái cây đến nhà cô." }
+    ];
+
+    // Vocab List 1
+    const vocabList1 = [
+      { hz: "牛肉", py: "niú ròu", pos: "N", vi: "thịt bò", ex: [
+        { hz: "這家店的牛肉很多。", py: "Zhè jiā diàn de niúròu hěn duō.", vi: "Thịt bò của quán này rất nhiều." },
+        { hz: "我不吃牛肉。", py: "Wǒ bù chī niúròu.", vi: "Tôi không ăn thịt bò." },
+        { hz: "你想買牛肉嗎？", py: "Nǐ xiǎng mǎi niúròu ma?", vi: "Bạn có muốn mua thịt bò không?" }
+      ]},
+      { hz: "麵", py: "miàn", pos: "N", vi: "mì, bột mì", ex: [
+        { hz: "你喜歡吃麵嗎？", py: "Nǐ xǐhuān chī miàn ma?", vi: "Bạn có thích ăn mì không?" },
+        { hz: "這碗麵真好吃。", py: "Zhè wǎn miàn zhēn hǎochī.", vi: "Tô mì này ngon thật đấy." },
+        { hz: "我們去買麵吧。", py: "Wǒmen qù mǎi miàn ba.", vi: "Chúng ta đi mua mì nhé." }
+      ]},
+      { hz: "真", py: "zhēn", pos: "Adv", vi: "thật, rất (cảm thán)", ex: [
+        { hz: "這家店的菜真好吃！", py: "Zhè jiā diàn de cài zhēn hǎochī!", vi: "Món ăn quán này ngon thật đấy!" },
+        { hz: "今天天氣真好。", py: "Jīntiān tiānqì zhēn hǎo.", vi: "Hôm nay thời tiết thật tốt." },
+        { hz: "你真漂亮！", py: "Nǐ zhēn piàoliang!", vi: "Bạn thật là đẹp!" }
+      ]},
+      { hz: "好吃", py: "hǎo chī", pos: "Vst", vi: "ngon (đồ ăn)", ex: [
+        { hz: "臺灣的小吃都很好吃。", py: "Táiwān de xiǎochī dōu hěn hǎochī.", vi: "Đặc sản Đài Loan đều rất ngon." },
+        { hz: "這個小籠包很好吃。", py: "Zhège xiǎolóngbāo hěn hǎochī.", vi: "Bánh tiểu long bao này rất ngon." },
+        { hz: "哪家店的菜好吃？", py: "Nǎ jiā diàn de cài hǎochī?", vi: "Quán nào thức ăn ngon?" }
+      ]},
+      { hz: "說", py: "shuō", pos: "V", vi: "nói, cho rằng", ex: [
+        { hz: "大家都說這家店有名。", py: "Dàjiā dōu shuō zhè jiā diàn yǒumíng.", vi: "Mọi người đều nói quán này nổi tiếng." },
+        { hz: "請你說中文。", py: "Qǐng nǐ shuō Zhōngwén.", vi: "Xin bạn nói tiếng Trung." },
+        { hz: "你想說什麼？", py: "Nǐ xiǎng shuō shénme?", vi: "Bạn muốn nói gì?" }
+      ]},
+      { hz: "少", py: "shǎo", pos: "Vst", vi: "ít", ex: [
+        { hz: "這家店的人很少。", py: "Zhè jiā diàn de rén hěn shǎo.", vi: "Người ở quán này rất ít." },
+        { hz: "我今天吃得很少。", py: "Wǒ jīntiān chī de hěn shǎo.", vi: "Hôm nay tôi ăn rất ít." },
+        { hz: "請少放一點辣。", py: "Qǐng shǎo fàng yìdiǎn là.", vi: "Xin hãy bỏ ít cay một chút." }
+      ]},
+      { hz: "有名", py: "yǒu míng", pos: "Vst", vi: "nổi tiếng", ex: [
+        { hz: "牛肉麵在臺灣很有名。", py: "Niúròumiàn zài Táiwān hěn yǒumíng.", vi: "Mì bò rất nổi tiếng ở Đài Loan." },
+        { hz: "這家餐廳很有名。", py: "Zhè jiā cān tīng hěn yǒumíng.", vi: "Nhà hàng này rất nổi tiếng." },
+        { hz: "你知道有名的小吃嗎？", py: "Nǐ zhīdào yǒumíng de xiǎochī ma?", vi: "Bạn có biết đặc sản nổi tiếng không?" }
+      ]},
+      { hz: "小吃", py: "xiǎo chī", pos: "N", vi: "món ăn vặt, đặc sản địa phương", ex: [
+        { hz: "臺灣的小吃很多。", py: "Táiwān de xiǎochī hěn duō.", vi: "Món ăn vặt Đài Loan rất nhiều." },
+        { hz: "你最喜歡什麼小吃？", py: "Nǐ zuì xǐhuān shénme xiǎochī?", vi: "Bạn thích món đặc sản nào nhất?" },
+        { hz: "我們去吃小吃吧。", py: "Wǒmen qù chī xiǎochī ba.", vi: "Chúng ta đi ăn đồ ăn vặt đi." }
+      ]},
+      { hz: "最", py: "zuì", pos: "Adv", vi: "nhất (so sánh bậc nhất)", ex: [
+        { hz: "我最喜歡吃牛肉麵。", py: "Wǒ zuì xǐhuān chī niúròumiàn.", vi: "Tôi thích ăn mì bò nhất." },
+        { hz: "哪家店最好吃？", py: "Nǎ jiā diàn zuì hǎochī?", vi: "Quán nào ngon nhất?" },
+        { hz: "他是我最好的朋友。", py: "Tā shì wǒ zuì hǎo de péngyǒu.", vi: "Cậu ấy là bạn tốt nhất của tôi." }
+      ]},
+      { hz: "湯", py: "tāng", pos: "N", vi: "canh, súp, nước dùng", ex: [
+        { hz: "這碗牛肉麵湯很好喝。", py: "Zhè wǎn niúròumiàn tāng hěn hǎo hē.", vi: "Nước dùng tô mì bò này rất ngon." },
+        { hz: "你想喝湯嗎？", py: "Nǐ xiǎng hē tāng ma?", vi: "Bạn có muốn uống canh không?" },
+        { hz: "這個湯太辣了。", py: "Zhège tāng tài là le.", vi: "Tô canh này cay quá rồi." }
+      ]},
+      { hz: "這麼", py: "zhèm e", pos: "Adv", vi: "như thế này, thế này", ex: [
+        { hz: "這家店的牛肉麵這麼好吃！", py: "Zhè jiā diàn de niúròumiàn zhèm e hǎochī!", vi: "Mì bò quán này ngon đến thế này cơ à!" },
+        { hz: "你怎麼這麼忙？", py: "Nǐ zěnme zhèm e máng?", vi: "Sao bạn lại bận rộn thế này?" },
+        { hz: "這道菜這麼辣！", py: "Zhè dào cài zhèm e là!", vi: "Món này cay thế này cơ à!" }
+      ]},
+      { hz: "知道", py: "zhī dào", pos: "V", vi: "biết (thông tin)", ex: [
+        { hz: "你知道這家店嗎？", py: "Nǐ zhīdào zhè jiā diàn ma?", vi: "Bạn có biết quán này không?" },
+        { hz: "我知道哪家店最好吃。", py: "Wǒ zhīdào nǎ jiā diàn zuì hǎochī.", vi: "Tôi biết quán nào ngon nhất." },
+        { hz: "我不知道他去哪裡。", py: "Wǒ bù zhīdào tā qù nǎlǐ.", vi: "Tôi không biết cậu ấy đi đâu." }
+      ]},
+      { hz: "家", py: "jiā", pos: "M", vi: "lượng từ cho quán, nhà hàng, công ty", ex: [
+        { hz: "這家餐廳的菜很好吃。", py: "Zhè jiā cān tīng de cài hěn hǎochī.", vi: "Thức ăn ở nhà hàng này rất ngon." },
+        { hz: "那一家店很有名。", py: "Nà yì jiā diàn hěn yǒumíng.", vi: "Quán ăn đó rất nổi tiếng." },
+        { hz: "你有幾家店？", py: "Nǐ yǒu jǐ jiā diàn?", vi: "Bạn có mấy cửa hàng?" }
+      ]},
+      { hz: "店", py: "diàn", pos: "N", vi: "cửa hàng, quán", ex: [
+        { hz: "我們去那家店吃麵吧。", py: "Wǒmen qù nà jiā diàn chī miàn ba.", vi: "Chúng ta đến quán đó ăn mì đi." },
+        { hz: "這家店很大。", py: "Zhè jiā diàn hěn dà.", vi: "Cửa hàng này rất lớn." },
+        { hz: "這是一家牛肉麵店。", py: "Zhè shì yì jiā niúròumiàn diàn.", vi: "Đây là một quán mì bò." }
+      ]},
+      { hz: "一定", py: "yí dìng", pos: "Adv", vi: "nhất định, chắc chắn", ex: [
+        { hz: "我們一定要點大碗的！", py: "Wǒmen yídìng yào diǎn dà wǎn de!", vi: "Chúng ta nhất định phải gọi tô lớn!" },
+        { hz: "他明天一定來。", py: "Tā míngtiān yídìng lái.", vi: "Ngày mai cậu ấy chắc chắn tới." },
+        { hz: "這家店的菜一定好吃。", py: "Zhè jiā diàn de cài yídìng hǎochī.", vi: "Thức ăn quán này nhất định rất ngon." }
+      ]},
+      { hz: "點", py: "diǎn", pos: "V", vi: "gọi món, đặt món", ex: [
+        { hz: "請問你想點什麼？", py: "Qǐngwèn nǐ xiǎng diǎn shénme?", vi: "Xin hỏi bạn muốn gọi món gì?" },
+        { hz: "我們點一碗牛肉麵吧。", py: "Wǒmen diǎn yì wǎn niúròumiàn ba.", vi: "Chúng ta gọi một tô mì bò nhé." },
+        { hz: "這家店點菜很快。", py: "Zhè jiā diàn diǎn cài hěn kuài.", vi: "Quán này gọi món rất nhanh." }
+      ]},
+      { hz: "碗", py: "wǎn", pos: "M/N", vi: "bát, tô (lượng từ & danh từ)", ex: [
+        { hz: "請給我一碗大碗的牛肉麵。", py: "Qǐng gěi wǒ yì wǎn dà wǎn de niúròumiàn.", vi: "Xin cho tôi một tô mì bò lớn." },
+        { hz: "桌子上有三個碗。", py: "Zhuōzi shàng yǒu sān ge wǎn.", vi: "Trên bàn có ba cái bát." },
+        { hz: "你要大碗還是小碗？", py: "Nǐ yào dà wǎn háishì xiǎo wǎn?", vi: "Bạn muốn tô lớn hay tô nhỏ?" }
+      ]},
+      { hz: "是啊", py: "shì a", pos: "P", vi: "đúng vậy, phải rồi", ex: [
+        { hz: "A: 這家店很有名吧？ B: 是啊！", py: "A: Zhè jiā diàn hěn yǒumíng ba? B: Shì a!", vi: "A: Quán này nổi tiếng lắm nhỉ? B: Đúng vậy!" },
+        { hz: "是啊，我們一起去吧。", py: "Shì a, wǒmen yìqǐ qù ba.", vi: "Phải rồi, chúng ta cùng đi thôi." },
+        { hz: "是啊，今天真的很熱。", py: "Shì a, jīntiān zhēn de hěn rè.", vi: "Đúng vậy, hôm nay thật sự rất nóng." }
+      ]},
+      { hz: "小籠包", py: "xiǎo lóng bāo", pos: "N", vi: "bánh tiểu long bao", ex: [
+        { hz: "我很喜歡吃小籠包。", py: "Wǒ hěn xǐhuān chī xiǎolóngbāo.", vi: "Tôi rất thích ăn bánh tiểu long bao." },
+        { hz: "這家店的小籠包很有名。", py: "Zhè jiā diàn de xiǎolóngbāo hěn yǒumíng.", vi: "Bánh tiểu long bao của quán này rất nổi tiếng." },
+        { hz: "我們點一籠小籠包吧。", py: "Wǒmen diǎn yì lóng xiǎolóngbāo ba.", vi: "Chúng ta gọi một lồng tiểu long bao nhé." }
+      ]},
+      { hz: "臭豆腐", py: "chòu dòu fu", pos: "N", vi: "đậu phụ thối", ex: [
+        { hz: "你敢吃臭豆腐嗎？", py: "Nǐ gǎn chī chòudòufu ma?", vi: "Bạn có dám ăn đậu phụ thối không?" },
+        { hz: "臺灣的臭豆腐很好吃。", py: "Táiwān de chòudòufu hěn hǎochī.", vi: "Đậu phụ thối Đài Loan rất ngon." },
+        { hz: "這家店的臭豆腐真有名！", py: "Zhè jiā diàn de chòudòufu zhēn yǒumíng!", vi: "Đậu phụ thối quán này nổi tiếng thật đấy!" }
+      ]},
+      { hz: "太好了", py: "tài hǎo le", pos: "Phrase", vi: "tốt quá rồi, tuyệt quá", ex: [
+        { hz: "明天不用上班，太好了！", py: "Míngtiān bú yòng shàngbān, tài hǎo le!", vi: "Ngày mai không cần đi làm, tuyệt quá!" },
+        { hz: "你也去吃牛肉麵？太好了！", py: "Nǐ yě qù chī niúròumiàn? Tài hǎo le!", vi: "Bạn cũng đi ăn mì bò à? Tốt quá!" },
+        { hz: "這家店有開，太好了！", py: "Zhè jiā diàn yǒu kāi, tài hǎo le!", vi: "Quán này có mở cửa, tuyệt quá!" }
+      ]}
+    ];
+
+    // Vocab List 2
+    const vocabList2 = [
+      { hz: "昨天", py: "zuó tiān", pos: "N", vi: "hôm qua", ex: [
+        { hz: "昨天晚上我們去吃牛肉麵。", py: "Zuótiān wǎnshàng wǒmen qù chī niúròumiàn.", vi: "Tối hôm qua chúng tôi đi ăn mì bò." },
+        { hz: "你昨天去哪裡？", py: "Nǐ zuótiān qù nǎlǐ?", vi: "Hôm qua bạn đi đâu?" },
+        { hz: "昨天天氣很好。", py: "Zuótiān tiānqì hěn hǎo.", vi: "Hôm qua thời tiết rất tốt." }
+      ]},
+      { hz: "餐廳", py: "cān tīng", pos: "N", vi: "nhà hàng, quán ăn", ex: [
+        { hz: "那家餐廳的菜很好吃。", py: "Nà jiā cān tīng de cài hěn hǎochī.", vi: "Thức ăn nhà hàng đó rất ngon." },
+        { hz: "我們在餐廳吃晚飯。", py: "Wǒmen zài cān tīng chī wǎnfàn.", vi: "Chúng tôi ăn tối ở nhà hàng." },
+        { hz: "這家餐廳有一點貴。", py: "Zhè jiā cān tīng yǒu yìdiǎn guì.", vi: "Nhà hàng này hơi đắt một chút." }
+      ]},
+      { hz: "可是", py: "kě shì", pos: "Conj", vi: "nhưng, nhưng mà", ex: [
+        { hz: "這家店的菜很好吃，可是有一點辣。", py: "Zhè jiā diàn de cài hěn hǎochī, kěshì yǒu yìdiǎn là.", vi: "Món quán này rất ngon nhưng hơi cay." },
+        { hz: "我想去，可是今天太忙了。", py: "Wǒ xiǎng qù, kěshì jīntiān tài máng le.", vi: "Tôi muốn đi nhưng hôm nay bận quá." },
+        { hz: "牛肉麵很好吃，可是很貴。", py: "Niúròumiàn hěn hǎochī, kěshì hěn guì.", vi: "Mì bò rất ngon nhưng mà đắt." }
+      ]},
+      { hz: "辣", py: "là", pos: "Vst", vi: "cay", ex: [
+        { hz: "這個湯太辣了！", py: "Zhège tāng tài là le!", vi: "Tô canh này cay quá rồi!" },
+        { hz: "你喜歡吃辣嗎？", py: "Nǐ xǐhuān chī là ma?", vi: "Bạn có thích ăn cay không?" },
+        { hz: "這道菜有一點辣。", py: "Zhè dào cài yǒu yìdiǎn là.", vi: "Món này hơi cay một chút." }
+      ]},
+      { hz: "怕", py: "pà", pos: "Vst", vi: "sợ, e rằng", ex: [
+        { hz: "我很怕辣，所以不吃辣的。", py: "Wǒ hěn pà là, suǒyǐ bù chī là de.", vi: "Tôi rất sợ cay cho nên không ăn cay." },
+        { hz: "你怕不怕狗？", py: "Nǐ pà bú pà gǒu?", vi: "Bạn có sợ chó không?" },
+        { hz: "我怕明天會下雨。", py: "Wǒ pà míngtiān huì xiàyǔ.", vi: "Tôi sợ ngày mai sẽ mưa." }
+      ]},
+      { hz: "所以", py: "suǒ yǐ", pos: "Conj", vi: "cho nên, vì vậy", ex: [
+        { hz: "我很怕辣，所以吃得很少。", py: "Wǒ hěn pà là, suǒyǐ chī de hěn shǎo.", vi: "Tôi rất sợ cay cho nên ăn rất ít." },
+        { hz: "因為下雨，所以我沒去。", py: "Yīnwèi xiàyǔ, suǒyǐ wǒ méi qù.", vi: "Vì trời mưa cho nên tôi không đi." },
+        { hz: "這家店有名，所以人很多。", py: "Zhè jiā diàn yǒumíng, suǒyǐ rén hěn duō.", vi: "Quán này nổi tiếng cho nên rất đông người." }
+      ]},
+      { hz: "自己", py: "zì jǐ", pos: "N", vi: "tự mình, bản thân", ex: [
+        { hz: "你平時都自己做飯嗎？", py: "Nǐ píngshí dōu zìjǐ zuò fàn ma?", vi: "Bình thường bạn đều tự nấu ăn à?" },
+        { hz: "我想自己去臺灣。", py: "Wǒ xiǎng zìjǐ qù Táiwān.", vi: "Tôi muốn tự mình đi Đài Loan." },
+        { hz: "這是我自己做的甜點。", py: "Zhè shì wǒ zìjǐ zuò de tiándiǎn.", vi: "Đây là món tráng miệng do chính tôi làm." }
+      ]},
+      { hz: "做飯", py: "zuò fàn", pos: "V-sep", vi: "nấu ăn, làm cơm", ex: [
+        { hz: "我喜歡在家自己做飯。", py: "Wǒ xǐhuān zài jiā zìjǐ zuò fàn.", vi: "Tôi thích tự nấu ăn ở nhà." },
+        { hz: "你做飯做得怎麼樣？", py: "Nǐ zuò fàn zuò de zěnme yàng?", vi: "Bạn nấu ăn thế nào?" },
+        { hz: "我媽媽天天做飯。", py: "Wǒ māmā tiāntiān zuò fàn.", vi: "Mẹ tôi nấu ăn mỗi ngày." }
+      ]},
+      { hz: "得", py: "de", pos: "P", vi: "trợ từ bổ ngữ trình độ (sau V)", ex: [
+        { hz: "你做飯做得很好吃！", py: "Nǐ zuò fàn zuò de hěn hǎochī!", vi: "Bạn nấu ăn làm rất ngon!" },
+        { hz: "他跑得很快。", py: "Tā pǎo de hěn kuài.", vi: "Anh ấy chạy rất nhanh." },
+        { hz: "昨天我吃得很少。", py: "Zuótiān wǒ chī de hěn shǎo.", vi: "Hôm qua tôi ăn rất ít." }
+      ]},
+      { hz: "會", py: "huì", pos: "Vaux", vi: "biết (qua rèn luyện/học tập)", ex: [
+        { hz: "你會做臺灣菜嗎？", py: "Nǐ huì zuò Táiwān cài ma?", vi: "Bạn biết làm món ăn Đài Loan không?" },
+        { hz: "我會說一點中文。", py: "Wǒ huì shuō yìdiǎn Zhōngwén.", vi: "Tôi biết nói một chút tiếng Trung." },
+        { hz: "他會做很棒的甜點。", py: "Tā huì zuò hěn bàng de tiándiǎn.", vi: "Anh ấy biết làm món tráng miệng rất tuyệt." }
+      ]},
+      { hz: "甜點", py: "tián diǎn", pos: "N", vi: "món tráng miệng, bánh ngọt", ex: [
+        { hz: "我也很會做甜點。", py: "Wǒ yě hěn huì zuò tiándiǎn.", vi: "Tôi cũng rất biết làm món tráng miệng." },
+        { hz: "你想吃什麼甜點？", py: "Nǐ xiǎng chī shénme tiándiǎn?", vi: "Bạn muốn ăn món tráng miệng gì?" },
+        { hz: "這家店的甜點很有名。", py: "Zhè jiā diàn de tiándiǎn hěn yǒumíng.", vi: "Món tráng miệng quán này rất nổi tiếng." }
+      ]},
+      { hz: "不錯", py: "bú cuò", pos: "Vst", vi: "khá tốt, không tồi", ex: [
+        { hz: "這家餐廳的甜點很不錯！", py: "Zhè jiā cān tīng de tiándiǎn hěn búcuò!", vi: "Món tráng miệng nhà hàng này rất khá!" },
+        { hz: "他的中文說得不錯。", py: "Tā de Zhōngwén shuō de búcuò.", vi: "Tiếng Trung của anh ấy nói khá tồi đấy." },
+        { hz: "這個主意不錯。", py: "Zhège zhǔyì búcuò.", vi: "Ý kiến này không tồi." }
+      ]},
+      { hz: "可以", py: "kě yǐ", pos: "Vaux", vi: "có thể, được phép", ex: [
+        { hz: "週末你可以來我家。", py: "Zhōumò nǐ kěyǐ lái wǒ jiā.", vi: "Cuối tuần bạn có thể đến nhà tôi." },
+        { hz: "請問我可以坐這裡嗎？", py: "Qǐngwèn wǒ kěyǐ zuò zhèlǐ ma?", vi: "Xin hỏi tôi có thể ngồi đây không?" },
+        { hz: "你可以教我做飯嗎？", py: "Nǐ kěyǐ jiāo wǒ zuò fàn ma?", vi: "Bạn có thể dạy tôi nấu ăn không?" }
+      ]},
+      { hz: "教", py: "jiāo", pos: "V", vi: "dạy, truyền thụ", ex: [
+        { hz: "我教你做甜點，好嗎？", py: "Wǒ jiāo nǐ zuò tiándiǎn, hǎo ma?", vi: "Tôi dạy bạn làm món tráng miệng nhé?" },
+        { hz: "老師教我們中文。", py: "Lǎoshī jiāo wǒmen Zhōngwén.", vi: "Thầy giáo dạy chúng tôi tiếng Trung." },
+        { hz: "誰教你做牛肉麵？", py: "Shéi jiāo nǐ zuò niúròumiàn?", vi: "Ai dạy bạn nấu mì bò?" }
+      ]},
+      { hz: "到", py: "dào", pos: "V/Prep", vi: "đến, tới", ex: [
+        { hz: "你可以到我家來吃晚飯。", py: "Nǐ kěyǐ dào wǒ jiā lái chī wǎnfàn.", vi: "Bạn có thể đến nhà tôi ăn tối." },
+        { hz: "我們到臺灣去玩吧。", py: "Wǒmen dào Táiwān qù wán ba.", vi: "Chúng ta đến Đài Loan chơi đi." },
+        { hz: "你幾點到家？", py: "Nǐ jǐ diǎn dào jiā?", vi: "Mấy giờ bạn về tới nhà?" }
+      ]},
+      { hz: "有一點", py: "yǒu yì diǎn", pos: "Adv", vi: "hơi... một chút (không vừa ý)", ex: [
+        { hz: "這道菜有一點辣。", py: "Zhè dào cài yǒu yìdiǎn là.", vi: "Món này hơi cay một chút." },
+        { hz: "今天有一點冷。", py: "Jīntiān yǒu yìdiǎn lěng.", vi: "Hôm nay hơi lạnh một chút." },
+        { hz: "這碗麵有一點貴。", py: "Zhè wǎn miàn yǒu yìdiǎn guì.", vi: "Tô mì này hơi đắt một chút." }
+      ]}
+    ];
+
+    // Grammar Points (8 points)
+    const grammarPoints = [
+      {
+        num: 1,
+        title: "Phó từ cảm thán: 真 + Adj & 太 + Adj + 了",
+        desc: "Dùng để diễn tả cảm xúc khen ngợi hoặc thán phục mạnh mẽ trực quan.",
+        structure: "• 真 + Tính từ (Thật là...)\n• 太 + Tính me + 了 (Quá... rồi!)",
+        notes: "Trong giao tiếp Đài Loan, '真' mang tính tự nhiên khen ngợi nhẹ nhàng, còn '太...了' mang sắc thái mãnh liệt hơn.",
+        examples: [
+          { hz: "這家店的牛肉麵真好吃！", py: "Zhè jiā diàn de niúròumiàn zhēn hǎochī!", vi: "Mì bò quán này ngon thật đấy!" },
+          { hz: "小籠包太香了！", py: "Xiǎolóngbāo tài xiāng le!", vi: "Bánh tiểu long bao thơm quá rồi!" }
+        ]
+      },
+      {
+        num: 2,
+        title: "So sánh bậc nhất với Phó từ 最 (zuì)",
+        desc: "Đứng trước tính từ hoặc động từ tâm lý để chỉ mức độ cao nhất (nhất).",
+        structure: "S + 最 + Adj / V (tâm lý) (+ O)",
+        notes: "Thường dùng: 最喜歡 (thích nhất), 最好吃 (ngon nhất), 最有名 (nổi tiếng nhất).",
+        examples: [
+          { hz: "臺灣的小吃很多，我最喜歡牛肉麵。", py: "Táiwān de xiǎochī hěn duō, wǒ zuì xǐhuān niúròumiàn.", vi: "Đặc sản Đài Loan rất nhiều, tôi thích mì bò nhất." },
+          { hz: "你知道哪家店的牛肉麵最好吃嗎？", py: "Nǐ zhīdào nǎ jiā diàn de niúròumiàn zuì hǎochī ma?", vi: "Bạn có biết mì bò quán nào ngon nhất không?" }
+        ]
+      },
+      {
+        num: 3,
+        title: "Phó từ mức độ 這麼 (zhèm e - Như thế này)",
+        desc: "Dùng để nhấn mạnh mức độ cao của tính từ khi chứng kiến tận mắt hoặc cảm nhận trực tiếp.",
+        structure: "這麼 + Adj",
+        notes: "Thường đứng trong câu cảm thán hoặc câu hỏi biểu thị bất ngờ.",
+        examples: [
+          { hz: "這家的牛肉麵這麼好吃，我們一定要點大碗的！", py: "Zhè jiā de niúròumiàn zhèm e hǎochī, wǒmen yídìng yào diǎn dà wǎn de!", vi: "Mì bò quán này ngon thế này, chúng ta nhất định phải gọi tô lớn!" },
+          { hz: "今天天氣怎麼這麼熱？", py: "Jīntiān tiānqì zěnme zhèm e rè?", vi: "Hôm nay thời tiết sao lại nóng thế này?" }
+        ]
+      },
+      {
+        num: 4,
+        title: "Lượng từ 家 (jiā) & 碗 (wǎn)",
+        desc: "Cách dùng lượng từ chuẩn xác dành cho địa điểm kinh doanh và đồ ăn dạng bát/tô.",
+        structure: "• Số lượng + 家 + Cửa hàng/Nhà hàng (這家店 / 那家餐廳)\n• Số lượng + 碗 + Mì/Canh (一碗牛肉麵 / 大碗)",
+        notes: "'大碗的' là dạng lược bỏ danh từ (Đại bát đích = Tô lớn).",
+        examples: [
+          { hz: "這家店在臺灣很有名。", py: "Zhè jiā diàn zài Táiwān hěn yǒumíng.", vi: "Quán này ở Đài Loan rất nổi tiếng." },
+          { hz: "請 me/給我一碗牛肉麵。", py: "Qǐng gěi wǒ yì wǎn niúròumiàn.", vi: "Xin cho tôi một tô mì bò." }
+        ]
+      },
+      {
+        num: 5,
+        title: "Phó từ 有一點 (yǒu yì diǎn - Hơi... một chút)",
+        desc: "Đứng trước tính từ để biểu thị mức độ nhẹ, thường mang sắc thái không vừa ý hoặc tiêu cực nhẹ.",
+        structure: "Chủ ngữ + 有一點 + Adj",
+        notes: "Phân biệt: '有一點 + Adj' (ngôn ngữ không vừa ý: 有一點辣 - hơi cay) vs 'Động từ + 一點' (chỉ số lượng ít: 吃一點 - ăn một chút).",
+        examples: [
+          { hz: "昨天那家餐廳的菜很好吃，可是有一點辣。", py: "Zuótiān nà jiā cān tīng de cài hěn hǎochī, kěshì yǒu yìdiǎn là.", vi: "Thức ăn nhà hàng đó hôm qua rất ngon nhưng hơi cay một chút." },
+          { hz: "這雙鞋子有一點大。", py: "Zhè shuāng xiézi yǒu yìdiǎn dà.", vi: "Đôi giày này hơi rộng một chút." }
+        ]
+      },
+      {
+        num: 6,
+        title: "Bổ ngữ trình độ với Trợ từ 得 (de)",
+        desc: "Dùng để đánh giá trình độ, kết quả hoặc trạng thái của một hành động đã xảy ra hoặc thường xuyên xảy ra.",
+        structure: "• V + 得 + Adj (Ví dụ: 做得好)\n• V + O + V + 得 + Adj (Khi có tân ngữ: 你做飯做得怎麼樣？ / 我做飯做得很好)",
+        notes: "Nếu câu có tân ngữ (飯), phải lặp lại động từ (做飯做得...) hoặc đưa tân ngữ lên đầu câu.",
+        examples: [
+          { hz: "你做飯做得怎麼樣？", py: "Nǐ zuò fàn zuò de zěnme yàng?", vi: "Bạn nấu ăn làm thế nào (nấu có ngon không)?" },
+          { hz: "我很怕辣，所以昨天吃得很少。", py: "Wǒ hěn pà là, suǒyǐ chī de hěn shǎo.", vi: "Tôi rất sợ cay cho nên hôm qua ăn rất ít." }
+        ]
+      },
+      {
+        num: 7,
+        title: "Phân biệt Động từ năng nguyện 會 (huì) vs. 可以 (kěyǐ)",
+        desc: "• 會 (huì): Khả năng có được nhờ qua rèn luyện, học tập (biết nấu ăn, biết nói tiếng Trung).\n• 可以 (kěyǐ): Khả năng do hoàn cảnh cho phép hoặc sự cho phép/thủ thuận.",
+        structure: "• S + 會 + V (Biết làm gì qua học tập)\n• S + 可以 + V (Có thể / Được phép làm gì)",
+        notes: "Ví dụ: 我會做甜點 (Tôi biết làm bánh ngọt - có kỹ năng). 你可以來我家 (Bạn có thể đến nhà tôi - hoàn cảnh cho phép).",
+        examples: [
+          { hz: "我會做幾道臺灣菜。", py: "Wǒ huì zuò jǐ dào Táiwān cài.", vi: "Tôi biết làm vài món ăn Đài Loan." },
+          { hz: "這周末你可以到我家來。", py: "Zhè zhōumò nǐ kěyǐ dào wǒ jiā lái.", vi: "Cuối tuần này bạn có thể đến nhà tôi." }
+        ]
+      },
+      {
+        num: 8,
+        title: "Câu phức Nhân - Kết (所以) & Chuyển ngoặt (可是) & Cấu trúc Di chuyển (到...來/去)",
+        desc: "Kết hợp các liên từ biểu thị quan hệ logic trong câu phức cùng cấu trúc phương hướng di chuyển.",
+        structure: "• (因為)... 所以... (Cho nên...)\n• ... 可是... (Nhưng mà...)\n• 到 + Địa điểm + 來 / 去 (Đến đâu đó)",
+        notes: "來 (lại): di chuyển về phía người nói. 去 (đi): di chuyển xa phía người nói.",
+        examples: [
+          { hz: "我很怕辣，所以吃得很少。", py: "Wǒ hěn pà là, suǒyǐ chī de hěn shǎo.", vi: "Tôi rất sợ cay cho nên ăn rất ít." },
+          { hz: "你可以到我家來，我教你做甜點。", py: "Nǐ kěyǐ dào wǒ jiā lái, wǒ jiāo nǐ zuò tiándiǎn.", vi: "Bạn có thể đến nhà tôi, tôi dạy bạn làm món tráng miệng." }
+        ]
+      }
+    ];
+
+    /* -------------------------------------------------------------------------
+       2. GLOBAL STATE & TTS ENGINE
+       ------------------------------------------------------------------------- */
+    let currentSpeechUtterance = null;
+    let showPinyin = true;
+    let showTrans = true;
+
+    // SpeechSynthesis initialization
+    const synth = window.speechSynthesis;
+    let twVoice = null;
+
+    function initVoices() {
+      if (!synth) return;
+      const voices = synth.getVoices();
+      const voiceSelect = document.getElementById('voiceSelect');
+      voiceSelect.innerHTML = '<option value="">Mặc định (zh-TW)</option>';
+
+      // Find Taiwan voices
+      const twVoices = voices.filter(v => v.lang.includes('zh-TW') || v.lang.includes('zh_TW') || v.name.includes('Taiwan') || v.name.includes('Traditional'));
+      
+      voices.forEach((v, idx) => {
+        if (v.lang.startsWith('zh')) {
+          const opt = document.createElement('option');
+          opt.value = idx;
+          opt.textContent = `${v.name} (${v.lang})`;
+          if (v.lang.includes('TW') || v.name.includes('Taiwan')) {
+            opt.selected = true;
+            twVoice = v;
+          }
+          voiceSelect.appendChild(opt);
+        }
+      });
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = initVoices;
+    }
+
+    function speakText(text, onEndCallback = null) {
+      stopTTS();
+      if (!text) return;
+
+      const u = new SpeechSynthesisUtterance(text);
+      const speed = parseFloat(document.getElementById('speedSelect').value) || 0.9;
+      u.rate = speed;
+      u.lang = 'zh-TW';
+
+      const voiceIdx = document.getElementById('voiceSelect').value;
+      const voices = synth.getVoices();
+      if (voiceIdx !== "" && voices[voiceIdx]) {
+        u.voice = voices[voiceIdx];
+      } else if (twVoice) {
+        u.voice = twVoice;
+      }
+
+      if (onEndCallback) {
+        u.onend = onEndCallback;
+        u.onerror = onEndCallback;
+      }
+
+      currentSpeechUtterance = u;
+      synth.speak(u);
+    }
+
+    function stopTTS() {
+      if (synth && synth.speaking) {
+        synth.cancel();
+      }
+      clearSentenceHighlights();
+    }
+
+    function clearSentenceHighlights() {
+      document.querySelectorAll('.speaking-active').forEach(el => {
+        el.classList.remove('speaking-active');
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+       3. LONGEST-MATCH-FIRST DICTIONARY PARSER & MODAL
+       ------------------------------------------------------------------------- */
+    // Segment text into click-to-lookup elements using longest match algorithm
+    function renderInteractiveText(text) {
+      if (!text) return '';
+      let result = '';
+      let i = 0;
+      const keys = Object.keys(dictionary).sort((a, b) => b.length - a.length);
+
+      while (i < text.length) {
+        let matched = false;
+        for (let key of keys) {
+          if (text.substr(i, key.length) === key) {
+            result += `<span class="zh-word" onclick="openDictModal('${key}')">${key}</span>`;
+            i += key.length;
+            matched = true;
+            break;
+          }
+        }
+        if (!matched) {
+          const char = text[i];
+          // Check if single char exists in dictionary
+          if (dictionary[char]) {
+            result += `<span class="zh-word" onclick="openDictModal('${char}')">${char}</span>`;
+          } else {
+            result += char;
+          }
+          i++;
+        }
+      }
+      return result;
+    }
+
+    function openDictModal(word) {
+      const entry = dictionary[word];
+      if (!entry) {
+        // Fallback for unlisted single characters
+        document.getElementById('modalHanzi').textContent = word;
+        document.getElementById('modalPinyin').textContent = "";
+        document.getElementById('modalPos').textContent = "Từ đơn";
+        document.getElementById('modalMeaning').textContent = "Chữ Hán trong hệ thống TOCFL.";
+        document.getElementById('modalNote').textContent = "Từ này xuất hiện trong giáo trình Tiếng Trung Phồn thể.";
+        document.getElementById('modalExamples').innerHTML = `<p class="italic text-slate-400">Không có ví dụ mẫu.</p>`;
+      } else {
+        document.getElementById('modalHanzi').textContent = word;
+        document.getElementById('modalPinyin').textContent = entry.pinyin;
+        document.getElementById('modalPos').textContent = entry.pos;
+        document.getElementById('modalMeaning').textContent = entry.meaning;
+        document.getElementById('modalNote').textContent = entry.note || "Không có ghi chú.";
+        
+        const exContainer = document.getElementById('modalExamples');
+        if (entry.examples && entry.examples.length > 0) {
+          exContainer.innerHTML = entry.examples.map(ex => `<div class="bg-slate-50 p-2 rounded-lg border border-slate-100"><p class="font-medium text-slate-800">${ex}</p></div>`).join('');
+        } else {
+          exContainer.innerHTML = `<p class="italic text-slate-400">Không có ví dụ thêm.</p>`;
+        }
+      }
+
+      // Set TTS button for modal
+      const ttsBtn = document.getElementById('modalTTSBtn');
+      ttsBtn.onclick = () => speakText(word);
+
+      // Speak immediately on open
+      speakText(word);
+
+      // Show modal
+      document.getElementById('dictModal').classList.remove('hidden');
+    }
+
+    function closeDictModal() {
+      document.getElementById('dictModal').classList.add('hidden');
+    }
+
+    /* -------------------------------------------------------------------------
+       4. DYNAMIC RENDER FUNCTIONS
+       ------------------------------------------------------------------------- */
+    function renderDialogues() {
+      // Dialogue 1
+      const d1Box = document.getElementById('d1-container');
+      d1Box.innerHTML = dialogue1.map((item, index) => `
+        <div id="d1-s-${index}" class="dialogue-card p-3 sm:p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition flex items-start gap-3">
+          <button onclick="playSentence('d1', ${index})" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold flex items-center justify-center text-xs transition" title="Nghe câu này">
+            ▶
+          </button>
+          <div class="flex-grow min-w-0">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="font-bold text-xs px-2 py-0.5 rounded ${item.speaker === '月美' ? 'bg-pink-100 text-pink-800' : 'bg-blue-100 text-blue-800'}">${item.speaker}</span>
+            </div>
+            <div class="text-base sm:text-lg font-medium text-slate-900 font-serif leading-relaxed">
+              ${renderInteractiveText(item.text)}
+            </div>
+            <div class="pinyin-text text-xs sm:text-sm text-sky-700 font-medium mt-1 ${showPinyin ? '' : 'hidden'}">
+              ${item.pinyin}
+            </div>
+            <div class="trans-text text-xs sm:text-sm text-slate-500 mt-1 ${showTrans ? '' : 'hidden'}">
+              ${item.trans}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Dialogue 2
+      const d2Box = document.getElementById('d2-container');
+      d2Box.innerHTML = dialogue2.map((item, index) => `
+        <div id="d2-s-${index}" class="dialogue-card p-3 sm:p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition flex items-start gap-3">
+          <button onclick="playSentence('d2', ${index})" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold flex items-center justify-center text-xs transition" title="Nghe câu này">
+            ▶
+          </button>
+          <div class="flex-grow min-w-0">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="font-bold text-xs px-2 py-0.5 rounded ${item.speaker === '月美' ? 'bg-pink-100 text-pink-800' : 'bg-emerald-100 text-emerald-800'}">${item.speaker}</span>
+            </div>
+            <div class="text-base sm:text-lg font-medium text-slate-900 font-serif leading-relaxed">
+              ${renderInteractiveText(item.text)}
+            </div>
+            <div class="pinyin-text text-xs sm:text-sm text-sky-700 font-medium mt-1 ${showPinyin ? '' : 'hidden'}">
+              ${item.pinyin}
+            </div>
+            <div class="trans-text text-xs sm:text-sm text-slate-500 mt-1 ${showTrans ? '' : 'hidden'}">
+              ${item.trans}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderVocabGrid(vocabArray, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = vocabArray.map((item) => `
+        <div class="bg-slate-50/70 rounded-xl p-4 border border-slate-200/80 hover:border-sky-300 hover:shadow-md transition">
+          <div class="flex items-start justify-between gap-2 pb-2 border-b border-slate-200/60">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-slate-900 font-serif">${renderInteractiveText(item.hz)}</span>
+                <span class="bg-sky-100 text-sky-800 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">${item.pos}</span>
+              </div>
+              <div class="pinyin-text text-sm font-semibold text-sky-700 mt-0.5 ${showPinyin ? '' : 'hidden'}">${item.py}</div>
+            </div>
+            <button onclick="speakText('${item.hz}')" class="w-9 h-9 rounded-full bg-sky-600 hover:bg-sky-700 text-white flex items-center justify-center text-sm shadow transition shrink-0" title="Phát âm từ này">
+              🔊
+            </button>
+          </div>
+          
+          <div class="trans-text mt-2 text-sm font-medium text-slate-700 ${showTrans ? '' : 'hidden'}">
+            👉 ${item.vi}
+          </div>
+
+          <!-- 3 Practice Examples -->
+          <div class="mt-3 space-y-2 pt-2 border-t border-slate-100">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ví dụ ứng dụng thực hành:</span>
+            ${item.ex.map(e => `
+              <div class="bg-white p-2 rounded-lg border border-slate-100 text-xs sm:text-sm flex items-start justify-between gap-2">
+                <div>
+                  <div class="font-serif font-medium text-slate-800">${renderInteractiveText(e.hz)}</div>
+                  <div class="pinyin-text text-sky-600 text-[11px] font-medium ${showPinyin ? '' : 'hidden'}">${e.py}</div>
+                  <div class="trans-text text-slate-500 text-[11px] mt-0.5 ${showTrans ? '' : 'hidden'}">${e.vi}</div>
+                </div>
+                <button onclick="speakText('${e.hz}')" class="text-sky-600 hover:text-sky-800 p-1 text-xs font-bold" title="Nghe câu ví dụ">▶</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderGrammar() {
+      const container = document.getElementById('grammar-container');
+      container.innerHTML = grammarPoints.map(g => `
+        <div class="bg-slate-50/80 rounded-xl p-4 sm:p-5 border border-slate-200">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">${g.num}</span>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">${g.title}</h3>
+          </div>
+          
+          <p class="text-sm text-slate-600 mb-3">${g.desc}</p>
+          
+          <div class="bg-white p-3 rounded-lg border border-sky-100 mb-3">
+            <span class="text-xs font-bold text-sky-700 uppercase tracking-wider block mb-1">Cấu trúc / Công thức:</span>
+            <pre class="text-xs sm:text-sm font-semibold text-slate-800 font-sans whitespace-pre-wrap">${g.structure}</pre>
+          </div>
+
+          <div class="text-xs sm:text-sm text-slate-500 mb-3 italic bg-amber-50/60 p-2.5 rounded-lg border border-amber-100 text-amber-900">
+            💡 <strong>Ghi chú thực tế:</strong> ${g.notes}
+          </div>
+
+          <div class="space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ví dụ minh họa:</span>
+            ${g.examples.map(ex => `
+              <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex items-start justify-between gap-2">
+                <div>
+                  <div class="text-sm font-medium text-slate-900 font-serif">${renderInteractiveText(ex.hz)}</div>
+                  <div class="pinyin-text text-xs text-sky-600 font-medium ${showPinyin ? '' : 'hidden'}">${ex.py}</div>
+                  <div class="trans-text text-xs text-slate-500 ${showTrans ? '' : 'hidden'}">${ex.vi}</div>
+                </div>
+                <button onclick="speakText('${ex.hz}')" class="bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold px-2 py-1 rounded text-xs transition">▶ Nghe</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* -------------------------------------------------------------------------
+       5. INTERACTION LOGIC (Full Play, Single Sentence, Tabs, Font Scale)
+       ------------------------------------------------------------------------- */
+    
+    // Play full dialogue sequentially
+    function playFullDialogue(dId) {
+      stopTTS();
+      const list = dId === 'd1' ? dialogue1 : dialogue2;
+      let currentIndex = 0;
+
+      function playNext() {
+        if (currentIndex >= list.length) {
+          clearSentenceHighlights();
+          return;
+        }
+
+        clearSentenceHighlights();
+        const cardId = `${dId}-s-${currentIndex}`;
+        const card = document.getElementById(cardId);
+        if (card) {
+          card.classList.add('speaking-active');
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        speakText(list[currentIndex].text, () => {
+          currentIndex++;
+          playNext();
+        });
+      }
+
+      playNext();
+    }
+
+    // Play single sentence
+    function playSentence(dId, index) {
+      stopTTS();
+      clearSentenceHighlights();
+
+      const cardId = `${dId}-s-${index}`;
+      const card = document.getElementById(cardId);
+      if (card) {
+        card.classList.add('speaking-active');
+      }
+
+      const list = dId === 'd1' ? dialogue1 : dialogue2;
+      speakText(list[index].text, () => {
+        if (card) card.classList.remove('speaking-active');
+      });
+    }
+
+    // Global Toggle Pinyin
+    function toggleGlobalPinyin() {
+      showPinyin = !showPinyin;
+      document.getElementById('pinyinStatus').textContent = showPinyin ? 'Hiện' : 'Ẩn';
+      document.querySelectorAll('.pinyin-text').forEach(el => {
+        if (showPinyin) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    // Global Toggle Translation
+    function toggleGlobalTrans() {
+      showTrans = !showTrans;
+      document.getElementById('transStatus').textContent = showTrans ? 'Hiện' : 'Ẩn';
+      document.querySelectorAll('.trans-text').forEach(el => {
+        if (showTrans) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    // Switch Main Tabs
+    function switchTab(tabId) {
+      stopTTS();
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-sky-600', 'text-white', 'shadow');
+        btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+      });
+
+      const activeIdx = tabId === 'tab1' ? '1' : tabId === 'tab2' ? '2' : '3';
+      const activeBtn = document.getElementById(`tabBtn${activeIdx}`);
+      activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+      activeBtn.classList.add('bg-sky-600', 'text-white', 'shadow');
+    }
+
+    // Font Size Scaling System (80% - 300%)
+    function setFontSize(size) {
+      size = Math.max(80, Math.min(300, parseInt(size)));
+      document.documentElement.style.fontSize = `${size}%`;
+      document.getElementById('fontSizeSlider').value = size;
+      document.getElementById('fontBadge').textContent = `${size}%`;
+      localStorage.setItem('tocfl_font_size', size);
+    }
+
+    function changeFontSize(delta) {
+      const current = parseInt(document.getElementById('fontSizeSlider').value) || 100;
+      setFontSize(current + delta);
+    }
+
+    /* -------------------------------------------------------------------------
+       6. INIT ON PAGE LOAD
+       ------------------------------------------------------------------------- */
+    window.onload = function() {
+      // Render text and content
+      renderDialogues();
+      renderVocabGrid(vocabList1, 'vocab1-grid');
+      renderVocabGrid(vocabList2, 'vocab2-grid');
+      renderGrammar();
+
+      // Init TTS Voices
+      initVoices();
+
+      // Load saved font size
+      const savedFontSize = localStorage.getItem('tocfl_font_size');
+      if (savedFontSize) {
+        setFontSize(savedFontSize);
+      }
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第三課：週末做什麼？ (Bài 3: Làm gì vào cuối tuần?)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                        zh: ['Noto Sans TC', 'sans-serif']
+                    },
+                    colors: {
+                        sky: {
+                            50: '#F0F9FF',
+                            100: '#E0F2FE',
+                            200: '#BAE6FD',
+                            500: '#0EA5E9',
+                            600: '#0284C7',
+                            700: '#0369A1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            font-size: 100%;
+            overflow-wrap: anywhere;
+        }
+        .speaking-active {
+            background-color: #FEF08A !important;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease;
+        }
+        .zh-word {
+            border-bottom: 1.5px dashed #0284C7;
+            transition: all 0.15s ease;
+            display: inline-block;
+        }
+        .zh-word:hover {
+            background-color: #E0F2FE;
+            color: #0369A1;
+            border-bottom-style: solid;
+        }
+        /* Hide Pinyin / Translation toggles */
+        .hide-pinyin .pinyin-text { display: none !important; }
+        .hide-translation .vi-text { display: none !important; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #F1F5F9; }
+        ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748B; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-full flex flex-col antialiased selection:bg-sky-200 selection:text-sky-900">
+
+    <!-- STICKY TOP TOOLBAR (2 COMPACT ROWS) -->
+    <header class="sticky top-0 z-40 bg-white shadow-md border-b border-sky-100">
+        <!-- ROW 1: Header Title & Speech Controls -->
+        <div class="max-w-7xl mx-auto px-3 py-2 flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 text-xs sm:text-sm">
+            <!-- Left: Badge & Title -->
+            <div class="flex items-center gap-2">
+                <span class="bg-sky-600 text-white font-bold px-2 py-0.5 rounded text-xs tracking-wide uppercase shadow-sm">TOCFL A1</span>
+                <h1 class="font-bold text-slate-800 text-sm sm:text-base md:text-lg flex items-center gap-1.5">
+                    <span>第三課：週末做什麼？</span>
+                    <span class="text-slate-500 font-normal text-xs sm:text-sm">(Bài 3: Làm gì vào cuối tuần?)</span>
+                </h1>
+            </div>
+
+            <!-- Right: TTS Controls & Global Toggles -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- TTS Speed Selector -->
+                <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-lg border border-slate-200">
+                    <span class="text-slate-600 text-xs font-medium">⚡ Tốc độ:</span>
+                    <select id="tts-speed" class="bg-transparent font-semibold text-sky-700 outline-none cursor-pointer text-xs" onchange="updateTTSSpeed(this.value)">
+                        <option value="0.75">0.75x Chậm</option>
+                        <option value="0.9" selected>0.9x Vừa</option>
+                        <option value="1.0">1.0x Chuẩn</option>
+                        <option value="1.15">1.15x Nhanh</option>
+                    </select>
+                </div>
+
+                <!-- Voice Dropdown -->
+                <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-lg border border-slate-200">
+                    <span class="text-slate-600 text-xs font-medium">🗣️ Giọng:</span>
+                    <select id="tts-voice" class="bg-transparent font-medium text-slate-700 outline-none cursor-pointer text-xs max-w-[130px] sm:max-w-[180px] truncate">
+                        <option value="">Tự động chọn (zh-TW)</option>
+                    </select>
+                </div>
+
+                <!-- Toggles -->
+                <button onclick="togglePinyin()" id="btn-toggle-pinyin" class="px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 font-medium rounded-lg text-xs transition flex items-center gap-1">
+                    🔤 <span>Pinyin: Hiện</span>
+                </button>
+                <button onclick="toggleTranslation()" id="btn-toggle-trans" class="px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 font-medium rounded-lg text-xs transition flex items-center gap-1">
+                    🌐 <span>Dịch: Hiện</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ROW 2: Navigation Tabs & Font Zoom Controls -->
+        <div class="max-w-7xl mx-auto px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+            <!-- Tabs -->
+            <nav class="flex items-center gap-1 sm:gap-2">
+                <button onclick="switchTab('tab1')" id="tab-btn-tab1" class="tab-btn px-3 py-1.5 rounded-lg font-semibold transition bg-sky-600 text-white shadow-sm">
+                    Phần 1: Thể thao (23 từ)
+                </button>
+                <button onclick="switchTab('tab2')" id="tab-btn-tab2" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-600 hover:text-sky-700 hover:bg-sky-50 transition">
+                    Phần 2: Xem phim & Ăn tối (18 từ)
+                </button>
+                <button onclick="switchTab('tab3')" id="tab-btn-tab3" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-600 hover:text-sky-700 hover:bg-sky-50 transition">
+                    Ngữ pháp trọng tâm (8 điểm)
+                </button>
+            </nav>
+
+            <!-- Text Zoom Control -->
+            <div class="flex items-center gap-1.5 bg-slate-100 px-2 py-1 rounded-lg border border-slate-200">
+                <span class="text-slate-600 font-medium text-xs hidden sm:inline">Cỡ chữ:</span>
+                <button onclick="adjustZoom(-10)" class="w-6 h-6 flex items-center justify-center font-bold bg-white rounded border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs">A-</button>
+                <input type="range" id="zoom-slider" min="80" max="300" step="10" value="100" oninput="setZoom(this.value)" class="w-16 sm:w-24 accent-sky-600 cursor-pointer">
+                <span id="zoom-badge" class="font-bold text-sky-700 w-9 text-center text-xs">100%</span>
+                <button onclick="adjustZoom(10)" class="w-6 h-6 flex items-center justify-center font-bold bg-white rounded border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs">A+</button>
+                
+                <!-- Quick Presets -->
+                <div class="hidden md:flex items-center gap-1 border-l border-slate-300 pl-1.5 ml-0.5">
+                    <button onclick="setZoom(100)" class="px-1.5 py-0.5 text-[11px] rounded bg-white hover:bg-sky-50 text-slate-600 border border-slate-200">100%</button>
+                    <button onclick="setZoom(150)" class="px-1.5 py-0.5 text-[11px] rounded bg-white hover:bg-sky-50 text-slate-600 border border-slate-200">150%</button>
+                    <button onclick="setZoom(200)" class="px-1.5 py-0.5 text-[11px] rounded bg-white hover:bg-sky-50 text-slate-600 border border-slate-200">200%</button>
+                    <button onclick="setZoom(300)" class="px-1.5 py-0.5 text-[11px] rounded bg-white hover:bg-sky-50 text-slate-600 border border-slate-200">300%</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- INSTRUCTION BANNER -->
+    <div class="bg-sky-50 border-b border-sky-100 py-2 px-4 text-center text-xs sm:text-sm text-sky-800 flex items-center justify-center gap-2">
+        <span>💡 <strong>Hướng dẫn:</strong> Nhấp vào <u>bất kỳ từ Hán tự nào</u> để xem phiên âm Pinyin, từ loại, tất cả nghĩa tiếng Việt và chú thích văn hóa Đài Loan. Bấm nút ▶ để nghe phát âm chuẩn giọng Đài Loan!</span>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-6">
+
+        <!-- ==================== TAB 1: PHẦN 1 ==================== -->
+        <section id="tab1" class="tab-content space-y-6">
+            <!-- Header Card -->
+            <div class="bg-white rounded-xl p-5 border border-sky-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md mb-2">
+                        <span>Bài khóa (一)</span> • <span>23 Từ vựng</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800">課文（一）：週末運動</h2>
+                    <p class="text-slate-600 text-sm mt-1">Chủ đề: Thể thao cuối tuần (Nghe nhạc, đá bóng, bơi lội, chơi bóng rổ/bóng chày/quần vợt)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="playDialogue('d1')" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow transition flex items-center gap-2 text-sm">
+                        <span>▶ Nghe cả bài khóa</span>
+                    </button>
+                    <button onclick="stopAudio()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition flex items-center gap-1.5 text-sm">
+                        <span>⏹️ Dừng</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dialogue 1 Section -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-sky-700 text-white px-5 py-3 font-semibold text-base sm:text-lg flex justify-between items-center">
+                    <span>💬 Hội thoại 1: 田中 & 馬安同</span>
+                    <span class="text-xs bg-sky-800 px-2.5 py-1 rounded-full text-sky-100 font-normal">10 câu hội thoại</span>
+                </div>
+                <div class="p-4 sm:p-6 divide-y divide-slate-100 space-y-3" id="dialogue1-container">
+                    <!-- Lines rendered dynamically via JS tokenizer for full clickability -->
+                </div>
+            </div>
+
+            <!-- Vocab 1 Section -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-3 h-6 bg-sky-600 rounded-sm inline-block"></span>
+                        <span>Từ vựng Phần 1 (23 từ)</span>
+                    </h3>
+                    <span class="text-xs text-slate-500">Tất cả ví dụ tuân thủ nghiêm ngặt từ vựng tích lũy L1 + L2 + L3P1</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="vocab1-container">
+                    <!-- Vocab cards injected dynamically -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 2: PHẦN 2 ==================== -->
+        <section id="tab2" class="tab-content hidden space-y-6">
+            <!-- Header Card -->
+            <div class="bg-white rounded-xl p-5 border border-sky-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md mb-2">
+                        <span>Bài khóa (二)</span> • <span>18 Từ vựng</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800">課文（二）：看電影與吃晚飯</h2>
+                    <p class="text-slate-600 text-sm mt-1">Chủ đề: Xem phim điện ảnh và ăn tối (Phim Mỹ/Đài Loan, món ăn Việt Nam)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="playDialogue('d2')" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow transition flex items-center gap-2 text-sm">
+                        <span>▶ Nghe cả bài khóa</span>
+                    </button>
+                    <button onclick="stopAudio()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition flex items-center gap-1.5 text-sm">
+                        <span>⏹️ Dừng</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dialogue 2 Section -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-sky-700 text-white px-5 py-3 font-semibold text-base sm:text-lg flex justify-between items-center">
+                    <span>💬 Hội thoại 2: 白如玉 & 陳月美</span>
+                    <span class="text-xs bg-sky-800 px-2.5 py-1 rounded-full text-sky-100 font-normal">8 câu hội thoại</span>
+                </div>
+                <div class="p-4 sm:p-6 divide-y divide-slate-100 space-y-3" id="dialogue2-container">
+                    <!-- Lines rendered dynamically via JS tokenizer -->
+                </div>
+            </div>
+
+            <!-- Vocab 2 Section -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-3 h-6 bg-sky-600 rounded-sm inline-block"></span>
+                        <span>Từ vựng Phần 2 (18 từ)</span>
+                    </h3>
+                    <span class="text-xs text-slate-500">Ví dụ tuân thủ tích lũy L1 + L2 + L3P1 + L3P2</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="vocab2-container">
+                    <!-- Vocab cards injected dynamically -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 3: NGỮ PHÁP ==================== -->
+        <section id="tab3" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl p-5 border border-sky-100 shadow-sm">
+                <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md mb-2">
+                    <span>Ngữ pháp trọng tâm</span> • <span>TOCFL A1 Standard</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-800">8 Điểm Ngữ Pháp Bài 3</h2>
+                <p class="text-slate-600 text-sm mt-1">Phân tích chi tiết động từ thể thao, phó từ, cấu trúc câu hỏi đề nghị, câu hỏi lựa chọn và trợ từ ngữ khí.</p>
+            </div>
+
+            <div class="space-y-6" id="grammar-container">
+                <!-- 8 Grammar Cards rendered dynamically -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs sm:text-sm text-slate-500">
+        <p>Giáo trình Tiếng Trung Phồn Thể (Đài Loan) - TOCFL A1 | Thiết kế dành cho sinh viên Việt Nam</p>
+        <p class="mt-1 text-slate-400">© 2026 Mandarin Interactive Learning Platform</p>
+    </footer>
+
+    <!-- INTERACTIVE DICTIONARY MODAL -->
+    <div id="dict-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-sky-100 space-y-4 transform transition-all relative max-h-[90vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button onclick="closeDictModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-100 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Word Header -->
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 pr-8">
+                <div>
+                    <h3 id="modal-zh" class="text-3xl font-extrabold text-sky-700 tracking-wide font-zh">--</h3>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span id="modal-pinyin" class="text-lg font-semibold text-slate-600">--</span>
+                        <span id="modal-pos" class="bg-sky-100 text-sky-800 text-xs px-2.5 py-0.5 rounded-full font-medium">--</span>
+                    </div>
+                </div>
+                <button onclick="speakModalWord()" class="w-12 h-12 bg-sky-600 hover:bg-sky-700 text-white rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-105 active:scale-95" title="Phát âm">
+                    <span class="text-xl">▶</span>
+                </button>
+            </div>
+
+            <!-- Meanings List -->
+            <div>
+                <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">Nghĩa tiếng Việt đầy đủ</h4>
+                <div id="modal-meanings" class="space-y-1.5 text-slate-700 text-sm font-medium">
+                    <!-- Meaning lines -->
+                </div>
+            </div>
+
+            <!-- Taiwan Cultural / Usage Note (Amber Callout) -->
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-3.5 rounded-r-lg space-y-1">
+                <div class="flex items-center gap-1.5 font-bold text-amber-800 text-xs">
+                    <span>🇹🇼</span> <span>Ghi chú văn hóa & Cách dùng tại Đài Loan:</span>
+                </div>
+                <p id="modal-note" class="text-amber-900 text-xs sm:text-sm leading-relaxed">
+                    --
+                </p>
+            </div>
+
+            <!-- Modal Footer button -->
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeDictModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition">
+                    Đóng (Esc)
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ==================== DICTIONARY DATABASE (L1 + L2 + L3 Words & Single Characters) ==================== */
+        const DICTIONARY = {
+            // LESSON 3 PART 1 VOCABULARY (23 Words)
+            "週末": { pinyin: "zhōumò", pos: "Danh từ", meanings: ["Cuối tuần (thứ Bảy và Chủ nhật)."], note: "Tại Đài Loan, người dân rất thích đi dã ngoại hoặc làm đồ handmade vào 週末. Từ 週末 mang cảm giác nghỉ ngơi thong thả." },
+            "聽": { pinyin: "tīng", pos: "Động từ", meanings: ["1. Nghe (nghe nhạc, nghe nói).", "2. Nghe lời, tuân theo (聽話).", "3. Để mặc, tùy theo (聽便)."], note: "Đài Loan dùng 聽廣播 (nghe đài), 聽音樂 (nghe nhạc). '聽說' (nghe nói) là cụm từ mở đầu cực kỳ phổ biến trong giao tiếp." },
+            "音樂": { pinyin: "yīnyuè", pos: "Danh từ", meanings: ["Âm nhạc, nhạc."], note: "Đài Loan là trung tâm âm nhạc Pop (華語流行音樂) hàng đầu của thế giới nói tiếng Hoa với nhiều ca sĩ nổi tiếng như Châu Kiệt Luân (周傑倫), Ngũ Nguyệt Thiên (五月天)." },
+            "運動": { pinyin: "yùndòng", pos: "Danh từ / Động từ", meanings: ["1. (Đt) Vận động, tập thể thao.", "2. (Dt) Môn thể thao.", "3. (Dt) Phong trào, cuộc vận động."], note: "Ở Đài Loan, phong trào 運動 rất phát triển. Các công viên đều có đường chạy bộ và máy tập thể dục công cộng." },
+            "打": { pinyin: "dǎ", pos: "Động từ", meanings: ["1. Đánh, chơi (thể thao dùng tay: 打籃球, 打網球, 打棒球).", "2. Đánh, đập.", "3. Gọi (điện thoại 打電話), gõ (máy tính 打字), bắt (xe taxi 打車/叫車)."], note: "Tất cả môn bóng chơi bằng tay (trừ bóng đá) đều dùng động từ 打." },
+            "網球": { pinyin: "wǎngqiú", pos: "Danh từ", meanings: ["Quần vợt (tennis)."], note: "Tại Đài Loan, sân quần vợt công cộng rất phổ biến ở các trung tâm thể thao quận (運動中心)." },
+            "棒球": { pinyin: "bàngqiú", pos: "Danh từ", meanings: ["Bóng chày."], note: "棒球 là 'quốc cầu' (國球) của Đài Loan! Giải bóng chày chuyên nghiệp CPBL (中華職棒) thu hút đông đảo cổ vũ nhiệt tình." },
+            "和": { pinyin: "hé", pos: "Liên từ / Giới từ", meanings: ["1. (Lt) Và (nối danh từ hoặc cụm danh từ).", "2. (Gt) Với, cùng với.", "3. (Tt) Hòa thuận."], note: "Tại Đài Loan, từ 和 thường được phát âm chuẩn là 'hàn' trong giao tiếp hàng ngày thân mật, dù trong chuẩn sách giáo khoa đọc là 'hé'." },
+            "游泳": { pinyin: "yóuyǒng", pos: "Động từ", meanings: ["Bơi, bơi lội (động từ ly hợp)."], note: "Là động từ ly hợp: có thể tách ra thành 游了一個小時的泳 (bơi 1 tiếng đồng hồ)." },
+            "常": { pinyin: "cháng", pos: "Phó từ", meanings: ["Thường, thường xuyên (thường dùng 常常 để nhấn mạnh)."], note: "Luôn đứng TRƯỚC động từ: 我常去 (Tôi thường đi). Phủ định là 不常 (không thường)." },
+            "籃球": { pinyin: "lánqiú", pos: "Danh từ", meanings: ["Bóng rổ."], note: "Bóng rổ là môn thể thao được giới trẻ Đài Loan chơi nhiều nhất tại các sân bóng học đường và ngoài trời." },
+            "也": { pinyin: "yě", pos: "Phó từ", meanings: ["Cũng (luôn đứng trước động từ/tính từ, sau chủ ngữ)."], note: "Không bao giờ đứng đầu câu như từ 'Also' trong tiếng Anh. Ví dụ: 我也是 (Tôi cũng vậy)." },
+            "踢": { pinyin: "tī", pos: "Động từ", meanings: ["Đá (dùng chân đá, đặc biệt dùng cho bóng đá: 踢足球)."], note: "Chỉ dùng cho môn thể thao tác động bằng chân. Phân biệt rõ với 打 (chơi bằng tay)." },
+            "足球": { pinyin: "zúqiú", pos: "Danh từ", meanings: ["Bóng đá."], note: "Tại Đài Loan bóng đá ít phổ biến hơn bóng chày và bóng rổ, nhưng đang ngày càng thu hút giới trẻ quan tâm." },
+            "覺得": { pinyin: "juéde", pos: "Động từ", meanings: ["Cảm thấy, thấy rằng, cho rằng (nêu cảm nhận/quan điểm chủ quan)."], note: "Dùng để diễn tả suy nghĩ nhẹ nhàng, chủ quan: 我覺得很好 (Tôi thấy rất tốt)." },
+            "好玩": { pinyin: "hǎowán", pos: "Tính từ", meanings: ["Vui, thú vị, hấp dẫn (dùng cho hoạt động, trò chơi, địa điểm)."], note: "Từ rất phổ biến ở Đài Loan để khen trò chơi, chuyến đi: 這個 diorama 很好玩 (Cái này rất vui)." },
+            "明天": { pinyin: "míngtiān", pos: "Danh từ", meanings: ["Ngày mai."], note: "Có thể đứng trước hoặc sau chủ ngữ làm trạng từ chỉ thời gian: 明天我們去... hoặc 我們明天去..." },
+            "早上": { pinyin: "zǎoshang", pos: "Danh từ", meanings: ["Buổi sáng (khoảng từ 6h sáng đến trước 11h trưa)."], note: "Tại Đài Loan, bữa sáng (早餐 zǎocān) vô cùng phong phú với bánh mì nướng, quẩy, sữa đậu nành." },
+            "去": { pinyin: "qù", pos: "Động từ", meanings: ["1. Đi (rời xa vị trí người nói).", "2. Bỏ đi, loại bỏ."], note: "Trái nghĩa với 來 (lái - đến). Cấu trúc: 去 + [Địa điểm] + [Hành động]." },
+            "怎麼樣": { pinyin: "zěnmeyàng", pos: "Đại từ nghi vấn", meanings: ["Như thế nào? Ra sao? Thấy sao? (dùng hỏi ý kiến hoặc đề nghị)."], note: "Thường đặt cuối câu đề nghị: 明天去, 怎麼樣？ (Ngày mai đi nhé, thấy sao?)" },
+            "啊": { pinyin: "a", pos: "Trợ từ ngữ khí", meanings: ["À, ạ, đấy, nhé, quá (làm mềm câu, tăng sắc thái cảm thán)."], note: "Phổ biến cực kỳ trong văn phong khẩu ngữ Đài Loan để tạo cảm giác thân thiện, nhẹ nhàng." },
+            "做什麼": { pinyin: "zuò shénme", pos: "Cụm từ", meanings: ["Làm gì? (做: làm, thực hiện; 什麼: cái gì)."], note: "Dùng hỏi hành động: 你在做什麼？ (Bạn đang làm gì thế?)" },
+            "好啊": { pinyin: "hǎo a", pos: "Cụm từ", meanings: ["Được đấy! Hay đấy! Đồng ý! (đồng tình vui vẻ, nhiệt tình)."], note: "Câu trả lời nhận lời mời cực kỳ tự nhiên và lịch sự trong tiếng Trung Đài Loan." },
+
+            // LESSON 3 PART 2 VOCABULARY (18 Words)
+            "白如玉": { pinyin: "Bái Rúyù", pos: "Danh từ riêng", meanings: ["Bạch Như Ngọc (Tên nhân vật nữ người Mỹ trong giáo trình)."], note: "Họ 白 (Bạch), tên 如玉 (Như Ngọc - đẹp như ngọc)." },
+            "今天": { pinyin: "jīntiān", pos: "Danh từ", meanings: ["Hôm nay, ngày hôm nay."], note: "Trạng từ thời gian chỉ ngày hiện tại." },
+            "晚上": { pinyin: "wǎnshang", pos: "Danh từ", meanings: ["Buổi tối (từ khoảng 6h chiều đến trước nửa đêm)."], note: "Ở Đài Loan, 晚上 là thời gian dạo chợ đêm (夜市 yèshì) vô cùng nhộn nhịp." },
+            "看": { pinyin: "kàn", pos: "Động từ", meanings: ["1. Xem, nhìn, ngắm.", "2. Đọc (看書 đọc sách).", "3. Thăm (看朋友 thăm bạn).", "4. Khám (看病 khám bệnh)."], note: "Đài Loan dùng 看書 cho đọc sách, 看電影 cho xem phim, 看醫生 cho đi khám bác sĩ." },
+            "電影": { pinyin: "diànyǐng", pos: "Danh từ", meanings: ["Phim, phim điện ảnh."], note: "Rạp chiếu phim ở Đài Loan gọi là 電影院 (diànyǐngyuàn). Lượng từ của 電影 là 部 (bù)." },
+            "妳": { pinyin: "nǐ", pos: "Đại từ", meanings: ["Bạn, chị, em (ngôi thứ 2 số ít, dành riêng cho nữ giới)."], note: "Trong chữ Hán phồn thể Đài Loan, chữ 妳 (bộ Nữ 女) bắt buộc dùng khi xưng呼 với nữ giới trong văn viết." },
+            "想": { pinyin: "xiǎng", pos: "Động từ năng nguyện", meanings: ["1. Muốn (biểu thị mong muốn nhẹ nhàng, lịch sự).", "2. Nghĩ, suy nghĩ.", "3. Nhớ (想家 nhớ nhà)."], note: "Khác với 要 (yào - muốn khẳng định/quyết tâm hơn), 想 biểu thị nguyện vọng nhẹ nhàng hơn." },
+            "還是": { pinyin: "háishì", pos: "Liên từ / Phó từ", meanings: ["1. (Lt) Hay là (dùng trong câu hỏi lựa chọn A 還是 B).", "2. (Pt) Vẫn, vẫn là."], note: "Chỉ dùng 還是 cho câu hỏi lựa chọn. Trong câu trần thuật 'hoặc là' phải dùng 或者 (huòzhě)." },
+            "吧": { pinyin: "ba", pos: "Trợ từ ngữ khí", meanings: ["Nhé, đi, thôi, nhỉ (đề nghị nhẹ nhàng, gợi ý hoặc suy đoán)."], note: "Đặt cuối câu để giảm bớt tính mệnh lệnh: 我們走吧！ (Chúng ta đi thôi nhé!)." },
+            "可以": { pinyin: "kěyǐ", pos: "Động từ năng nguyện", meanings: ["1. Có thể, có khả năng.", "2. Được phép, cho phép.", "3. Tạm được, khá tốt."], note: "Dùng để xin phép hoặc diễn tả khả năng: 我可以進來嗎？ (Tôi có thể vào không?)" },
+            "學": { pinyin: "xué", pos: "Động từ", meanings: ["1. Học, học tập (學中文).", "2. Bắt chước, làm theo."], note: "Thường đi kèm với từ chỉ ngôn ngữ hoặc kỹ năng: 學中文, 學打棒球." },
+            "中文": { pinyin: "Zhōngwén", pos: "Danh từ", meanings: ["Tiếng Trung, Hoa văn (ngôn ngữ và chữ viết tiếng Trung)."], note: "Tại Đài Loan, người dân thường gọi tiếng Trung là 國語 (Guóyǔ - Quốc ngữ) hoặc 中文." },
+            "一起": { pinyin: "yìqǐ", pos: "Phó từ", meanings: ["Cùng, cùng nhau (đứng trước động từ)."], note: "Cấu trúc: 和/跟 + [Ai] + 一起 + [Động từ]. Ví dụ: 我和你一起去." },
+            "吃": { pinyin: "chī", pos: "Động từ", meanings: ["1. Ăn.", "2. Dùng (thuốc: 吃藥).", "3. Tiêu tốn, chịu."], note: "Văn hóa ẩm thực Đài Loan cực kỳ phong phú với vô số món ăn ngon (美食)." },
+            "晚飯": { pinyin: "wǎnfàn", pos: "Danh từ", meanings: ["Bữa tối, cơm tối."], note: "Ở Đài Loan người ta cũng rất hay dùng từ 晚餐 (wǎncān) để chỉ bữa tối chính thức." },
+            "菜": { pinyin: "cài", pos: "Danh từ / Tính từ", meanings: ["1. (Dt) Món ăn, ẩm thực (越南菜).", "2. (Dt) Rau, rau củ.", "3. (Lóng Đài Loan) Gu người yêu (我的菜).", "4. (Tt lóng) Kém, non tay."], note: "Thành ngữ lóng Đài Loan: 他是我的菜 (Anh ấy đúng là gu của tôi!)." },
+            "越南": { pinyin: "Yuènán", pos: "Danh từ riêng", meanings: ["Việt Nam."], note: "Món ăn Việt Nam (越南菜) như phở (河粉), bánh mì (法國麵包) rất được yêu thích tại Đài Loan." },
+            "好不好": { pinyin: "hǎo bù hǎo", pos: "Câu hỏi đề nghị", meanings: ["Được không? Có được không? (đặt cuối câu hỏi ý kiến)."], note: "Cách hỏi thân mật, nhẹ nhàng để xin sự đồng ý của đối phương." },
+
+            // CUMULATIVE LESSON 1 & LESSON 2 WORDS FOR TOKENIZER ACCURACY
+            "陳月美": { pinyin: "Chén Yuèměi", pos: "Danh từ riêng", meanings: ["Trần Nguyệt Mỹ (tên riêng)."], note: "Nhân vật nữ sinh viên Việt Nam." },
+            "李明華": { pinyin: "Lǐ Mínghuá", pos: "Danh từ riêng", meanings: ["Lý Minh Hoa (tên riêng)."], note: "Nhân vật nữ sinh viên Đài Loan." },
+            "王凱文": { pinyin: "Wáng Kǎiwén", pos: "Danh từ riêng", meanings: ["Vương Khải Văn (tên riêng)."], note: "Nhân vật nam sinh viên Mỹ." },
+            "張怡君": { pinyin: "Zhāng Yíjūn", pos: "Danh từ riêng", meanings: ["Trương Di Quân (tên riêng)."], note: "Nhân vật nữ sinh viên Đài Loan." },
+            "馬安同": { pinyin: "Mǎ Āntóng", pos: "Danh từ riêng", meanings: ["Mã An Đồng (tên riêng)."], note: "Nhân vật nam sinh viên Mỹ." },
+            "田中誠一": { pinyin: "Tiánzhōng Chéngyī", pos: "Danh từ riêng", meanings: ["Điền Trung Thành Nhất (tên riêng)."], note: "Nhân vật nam sinh viên Nhật Bản." },
+            "田中": { pinyin: "Tiánzhōng", pos: "Danh từ riêng", meanings: ["Điền Trung (Họ tên rút gọn)."], note: "Nhân vật nam người Nhật." },
+            "安同": { pinyin: "Āntóng", pos: "Danh từ riêng", meanings: ["An Đồng (Tên gọi thân mật)."], note: "Nhân vật nam người Mỹ." },
+            "如玉": { pinyin: "Rúyù", pos: "Danh từ riêng", meanings: ["Như Ngọc (Tên gọi thân mật)."], note: "Nhân vật Bạch Như Ngọc." },
+            "月美": { pinyin: "Yuèměi", pos: "Danh từ riêng", meanings: ["Nguyệt Mỹ (Tên gọi thân mật)."], note: "Nhân vật Trần Nguyệt Mỹ." },
+            "你": { pinyin: "nǐ", pos: "Đại từ", meanings: ["Bạn, anh, chị, em (ngôi 2 số ít)."], note: "Dùng chung cho nam nữ." },
+            "來": { pinyin: "lái", pos: "Động từ", meanings: ["Đến, tới."], note: "Trái nghĩa với 去 (qù)." },
+            "是": { pinyin: "shì", pos: "Động từ", meanings: ["Là, phải, đúng."], note: "Động từ liên kết là/là đúng." },
+            "小姐": { pinyin: "xiǎojiě", pos: "Danh từ", meanings: ["Cô, tiểu thư."], note: "Xưng呼 lịch sự với phụ nữ trẻ." },
+            "嗎": { pinyin: "ma", pos: "Trợ từ nghi vấn", meanings: ["Không? Phải không?"], note: "Đặt cuối câu hỏi Có/Không." },
+            "接": { pinyin: "jiē", pos: "Động từ", meanings: ["Đón, nhận."], note: "接人 (đón người), 接電話 (nghe điện thoại)." },
+            "我們": { pinyin: "wǒmen", pos: "Đại từ", meanings: ["Chúng tôi, chúng ta."], note: "Ngôi thứ 1 số nhiều." },
+            "我": { pinyin: "wǒ", pos: "Đại từ", meanings: ["Tôi, ta, tớ."], note: "Ngôi thứ 1 số ít." },
+            "這": { pinyin: "zhè", pos: "Đại từ chỉ định", meanings: ["Đây, này."], note: "Chỉ vật/người ở gần." },
+            "先生": { pinyin: "xiānshēng", pos: "Danh từ", meanings: ["Ông, ngài, chồng."], note: "Xưng呼 nam giới lịch sự." },
+            "好": { pinyin: "hǎo", pos: "Tính từ", meanings: ["Tốt, đẹp, hay, khỏe."], note: "Dùng rất phổ biến." },
+            "姓": { pinyin: "xìng", pos: "Động từ / Danh từ", meanings: ["Mang họ / Họ."], note: "請問您貴姓？" },
+            "叫": { pinyin: "jiào", pos: "Động từ", meanings: ["Tên là, gọi là."], note: "你叫什麼名字？" },
+            "你們": { pinyin: "nǐmen", pos: "Đại từ", meanings: ["Các bạn, các anh/chị."], note: "Ngôi thứ 2 số nhiều." },
+            "臺灣": { pinyin: "Táiwān", pos: "Danh từ riêng", meanings: ["Đài Loan."], note: "Viết phồn thể chuẩn 臺灣." },
+            "台灣": { pinyin: "Táiwān", pos: "Danh từ riêng", meanings: ["Đài Loan."], note: "Biến thể giản thể thông dụng." },
+            "歡迎": { pinyin: "huānyíng", pos: "Động từ", meanings: ["Hoan nghênh, chào đón."], note: "歡迎來到台灣!" },
+            "請問": { pinyin: "qǐngwèn", pos: "Cụm từ", meanings: ["Xin hỏi..."], note: "Dùng đầu câu hỏi lịch sự." },
+            "是的": { pinyin: "shìde", pos: "Cụm từ", meanings: ["Đúng vậy, vâng."], note: "Xác nhận khẳng định." },
+            "謝謝": { pinyin: "xièxie", pos: "Động từ", meanings: ["Cảm ơn."], note: "Lời cảm ơn phổ biến." },
+            "不客氣": { pinyin: "bú kèqi", pos: "Cụm từ", meanings: ["Không có gì, đừng khách khí."], note: "Đáp lại lời cảm ơn." },
+            "你好": { pinyin: "nǐ hǎo", pos: "Cụm từ", meanings: ["Xin chào."], note: "Lời chào tiêu chuẩn." },
+            "請": { pinyin: "qǐng", pos: "Động từ", meanings: ["Mời, xin vui lòng."], note: "請進 (Mời vào), 請坐 (Mời ngồi)." },
+            "喝": { pinyin: "hē", pos: "Động từ", meanings: ["Uống."], note: "喝茶 (uống trà), 喝咖啡 (uống cà phê)." },
+            "茶": { pinyin: "chá", pos: "Danh từ", meanings: ["Trà, chè."], note: "Văn hóa trà Đài Loan nổi tiếng." },
+            "很": { pinyin: "hěn", pos: "Phó từ", meanings: ["Rất."], note: "Đứng trước tính từ." },
+            "好喝": { pinyin: "hǎohē", pos: "Tính từ", meanings: ["Ngon (dùng cho đồ uống)."], note: "Trà/Cà phê rất ngon." },
+            "什麼": { pinyin: "shénme", pos: "Đại từ nghi vấn", meanings: ["Cái gì, gì."], note: "Hỏi vật/thông tin." },
+            "人": { pinyin: "rén", pos: "Danh từ", meanings: ["Người."], note: "越南人 (người Việt Nam)." },
+            "喜歡": { pinyin: "xǐhuān", pos: "Động từ", meanings: ["Thích, yêu thích."], note: "Chỉ sở thích." },
+            "呢": { pinyin: "ne", pos: "Trợ từ ngữ khí", meanings: ["Còn... thì sao?"], note: "Dùng phản vấn câu hỏi." },
+            "他": { pinyin: "tā", pos: "Đại từ", meanings: ["Anh ấy, ông ấy."], note: "Ngôi 3 số ít nam." },
+            "不": { pinyin: "bù", pos: "Phó từ", meanings: ["Không (phủ định)."], note: "Đứng trước động từ/tính từ." },
+            "哪": { pinyin: "nǎ", pos: "Đại từ nghi vấn", meanings: ["Nào, ở đâu."], note: "哪國人 (người nước nào)." },
+            "要": { pinyin: "yào", pos: "Động từ", meanings: ["Muốn, cần, phải."], note: "Biểu thị nhu cầu/khẳng định." },
+            "咖啡": { pinyin: "kāfēi", pos: "Danh từ", meanings: ["Cà phê."], note: "Đồ uống phổ biến." },
+            "烏龍茶": { pinyin: "wūlóngchá", pos: "Danh từ", meanings: ["Trà Ô Long."], note: "Đặc sản Đài Loan." },
+            "日本": { pinyin: "Rìběn", pos: "Danh từ riêng", meanings: ["Nhật Bản."], note: "Tên quốc gia." },
+            "美國": { pinyin: "Měiguó", pos: "Danh từ riêng", meanings: ["Mỹ, Hoa Kỳ."], note: "Tên quốc gia." },
+            "對不起": { pinyin: "duìbùqǐ", pos: "Cụm từ", meanings: ["Xin lỗi."], note: "Tạ lỗi lịch sự." },
+            "哪國": { pinyin: "nǎ guó", pos: "Cụm từ", meanings: ["Nước nào."], note: "Hỏi quốc tịch." },
+
+            // LESSON 2 WORDS
+            "的": { pinyin: "de", pos: "Trợ từ", meanings: ["Của (trợ từ sở hữu)."], note: "我的書 (Sách của tôi)." },
+            "家人": { pinyin: "jiārén", pos: "Danh từ", meanings: ["Người nhà, gia đình."], note: "Thành viên trong nhà." },
+            "家": { pinyin: "jiā", pos: "Danh từ", meanings: ["Nhà, gia đình."], note: "我家 (Nhà tôi)." },
+            "漂亮": { pinyin: "piàoliang", pos: "Tính từ", meanings: ["Đẹp, xinh đẹp."], note: "Khen người hoặc vật đẹp." },
+            "房子": { pinyin: "fángzi", pos: "Danh từ", meanings: ["Căn nhà, ngôi nhà."], note: "Nhà ở." },
+            "坐": { pinyin: "zuò", pos: "Động từ", meanings: ["Ngồi, đi (xe)."], note: "請坐 (Mời ngồi)." },
+            "有": { pinyin: "yǒu", pos: "Động từ", meanings: ["Có."], note: "Trái nghĩa với 沒." },
+            "多": { pinyin: "duō", pos: "Tính từ", meanings: ["Nhiều."], note: "Nhiều số lượng." },
+            "照片": { pinyin: "zhàopiàn", pos: "Danh từ", meanings: ["Bức ảnh, tấm hình."], note: "Bức chụp." },
+            "都": { pinyin: "dōu", pos: "Phó từ", meanings: ["Đều, tất cả."], note: "Đứng trước động từ." },
+            "照相": { pinyin: "zhàoxiàng", pos: "Động từ", meanings: ["Chụp ảnh."], note: "Hành động chụp hình." },
+            "張": { pinyin: "zhāng", pos: "Lượng từ", meanings: ["Tấm, tờ, chiếc (ảnh, bàn, giấy)."], note: "一張照片." },
+            "好看": { pinyin: "hǎokàn", pos: "Tính từ", meanings: ["Đẹp, dễ nhìn, hay (phim/sách)."], note: "Khen thẩm mỹ." },
+            "誰": { pinyin: "shéi", pos: "Đại từ nghi vấn", meanings: ["Ai?"], note: "Hỏi người." },
+            "姐姐": { pinyin: "jiějie", pos: "Danh từ", meanings: ["Chị gái."], note: "Thành viên gia đình." },
+            "妹妹": { pinyin: "mèimei", pos: "Danh từ", meanings: ["Em gái."], note: "Thành viên gia đình." },
+            "爸爸": { pinyin: "bàba", pos: "Danh từ", meanings: ["Bố, cha."], note: "Thành viên gia đình." },
+            "媽媽": { pinyin: "māma", pos: "Danh từ", meanings: ["Mẹ, má."], note: "Thành viên gia đình." },
+            "請進": { pinyin: "qǐng jìn", pos: "Cụm từ", meanings: ["Mời vào."], note: "Chào đón khách." },
+            "伯母": { pinyin: "bómǔ", pos: "Danh từ", meanings: ["Bác gái (mẹ của bạn)."], note: "Xưng呼 lịch sự với phụ nữ trung niên." },
+            "名字": { pinyin: "míngzi", pos: "Danh từ", meanings: ["Tên."], note: "Họ tên." },
+            "書": { pinyin: "shū", pos: "Danh từ", meanings: ["Sách."], note: "看書 (Đọc sách)." },
+            "哥哥": { pinyin: "gēge", pos: "Danh từ", meanings: ["Anh trai."], note: "Thành viên gia đình." },
+            "老師": { pinyin: "lǎoshī", pos: "Danh từ", meanings: ["Thầy/Cô giáo."], note: "Tôn xưng giáo viên." },
+            "看書": { pinyin: "kànshū", pos: "Động từ", meanings: ["Đọc sách."], note: "Hành động học tập." },
+            "幾": { pinyin: "jǐ", pos: "Đại từ nghi vấn", meanings: ["Mấy (hỏi số lượng dưới 10)."], note: "幾個人？" },
+            "個": { pinyin: "ge", pos: "Lượng từ", meanings: ["Cái, người (lượng từ chung)."], note: "Lượng từ phổ biến nhất." },
+            "沒": { pinyin: "méi", pos: "Phó từ", meanings: ["Không có (phủ định của 有)."], note: "沒有." },
+            "兄弟": { pinyin: "xiōngdì", pos: "Danh từ", meanings: ["Anh em trai."], note: "Anh em." },
+            "姐妹": { pinyin: "jiěmèi", pos: "Danh từ", meanings: ["Chị em gái."], note: "Chị em." },
+            "五": { pinyin: "wǔ", pos: "Số từ", meanings: ["Số 5."], note: "Số đếm." },
+            "兩": { pinyin: "liǎng", pos: "Số từ", meanings: ["Hai (dùng trước lượng từ)."], note: "兩個人 (2 người)." },
+            "您": { pinyin: "nín", pos: "Đại từ", meanings: ["Ngài, ông/bà (xưng呼 tôn kính)."], note: "Lịch sự ngôi thứ 2." }
+        };
+
+        // Fallback definitions for individual single Chinese characters if clicked alone
+        const SINGLE_CHAR_FALLBACKS = {
+            "週": { pinyin: "zhōu", pos: "Danh từ", meanings: ["Tuần, chu kỳ."], note: "Nằm trong 週末 (cuối tuần)." },
+            "末": { pinyin: "mò", pos: "Danh từ", meanings: ["Cuối, ngọn, mút."], note: "Nằm trong 週末 (cuối tuần)." },
+            "網": { pinyin: "wǎng", pos: "Danh từ", meanings: ["Lưới, mạng."], note: "Nằm trong 網球 (quần vợt)." },
+            "棒": { pinyin: "bàng", pos: "Danh từ / Tính từ", meanings: ["Gậy, cừ khôi, tuyệt vời."], note: "Nằm trong 棒球 (bóng chày)." },
+            "球": { pinyin: "qiú", pos: "Danh từ", meanings: ["Quả bóng, hình cầu."], note: "Từ chung cho các môn bóng." },
+            "游": { pinyin: "yóu", pos: "Động từ", meanings: ["Bơi, dạo chơi."], note: "Nằm trong 游泳 (bơi lội)." },
+            "泳": { pinyin: "yǒng", pos: "Danh từ / Động từ", meanings: ["Bơi lội."], note: "Nằm trong 游泳 (bơi lội)." },
+            "籃": { pinyin: "lán", pos: "Danh từ", meanings: ["Cái giỏ, cái rổ."], note: "Nằm trong 籃球 (bóng rổ)." },
+            "飯": { pinyin: "fàn", pos: "Danh từ", meanings: ["Cơm, bữa ăn."], note: "Nằm trong 晚飯 (bữa tối)." }
+        };
+
+        /* ==================== DIALOGUE DATA ==================== */
+        const DIALOGUE_1 = [
+            { speaker: "安同", zh: "田中，你喜歡聽音樂嗎？", pinyin: "Tiánzhōng, nǐ xǐhuān tīng yīnyuè ma?", vi: "An Đồng: Điền Trung, bạn có thích nghe nhạc không?" },
+            { speaker: "田中", zh: "我不喜歡聽音樂。我喜歡運動。", pinyin: "Wǒ bù xǐhuān tīng yīnyuè. Wǒ xǐhuān yùndòng.", vi: "Điền Trung: Tôi không thích nghe nhạc. Tôi thích vận động (thể thao)." },
+            { speaker: "安同", zh: "你喜歡打網球嗎？", pinyin: "Nǐ xǐhuān dǎ wǎngqiú ma?", vi: "An Đồng: Bạn có thích chơi quần vợt không?" },
+            { speaker: "田中", zh: "我不喜歡打網球。", pinyin: "Wǒ bù xǐhuān dǎ wǎngqiú.", vi: "Điền Trung: Tôi không thích chơi quần vợt." },
+            { speaker: "安同", zh: "你喜歡做什麼？", pinyin: "Nǐ xǐhuān zuò shénme?", vi: "An Đồng: Bạn thích làm gì?" },
+            { speaker: "田中", zh: "打棒球和游泳，你呢？", pinyin: "Dǎ bàngqiú hé yóuyǒng, nǐ ne?", vi: "Điền Trung: Chơi bóng chày và bơi lội, còn bạn thì sao?" },
+            { speaker: "安同", zh: "我常打籃球，也常踢足球。", pinyin: "Wǒ cháng dǎ lánqiú, yě cháng tī zúqiú.", vi: "An Đồng: Tôi thường chơi bóng rổ, cũng thường đá bóng." },
+            { speaker: "田中", zh: "我覺得踢足球很好玩。", pinyin: "Wǒ juéde tī zúqiú hěn hǎowán.", vi: "Điền Trung: Tôi cảm thấy đá bóng rất vui." },
+            { speaker: "安同", zh: "明天是週末，我們早上去踢足球，怎麼樣？", pinyin: "Míngtiān shì zhōumò, wǒmen zǎoshang qù tī zúqiú, zěnmeyàng?", vi: "An Đồng: Ngày mai là cuối tuần, buổi sáng chúng ta đi đá bóng nhé, thấy sao?" },
+            { speaker: "田中", zh: "好啊！", pinyin: "Hǎo a!", vi: "Điền Trung: Được đấy!" }
+        ];
+
+        const DIALOGUE_2 = [
+            { speaker: "如玉", zh: "今天晚上我們去看電影，好不好？", pinyin: "Jīntiān wǎnshang wǒmen qù kàn diànyǐng, hǎo bù hǎo?", vi: "Như Ngọc: Tối nay chúng ta đi xem phim, được không?" },
+            { speaker: "月美", zh: "好啊！", pinyin: "Hǎo a!", vi: "Nguyệt Mỹ: Được đấy!" },
+            { speaker: "如玉", zh: "妳想看美國電影還是臺灣電影？", pinyin: "Nǐ xiǎng kàn Měiguó diànyǐng háishì Táiwān diànyǐng?", vi: "Như Ngọc: Bạn muốn xem phim Mỹ hay là phim Đài Loan?" },
+            { speaker: "月美", zh: "美國電影、臺灣電影，我都想看。", pinyin: "Měiguó diànyǐng, Táiwān diànyǐng, wǒ dōu xiǎng kàn.", vi: "Nguyệt Mỹ: Phim Mỹ hay phim Đài Loan, tôi đều muốn xem." },
+            { speaker: "如玉", zh: "我們看臺灣電影吧！", pinyin: "Wǒmen kàn Táiwān diànyǐng ba!", vi: "Như Ngọc: Chúng ta xem phim Đài Loan nhé!" },
+            { speaker: "月美", zh: "好啊！看電影可以學中文。", pinyin: "Hǎo a! Kàn diànyǐng kěyǐ xué Zhōngwén.", vi: "Nguyệt Mỹ: Được đấy! Xem phim có thể học tiếng Trung." },
+            { speaker: "如玉", zh: "晚上要不要一起吃晚飯？", pinyin: "Wǎnshang yào bú yào yìqǐ chī wǎnfàn?", vi: "Như Ngọc: Buổi tối có muốn cùng nhau ăn tối không?" },
+            { speaker: "月美", zh: "好，我們去吃越南菜。", pinyin: "Hǎo, wǒmen qù chī Yuènán cài.", vi: "Nguyệt Mỹ: Được, chúng ta đi ăn món Việt Nam nhé." }
+        ];
+
+        /* ==================== VOCABULARY DATA WITH STRICT CUMULATIVE EXAMPLES ==================== */
+        const VOCAB_PART_1 = [
+            { word: "週末", pinyin: "zhōumò", pos: "Danh từ", vi: "Cuối tuần", examples: [
+                { zh: "明天是週末。", pinyin: "Míngtiān shì zhōumò.", vi: "Ngày mai là cuối tuần." },
+                { zh: "週末你喜歡做什麼？", pinyin: "Zhōumò nǐ xǐhuān zuò shénme?", vi: "Cuối tuần bạn thích làm gì?" },
+                { zh: "我們週末去打籃球。", pinyin: "Wǒmen zhōumò qù dǎ lánqiú.", vi: "Cuối tuần chúng tôi đi chơi bóng rổ." }
+            ]},
+            { word: "聽", pinyin: "tīng", pos: "Động từ", vi: "Nghe", examples: [
+                { zh: "你喜歡聽音樂嗎？", pinyin: "Nǐ xǐhuān tīng yīnyuè ma?", vi: "Bạn có thích nghe nhạc không?" },
+                { zh: "我不常聽音樂。", pinyin: "Wǒ bù cháng tīng yīnyuè.", vi: "Tôi không thường nghe nhạc." },
+                { zh: "哥哥喜歡聽音樂。", pinyin: "Gēge xǐhuān tīng yīnyuè.", vi: "Anh trai thích nghe nhạc." }
+            ]},
+            { word: "音樂", pinyin: "yīnyuè", pos: "Danh từ", vi: "Âm nhạc", examples: [
+                { zh: "這是好聽的音樂。", pinyin: "Zhè shì hǎotīng de yīnyuè.", vi: "Đây là âm nhạc hay." },
+                { zh: "你要聽音樂嗎？", pinyin: "Nǐ yào tīng yīnyuè ma?", vi: "Bạn có muốn nghe nhạc không?" },
+                { zh: "田中不喜歡聽音樂。", pinyin: "Tiánzhōng bù xǐhuān tīng yīnyuè.", vi: "Điền Trung không thích nghe nhạc." }
+            ]},
+            { word: "運動", pinyin: "yùndòng", pos: "Danh từ/Động từ", vi: "Vận động, thể thao", examples: [
+                { zh: "你喜歡什麼運動？", pinyin: "Nǐ xǐhuān shénme yùndòng?", vi: "Bạn thích môn thể thao gì?" },
+                { zh: "我早上去運動。", pinyin: "Wǒ zǎoshang qù yùndòng.", vi: "Buổi sáng tôi đi tập thể dục." },
+                { zh: "運動很好。", pinyin: "Yùndòng hěn hǎo.", vi: "Tập thể thao rất tốt." }
+            ]},
+            { word: "打", pinyin: "dǎ", pos: "Động từ", vi: "Đánh, chơi (bằng tay)", examples: [
+                { zh: "我喜歡打網球。", pinyin: "Wǒ xǐhuān dǎ wǎngqiú.", vi: "Tôi thích chơi quần vợt." },
+                { zh: "他常打籃球。", pinyin: "Tā cháng dǎ lánqiú.", vi: "Anh ấy thường chơi bóng rổ." },
+                { zh: "你打棒球嗎？", pinyin: "Nǐ dǎ bàngqiú ma?", vi: "Bạn có chơi bóng chày không?" }
+            ]},
+            { word: "網球", pinyin: "wǎngqiú", pos: "Danh từ", vi: "Quần vợt (tennis)", examples: [
+                { zh: "網球很好玩。", pinyin: "Wǎngqiú hěn hǎowán.", vi: "Quần vợt rất thú vị." },
+                { zh: "他不打網球。", pinyin: "Tā bù dǎ wǎngqiú.", vi: "Anh ấy không chơi quần vợt." },
+                { zh: "王先生喜歡打網球。", pinyin: "Wáng xiānshēng xǐhuān dǎ wǎngqiú.", vi: "Ông Vương thích chơi quần vợt." }
+            ]},
+            { word: "棒球", pinyin: "bàngqiú", pos: "Danh từ", vi: "Bóng chày", examples: [
+                { zh: "臺灣人喜歡打棒球。", pinyin: "Táiwānrén xǐhuān dǎ bàngqiú.", vi: "Người Đài Loan thích chơi bóng chày." },
+                { zh: "田中打棒球。", pinyin: "Tiánzhōng dǎ bàngqiú.", vi: "Điền Trung chơi bóng chày." },
+                { zh: "打棒球很好玩。", pinyin: "Dǎ bàngqiú hěn hǎowán.", vi: "Chơi bóng chày rất vui." }
+            ]},
+            { word: "和", pinyin: "hé", pos: "Liên từ", vi: "Và, cùng với", examples: [
+                { zh: "我和他是老師。", pinyin: "Wǒ hé tā shì lǎoshī.", vi: "Tôi và anh ấy là giáo viên." },
+                { zh: "爸爸和媽媽看照片。", pinyin: "Bàba hé māma kàn zhàopiàn.", vi: "Bố và mẹ xem ảnh." },
+                { zh: "我打棒球和游泳。", pinyin: "Wǒ dǎ bàngqiú hé yóuyǒng.", vi: "Tôi chơi bóng chày và bơi lội." }
+            ]},
+            { word: "游泳", pinyin: "yóuyǒng", pos: "Động từ", vi: "Bơi lội", examples: [
+                { zh: "明天早上我去游泳。", pinyin: "Míngtiān zǎoshang wǒ qù yóuyǒng.", vi: "Sáng mai tôi đi bơi." },
+                { zh: "你常游泳嗎？", pinyin: "Nǐ cháng yóuyǒng ma?", vi: "Bạn có thường bơi lội không?" },
+                { zh: "我覺得游泳很好。", pinyin: "Wǒ juéde yóuyǒng hěn hǎo.", vi: "Tôi thấy bơi lội rất tốt." }
+            ]},
+            { word: "常", pinyin: "cháng", pos: "Phó từ", vi: "Thường", examples: [
+                { zh: "我常去打籃球。", pinyin: "Wǒ cháng qù dǎ lánqiú.", vi: "Tôi thường đi chơi bóng rổ." },
+                { zh: "他不常喝茶。", pinyin: "Tā bù cháng hē chá.", vi: "Anh ấy không thường uống trà." },
+                { zh: "你常看書嗎？", pinyin: "Nǐ cháng kànshū ma?", vi: "Bạn có thường đọc sách không?" }
+            ]},
+            { word: "籃球", pinyin: "lánqiú", pos: "Danh từ", vi: "Bóng rổ", examples: [
+                { zh: "明天我們去打籃球。", pinyin: "Míngtiān wǒmen qù dǎ lánqiú.", vi: "Ngày mai chúng tôi đi chơi bóng rổ." },
+                { zh: "李先生常打籃球。", pinyin: "Lǐ xiānshēng cháng dǎ lánqiú.", vi: "Ông Lý thường chơi bóng rổ." },
+                { zh: "你喜歡打籃球嗎？", pinyin: "Nǐ xǐhuān dǎ lánqiú ma?", vi: "Bạn có thích chơi bóng rổ không?" }
+            ]},
+            { word: "也", pinyin: "yě", pos: "Phó từ", vi: "Cũng", examples: [
+                { zh: "我常打籃球，也常游泳。", pinyin: "Wǒ cháng dǎ lánqiú, yě cháng yóuyǒng.", vi: "Tôi thường chơi bóng rổ, cũng thường bơi lội." },
+                { zh: "他是老師，我也是老師。", pinyin: "Tā shì lǎoshī, wǒ yě shì lǎoshī.", vi: "Anh ấy là giáo viên, tôi cũng là giáo viên." },
+                { zh: "爸爸喜歡喝茶，媽媽也喜歡。", pinyin: "Bàba xǐhuān hē chá, māma yě xǐhuān.", vi: "Bố thích uống trà, mẹ cũng thích." }
+            ]},
+            { word: "踢", pinyin: "tī", pos: "Động từ", vi: "Đá (bằng chân)", examples: [
+                { zh: "明天我們去踢足球。", pinyin: "Míngtiān wǒmen qù tī zúqiú.", vi: "Ngày mai chúng ta đi đá bóng." },
+                { zh: "你喜歡踢足球嗎？", pinyin: "Nǐ xǐhuān tī zúqiú ma?", vi: "Bạn có thích đá bóng không?" },
+                { zh: "我常踢足球。", pinyin: "Wǒ cháng tī zúqiú.", vi: "Tôi thường đá bóng." }
+            ]},
+            { word: "足球", pinyin: "zúqiú", pos: "Danh từ", vi: "Bóng đá", examples: [
+                { zh: "踢足球很好玩。", pinyin: "Tī zúqiú hěn hǎowán.", vi: "Đá bóng rất vui." },
+                { zh: "哥哥不踢足球。", pinyin: "Gēge bù tī zúqiú.", vi: "Anh trai không đá bóng." },
+                { zh: "週末我們去踢足球。", pinyin: "Zhōumò wǒmen qù tī zúqiú.", vi: "Cuối tuần chúng ta đi đá bóng." }
+            ]},
+            { word: "覺得", pinyin: "juéde", pos: "Động từ", vi: "Cảm thấy, thấy rằng", examples: [
+                { zh: "我覺得這張照片很好看。", pinyin: "Wǒ juéde zhè zhāng zhàopiàn hěn hǎokàn.", vi: "Tôi cảm thấy bức ảnh này rất đẹp." },
+                { zh: "你覺得怎麼樣？", pinyin: "Nǐ juéde zěnmeyàng?", vi: "Bạn cảm thấy thế nào?" },
+                { zh: "我覺得打棒球很好玩。", pinyin: "Wǒ juéde dǎ bàngqiú hěn hǎowán.", vi: "Tôi thấy chơi bóng chày rất vui." }
+            ]},
+            { word: "好玩", pinyin: "hǎowán", pos: "Tính từ", vi: "Vui, thú vị", examples: [
+                { zh: "打網球很好玩。", pinyin: "Dǎ wǎngqiú hěn hǎowán.", vi: "Chơi quần vợt rất vui." },
+                { zh: "游泳好不好玩？", pinyin: "Yóuyǒng hǎo bù hǎowán?", vi: "Bơi lội có vui không?" },
+                { zh: "我覺得踢足球很好玩。", pinyin: "Wǒ juéde tī zúqiú hěn hǎowán.", vi: "Tôi thấy đá bóng rất vui." }
+            ]},
+            { word: "明天", pinyin: "míngtiān", pos: "Danh từ", vi: "Ngày mai", examples: [
+                { zh: "明天是週末。", pinyin: "Míngtiān shì zhōumò.", vi: "Ngày mai là cuối tuần." },
+                { zh: "明天早上你去哪？", pinyin: "Míngtiān zǎoshang nǐ qù nǎ?", vi: "Sáng mai bạn đi đâu?" },
+                { zh: "明天我們去打籃球。", pinyin: "Míngtiān wǒmen qù dǎ lánqiú.", vi: "Sáng mai chúng tôi đi chơi bóng rổ." }
+            ]},
+            { word: "早上", pinyin: "zǎoshang", pos: "Danh từ", vi: "Buổi sáng", examples: [
+                { zh: "明天早上我去運動。", pinyin: "Míngtiān zǎoshang wǒ qù yùndòng.", vi: "Sáng mai tôi đi tập thể dục." },
+                { zh: "早上你喝咖啡嗎？", pinyin: "Zǎoshang nǐ hē kāfēi ma?", vi: "Buổi sáng bạn có uống cà phê không?" },
+                { zh: "早上我和哥哥去游泳。", pinyin: "Zǎoshang wǒ hé gēge qù yóuyǒng.", vi: "Buổi sáng tôi và anh trai đi bơi." }
+            ]},
+            { word: "去", pinyin: "qù", pos: "Động từ", vi: "Đi", examples: [
+                { zh: "明天我們去看書。", pinyin: "Míngtiān wǒmen qù kànshū.", vi: "Ngày mai chúng tôi đi đọc sách." },
+                { zh: "你去哪？", pinyin: "Nǐ qù nǎ?", vi: "Bạn đi đâu?" },
+                { zh: "我去臺灣接伯母。", pinyin: "Wǒ qù Táiwān jiē bómǔ.", vi: "Tôi đi Đài Loan đón bác." }
+            ]},
+            { word: "怎麼樣", pinyin: "zěnmeyàng", pos: "Đại từ", vi: "Như thế nào, thấy sao", examples: [
+                { zh: "我們去游泳，怎麼樣？", pinyin: "Wǒmen qù yóuyǒng, zěnmeyàng?", vi: "Chúng ta đi bơi nhé, thấy sao?" },
+                { zh: "這張照片怎麼樣？", pinyin: "Zhè zhāng zhàopiàn zěnmeyàng?", vi: "Bức ảnh này như thế nào?" },
+                { zh: "明天去打網球，怎麼樣？", pinyin: "Míngtiān qù dǎ wǎngqiú, zěnmeyàng?", vi: "Ngày mai đi chơi quần vợt nhé, thấy sao?" }
+            ]},
+            { word: "啊", pinyin: "a", pos: "Trợ từ", vi: "À, ạ, nhé, đấy", examples: [
+                { zh: "好啊！", pinyin: "Hǎo a!", vi: "Được đấy!" },
+                { zh: "是啊，我很喜歡！", pinyin: "Shì a, wǒ hěn xǐhuān!", vi: "Đúng thế ạ, tôi rất thích!" },
+                { zh: "來啊！", pinyin: "Lái a!", vi: "Đến đây nào!" }
+            ]},
+            { word: "做什麼", pinyin: "zuò shénme", pos: "Cụm từ", vi: "Làm gì?", examples: [
+                { zh: "你週末喜歡做什麼？", pinyin: "Nǐ zhōumò xǐhuān zuò shénme?", vi: "Cuối tuần bạn thích làm gì?" },
+                { zh: "早上你做什麼？", pinyin: "Zǎoshang nǐ zuò shénme?", vi: "Buổi sáng bạn làm gì?" },
+                { zh: "他去做什麼？", pinyin: "Tā qù zuò shénme?", vi: "Anh ấy đi làm gì?" }
+            ]},
+            { word: "好啊", pinyin: "hǎo a", pos: "Cụm từ", vi: "Được đấy! Hay đấy!", examples: [
+                { zh: "我們去打籃球，好啊！", pinyin: "Wǒmen qù dǎ lánqiú, hǎo a!", vi: "Chúng ta đi chơi bóng rổ, được đấy!" },
+                { zh: "明天早上去游泳，好啊！", pinyin: "Míngtiān zǎoshang qù yóuyǒng, hǎo a!", vi: "Sáng mai đi bơi, được đấy!" },
+                { zh: "我們去運動？——好啊！", pinyin: "Wǒmen qù yùndòng? — Hǎo a!", vi: "Chúng ta đi tập thể thao nhé? — Được đấy!" }
+            ]}
+        ];
+
+        const VOCAB_PART_2 = [
+            { word: "白如玉", pinyin: "Bái Rúyù", pos: "Danh từ riêng", vi: "Bạch Như Ngọc", examples: [
+                { zh: "白如玉是美國人。", pinyin: "Bái Rúyù shì Měiguórén.", vi: "Bạch Như Ngọc là người Mỹ." },
+                { zh: "白如玉想學中文。", pinyin: "Bái Rúyù xiǎng xué Zhōngwén.", vi: "Bạch Như Ngọc muốn học tiếng Trung." },
+                { zh: "我和白如玉去看電影。", pinyin: "Wǒ hé Bái Rúyù qù kàn diànyǐng.", vi: "Tôi và Bạch Như Ngọc đi xem phim." }
+            ]},
+            { word: "今天", pinyin: "jīntiān", pos: "Danh từ", vi: "Hôm nay", examples: [
+                { zh: "今天是週末。", pinyin: "Jīntiān shì zhōumò.", vi: "Hôm nay là cuối tuần." },
+                { zh: "今天晚上我們去看電影。", pinyin: "Jīntiān wǎnshang wǒmen qù kàn diànyǐng.", vi: "Tối nay chúng ta đi xem phim." },
+                { zh: "你今天想做什麼？", pinyin: "Nǐ jīntiān xiǎng zuò shénme?", vi: "Hôm nay bạn muốn làm gì?" }
+            ]},
+            { word: "晚上", pinyin: "wǎnshang", pos: "Danh từ", vi: "Buổi tối", examples: [
+                { zh: "今天晚上你想吃什麼菜？", pinyin: "Jīntiān wǎnshang nǐ xiǎng chī shénme cài?", vi: "Tối nay bạn muốn ăn món gì?" },
+                { zh: "晚上我們一起吃晚飯。", pinyin: "Wǎnshang wǒmen yìqǐ chī wǎnfàn.", vi: "Buổi tối chúng ta cùng nhau ăn tối." },
+                { zh: "晚上我不看電影。", pinyin: "Wǎnshang wǒ bù kàn diànyǐng.", vi: "Buổi tối tôi không xem phim." }
+            ]},
+            { word: "看", pinyin: "kàn", pos: "Động từ", vi: "Xem, nhìn, đọc, thăm", examples: [
+                { zh: "我喜歡看臺灣電影。", pinyin: "Wǒ xǐhuān kàn Táiwān diànyǐng.", vi: "Tôi thích xem phim Đài Loan." },
+                { zh: "哥哥喜歡看書。", pinyin: "Gēge xǐhuān kànshū.", vi: "Anh trai thích đọc sách." },
+                { zh: "你想看什麼電影？", pinyin: "Nǐ xiǎng kàn shénme diànyǐng?", vi: "Bạn muốn xem phim gì?" }
+            ]},
+            { word: "電影", pinyin: "diànyǐng", pos: "Danh từ", vi: "Phim, điện ảnh", examples: [
+                { zh: "這是好看的電影。", pinyin: "Zhè shì hǎokàn de diànyǐng.", vi: "Đây là bộ phim hay." },
+                { zh: "你想看美國電影嗎？", pinyin: "Nǐ xiǎng kàn Měiguó diànyǐng ma?", vi: "Bạn muốn xem phim Mỹ không?" },
+                { zh: "看電影可以學中文。", pinyin: "Kàn diànyǐng kěyǐ xué Zhōngwén.", vi: "Xem phim có thể học tiếng Trung." }
+            ]},
+            { word: "妳", pinyin: "nǐ", pos: "Đại từ", vi: "Bạn, chị, em (nữ)", examples: [
+                { zh: "妳是白如玉嗎？", pinyin: "Nǐ shì Bái Rúyù ma?", vi: "Bạn là Bạch Như Ngọc phải không?" },
+                { zh: "妳想吃越南菜嗎？", pinyin: "Nǐ xiǎng chī Yuènán cài ma?", vi: "Bạn muốn ăn món Việt Nam không?" },
+                { zh: "妳喜歡聽什麼音樂？", pinyin: "Nǐ xǐhuān tīng shénme yīnyuè?", vi: "Chị thích nghe nhạc gì?" }
+            ]},
+            { word: "想", pinyin: "xiǎng", pos: "Động từ", vi: "Muốn, nghĩ, nhớ", examples: [
+                { zh: "我想學中文。", pinyin: "Wǒ xiǎng xué Zhōngwén.", vi: "Tôi muốn học tiếng Trung." },
+                { zh: "你想吃晚飯嗎？", pinyin: "Nǐ xiǎng chī wǎnfàn ma?", vi: "Bạn muốn ăn tối không?" },
+                { zh: "媽媽想看照片。", pinyin: "Māma xiǎng kàn zhàopiàn.", vi: "Mẹ muốn xem ảnh." }
+            ]},
+            { word: "還是", pinyin: "háishì", pos: "Liên từ", vi: "Hay là (câu hỏi lựa chọn)", examples: [
+                { zh: "你想喝咖啡還是茶？", pinyin: "Nǐ xiǎng hē kāfēi háishì chá?", vi: "Bạn muốn uống cà phê hay trà?" },
+                { zh: "你想看美國電影還是臺灣電影？", pinyin: "Nǐ xiǎng kàn Měiguó diànyǐng háishì Táiwān diànyǐng?", vi: "Bạn muốn xem phim Mỹ hay phim Đài Loan?" },
+                { zh: "我們去吃越南菜還是臺灣菜？", pinyin: "Wǒmen qù chī Yuènán cài háishì Táiwān cài?", vi: "Chúng ta đi ăn món Việt hay món Đài Loan?" }
+            ]},
+            { word: "吧", pinyin: "ba", pos: "Trợ từ", vi: "Nhé, đi, thôi (gợi ý)", examples: [
+                { zh: "我們看臺灣電影吧！", pinyin: "Wǒmen kàn Táiwān diànyǐng ba!", vi: "Chúng ta xem phim Đài Loan nhé!" },
+                { zh: "我們一起去吃晚飯吧！", pinyin: "Wǒmen yìqǐ qù chī wǎnfàn ba!", vi: "Chúng ta cùng đi ăn tối nhé!" },
+                { zh: "明天去打籃球吧！", pinyin: "Míngtiān qù dǎ lánqiú ba!", vi: "Ngày mai đi chơi bóng rổ nhé!" }
+            ]},
+            { word: "可以", pinyin: "kěyǐ", pos: "Động từ", vi: "Có thể, được phép", examples: [
+                { zh: "看電影可以學中文。", pinyin: "Kàn diànyǐng kěyǐ xué Zhōngwén.", vi: "Xem phim có thể học tiếng Trung." },
+                { zh: "我可以坐嗎？", pinyin: "Wǒ kěyǐ zuò ma?", vi: "Tôi có thể ngồi được không?" },
+                { zh: "你可以 me 和我一起去。", pinyin: "Nǐ kěyǐ hé wǒ yìqǐ qù.", vi: "Bạn có thể đi cùng tôi." }
+            ]},
+            { word: "學", pinyin: "xué", pos: "Động từ", vi: "Học, bắt chước", examples: [
+                { zh: "我想學中文。", pinyin: "Wǒ xiǎng xué Zhōngwén.", vi: "Tôi muốn học tiếng Trung." },
+                { zh: "看電影可以學中文。", pinyin: "Kàn diànyǐng kěyǐ xué Zhōngwén.", vi: "Xem phim có thể học tiếng Trung." },
+                { zh: "安同想學打棒球。", pinyin: "Āntóng xiǎng xué dǎ bàngqiú.", vi: "An Đồng muốn học chơi bóng chày." }
+            ]},
+            { word: "中文", pinyin: "Zhōngwén", pos: "Danh từ", vi: "Tiếng Trung", examples: [
+                { zh: "老師是中文老師。", pinyin: "Lǎoshī shì Zhōngwén lǎoshī.", vi: "Thầy giáo là giáo viên tiếng Trung." },
+                { zh: "學中文很好玩。", pinyin: "Xué Zhōngwén hěn hǎowán.", vi: "Học tiếng Trung rất vui." },
+                { zh: "你想學中文嗎？", pinyin: "Nǐ xiǎng xué Zhōngwén ma?", vi: "Bạn có muốn học tiếng Trung không?" }
+            ]},
+            { word: "一起", pinyin: "yìqǐ", pos: "Phó từ", vi: "Cùng nhau", examples: [
+                { zh: "我們一起吃晚飯。", pinyin: "Wǒmen yìqǐ chī wǎnfàn.", vi: "Chúng ta cùng nhau ăn tối." },
+                { zh: "我和姐姐一起去看電影。", pinyin: "Wǒ hé jiějie yìqǐ qù kàn diànyǐng.", vi: "Tôi và chị gái cùng nhau đi xem phim." },
+                { zh: "我們一起去運動吧！", pinyin: "Wǒmen yìqǐ qù yùndòng ba!", vi: "Chúng ta cùng nhau đi tập thể thao nhé!" }
+            ]},
+            { word: "吃", pinyin: "chī", pos: "Động từ", vi: "Ăn", examples: [
+                { zh: "你想吃什麼？", pinyin: "Nǐ xiǎng chī shénme?", vi: "Bạn muốn ăn gì?" },
+                { zh: "我們去吃晚飯。", pinyin: "Wǒmen qù chī wǎnfàn.", vi: "Chúng ta đi ăn tối." },
+                { zh: "我喜歡吃越南菜。", pinyin: "Wǒ xǐhuān chī Yuènán cài.", vi: "Tôi thích ăn món Việt Nam." }
+            ]},
+            { word: "晚飯", pinyin: "wǎnfàn", pos: "Danh từ", vi: "Cơm tối, bữa tối", examples: [
+                { zh: "晚上我們一起吃晚飯。", pinyin: "Wǎnshang wǒmen yìqǐ chī wǎnfàn.", vi: "Buổi tối chúng ta cùng nhau ăn tối." },
+                { zh: "你想吃晚飯嗎？", pinyin: "Nǐ xiǎng chī wǎnfàn ma?", vi: "Bạn muốn ăn tối không?" },
+                { zh: "今晚的晚飯是越南菜。", pinyin: "Jīnwǎn de wǎnfàn shì Yuènán cài.", vi: "Bữa tối tối nay là món Việt Nam." }
+            ]},
+            { word: "菜", pinyin: "cài", pos: "Danh từ", vi: "Món ăn, rau, gu người yêu", examples: [
+                { zh: "臺灣菜很好。", pinyin: "Táiwān cài hěn hǎo.", vi: "Món ăn Đài Loan rất tuyệt." },
+                { zh: "你想吃什麼菜？", pinyin: "Nǐ xiǎng chī shénme cài?", vi: "Bạn muốn ăn món gì?" },
+                { zh: "我喜歡吃越南菜。", pinyin: "Wǒ xǐhuān chī Yuènán cài.", vi: "Tôi thích ăn món Việt Nam." }
+            ]},
+            { word: "越南", pinyin: "Yuènán", pos: "Danh từ riêng", vi: "Việt Nam", examples: [
+                { zh: "我是越南人。", pinyin: "Wǒ shì Yuènánrén.", vi: "Tôi là người Việt Nam." },
+                { zh: "你喜歡越南菜嗎？", pinyin: "Nǐ xǐhuān Yuènán cài ma?", vi: "Bạn có thích món ăn Việt Nam không?" },
+                { zh: "我們去越南接伯母。", pinyin: "Wǒmen qù Yuènán jiē bómǔ.", vi: "Chúng tôi đi Việt Nam đón bác." }
+            ]},
+            { word: "好不好", pinyin: "hǎo bù hǎo", pos: "Câu hỏi", vi: "Được không?", examples: [
+                { zh: "我們去看電影，好不好？", pinyin: "Wǒmen qù kàn diànyǐng, hǎo bù hǎo?", vi: "Chúng ta đi xem phim nhé, được không?" },
+                { zh: "一起吃晚飯，好不好？", pinyin: "Yìqǐ chī wǎnfàn, hǎo bù hǎo?", vi: "Cùng ăn tối nhé, được không?" },
+                { zh: "明天去打籃球，好不好？", pinyin: "Míngtiān qù dǎ lánqiú, hǎo bù hǎo?", vi: "Ngày mai đi chơi bóng rổ nhé, được không?" }
+            ]}
+        ];
+
+        /* ==================== GRAMMAR POINTS DATA (8 POINTS) ==================== */
+        const GRAMMAR_POINTS = [
+            {
+                num: "1",
+                title: "Phân biệt động từ thể thao 打 (dǎ) & 踢 (tī)",
+                desc: "Trong tiếng Trung, động từ đi kèm môn thể thao phân biệt rõ nét theo bộ phận cơ thể sử dụng (Tay vs Chân):",
+                points: [
+                    "<strong>打 (dǎ):</strong> Dùng cho các môn thể thao thao tác bằng tay (bắt, đập, chuyền, dùng vợt): 打籃球 (bóng rổ), 打棒球 (bóng chày), 打網球 (quần vợt).",
+                    "<strong>踢 (tī):</strong> Dùng cho môn thể thao dùng chân đá: 踢足球 (bóng đá)."
+                ],
+                examples: [
+                    { zh: "我喜歡打籃球，不喜歡打網球。", pinyin: "Wǒ xǐhuān dǎ lánqiú, bù xǐhuān dǎ wǎngqiú.", vi: "Tôi thích chơi bóng rổ, không thích chơi quần vợt." },
+                    { zh: "安同常踢足球。", pinyin: "Āntóng cháng tī zúqiú.", vi: "An Đồng thường đá bóng." }
+                ]
+            },
+            {
+                num: "2",
+                title: "Phó từ tần suất 常 (cháng) và phó từ 也 (yě)",
+                desc: "Phó từ chỉ tần suất 常 (thường) và phó từ 也 (cũng) luôn đứng TRƯỚC động từ hoặc tính từ, sau chủ ngữ.",
+                points: [
+                    "Cấu trúc: <code>[Chủ ngữ] + 常 / 也 + [Động từ / Cụm động từ]</code>",
+                    "Dạng phủ định của 常 là <strong>不常</strong> (không thường xuyên).",
+                    "Nếu dùng cả hai: <strong>也常</strong> (cũng thường xuyên): 我常打籃球，也常踢足球。"
+                ],
+                examples: [
+                    { zh: "我不常聽音樂。", pinyin: "Wǒ bù cháng tīng yīnyuè.", vi: "Tôi không thường nghe nhạc." },
+                    { zh: "他常游泳，我也常游泳。", pinyin: "Tā cháng yóuyǒng, wǒ yě cháng yóuyǒng.", vi: "Anh ấy thường đi bơi, tôi cũng thường đi bơi." }
+                ]
+            },
+            {
+                num: "3",
+                title: "Động từ nêu quan điểm 覺得 (juéde) + Mệnh đề",
+                desc: "覺得 có nghĩa là 'cảm thấy, cho rằng', dùng để đưa ra ý kiến, nhận xét hoặc cảm nhận cá nhân về một hành động hoặc sự vật.",
+                points: [
+                    "Cấu trúc: <code>[Chủ ngữ] + 覺得 + [Mệnh đề / Cụm nhận xét]</code>",
+                    "Mệnh đề sau 覺得 có thể là một câu hoàn chỉnh hoặc cụm danh từ + tính từ."
+                ],
+                examples: [
+                    { zh: "我覺得踢足球很好玩。", pinyin: "Wǒ juéde tī zúqiú hěn hǎowán.", vi: "Tôi thấy đá bóng rất vui." },
+                    { zh: "這張照片，我覺得很好看。", pinyin: "Zhè zhāng zhàopiàn, wǒ juéde hěn hǎokàn.", vi: "Tấm ảnh này tôi cảm thấy rất đẹp." }
+                ]
+            },
+            {
+                num: "4",
+                title: "Câu hỏi đề nghị với 怎麼樣 (zěnmeyàng) & 好不好 (hǎo bù hǎo)",
+                desc: "Dùng ở cuối câu để đưa ra lời đề xuất, rủ rê và hỏi ý kiến đối phương một cách lịch sự, thân mật.",
+                points: [
+                    "<strong>...怎麼樣？ (Thấy sao? Thế nào?):</strong> Chúng ta làm X, bạn thấy thế nào?",
+                    "<strong>...好不好？ (Được không?):</strong> Chúng ta làm X, có được không?",
+                    "Câu trả lời đồng ý nhiệt tình thường dùng: <strong>好啊！ (Hǎo a! - Được đấy!)</strong>"
+                ],
+                examples: [
+                    { zh: "我們早上去踢足球，怎麼樣？", pinyin: "Wǒmen zǎoshang qù tī zúqiú, zěnmeyàng?", vi: "Buổi sáng chúng ta đi đá bóng nhé, thấy sao?" },
+                    { zh: "今天晚上我們去看電影，好不好？", pinyin: "Jīntiān wǎnshang wǒmen qù kàn diànyǐng, hǎo bù hǎo?", vi: "Tối nay chúng ta đi xem phim, được không?" }
+                ]
+            },
+            {
+                num: "5",
+                title: "Câu hỏi lựa chọn A 還是 B (háishì)",
+                desc: "還是 (hay là) được dùng trong câu hỏi lựa chọn giữa hai phương án A hoặc B. Người nghe bắt buộc phải chọn một trong các phương án.",
+                points: [
+                    "Cấu trúc: <code>[Phương án A] + 還是 + [Phương án B] ?</code>",
+                    "Chú ý: 還是 chỉ dùng trong câu hỏi. Trong câu trần thuật khẳng định không dùng 還是."
+                ],
+                examples: [
+                    { zh: "妳想看美國電影還是臺灣電影？", pinyin: "Nǐ xiǎng kàn Měiguó diànyǐng háishì Táiwān diànyǐng?", vi: "Bạn muốn xem phim Mỹ hay là phim Đài Loan?" },
+                    { zh: "你想喝咖啡還是烏龍茶？", pinyin: "Nǐ xiǎng hē kāfēi háishì wūlóngchá?", vi: "Bạn muốn uống cà phê hay trà Ô Long?" }
+                ]
+            },
+            {
+                num: "6",
+                title: "Trợ từ ngữ khí đề nghị 吧 (ba) và 啊 (a)",
+                desc: "Trợ từ ngữ khí đứng ở cuối câu giúp câu nói trở nên tự nhiên, mềm mại và giàu cảm xúc hơn.",
+                points: [
+                    "<strong>吧 (ba):</strong> Biểu thị lời rủ rê, gợi ý nhẹ nhàng (nhé, đi, thôi): 我們看臺灣電影吧！ (Chúng ta xem phim Đài Loan nhé!).",
+                    "<strong>啊 (a):</strong> Biểu thị sự nhiệt tình, mềm hóa câu nói hoặc đáp lại hào hứng: 好啊！ (Được đấy!)."
+                ],
+                examples: [
+                    { zh: "我們一起去吃晚飯吧！", pinyin: "Wǒmen yìqǐ qù chī wǎnfàn ba!", vi: "Chúng ta cùng đi ăn tối nhé!" },
+                    { zh: "A: 明天去打網球？ B: 好啊！", pinyin: "A: Míngtiān qù dǎ wǎngqiú? B: Hǎo a!", vi: "A: Ngày mai đi chơi tennis nhé? B: Được đấy!" }
+                ]
+            },
+            {
+                num: "7",
+                title: "Động từ năng nguyện 想 (xiǎng - muốn) & 可以 (kěyǐ - có thể)",
+                desc: "Đứng trước động từ chính để bổ sung ý nghĩa nguyện vọng hoặc khả năng/sự cho phép.",
+                points: [
+                    "<strong>想 (xiǎng):</strong> Muốn (nguyện vọng chủ quan lịch sự): 我想學中文 (Tôi muốn học tiếng Trung).",
+                    "<strong>可以 (kěyǐ):</strong> Có thể, được phép (diễn tả khả năng hoặc lợi ích): 看電影可以學中文 (Xem phim có thể học tiếng Trung)."
+                ],
+                examples: [
+                    { zh: "美美想吃越南菜。", pinyin: "Měiměi xiǎng chī Yuènán cài.", vi: "Mỹ Mỹ muốn ăn món Việt Nam." },
+                    { zh: "聽音樂可以學中文。", pinyin: "Tīng yīnyuè kěyǐ xué Zhōngwén.", vi: "Nghe nhạc có thể học tiếng Trung." }
+                ]
+            },
+            {
+                num: "8",
+                title: "Trạng từ thời gian (明天早上, 今天晚上) & Phó từ 一起 (yìqǐ)",
+                desc: "Vị trí của trạng từ chỉ thời gian và phó từ phối hợp trong câu tiếng Trung:",
+                points: [
+                    "Trạng từ thời gian (明天早上, 今天晚上) luôn đứng <strong>TRƯỚC động từ chính</strong> (có thể đứng trước hoặc sau chủ ngữ).",
+                    "Phó từ <strong>一起 (yìqǐ - cùng nhau)</strong> luôn đứng ngay trước động từ: <code>[Thời gian] + [Chủ ngữ] + 一起 + [Động từ]</code>."
+                ],
+                examples: [
+                    { zh: "今天晚上我們去看電影。", pinyin: "Jīntiān wǎnshang wǒmen qù kàn diànyǐng.", vi: "Tối nay chúng ta đi xem phim." },
+                    { zh: "晚上我們一起吃晚飯。", pinyin: "Wǎnshang wǒmen yìqǐ chī wǎnfàn.", vi: "Buổi tối chúng ta cùng nhau ăn tối." }
+                ]
+            }
+        ];
+
+        /* ==================== STATE MANAGEMENT ==================== */
+        let currentTTSSpeed = 0.9;
+        let ttsVoices = [];
+        let selectedVoice = null;
+        let isSpeakingDialogue = false;
+        let dialogueTimeout = null;
+        let showPinyin = true;
+        let showTranslation = true;
+
+        /* ==================== INITIALIZATION & TOKENIZER ==================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            initTTSVoices();
+            renderDialogues();
+            renderVocab();
+            renderGrammar();
+            loadZoomSetting();
+
+            // Keyboard ESC to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDictModal();
+            });
+
+            // Backdrop click to close modal
+            document.getElementById('dict-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'dict-modal') closeDictModal();
+            });
+        });
+
+        // Longest-Match-First Tokenizer to wrap Chinese text in clickable word spans
+        function tokenizeChinese(text) {
+            let result = "";
+            let i = 0;
+            const keys = Object.keys(DICTIONARY).sort((a, b) => b.length - a.length);
+
+            while (i < text.length) {
+                let matched = false;
+
+                // Try to match longest dictionary words first
+                for (const word of keys) {
+                    if (text.substr(i, word.length) === word) {
+                        result += `<span class="zh-word" onclick="handleWordClick('${word}')" data-word="${word}">${word}</span>`;
+                        i += word.length;
+                        matched = true;
+                        break;
+                    }
+                }
+
+                // Fallback for single Chinese character
+                if (!matched) {
+                    const char = text[i];
+                    if (/[\u4e00-\u9fa5]/.test(char)) {
+                        result += `<span class="zh-word" onclick="handleWordClick('${char}')" data-word="${char}">${char}</span>`;
+                    } else {
+                        result += char; // Punctuation / space
+                    }
+                    i++;
+                }
+            }
+            return result;
+        }
+
+        /* ==================== TTS SPEECH SYNTHESIS ENGINE ==================== */
+        function initTTSVoices() {
+            if (!('speechSynthesis' in window)) return;
+            
+            function populate() {
+                ttsVoices = window.speechSynthesis.getVoices();
+                const select = document.getElementById('tts-voice');
+                select.innerHTML = '<option value="">Tự động chọn (zh-TW)</option>';
+
+                // Prioritize Taiwan voices (zh-TW)
+                const twVoices = ttsVoices.filter(v => v.lang === 'zh-TW' || v.lang.includes('TW'));
+                const zhVoices = ttsVoices.filter(v => v.lang.startsWith('zh') && !v.lang.includes('TW'));
+
+                const sorted = [...twVoices, ...zhVoices];
+                sorted.forEach((v, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = v.name;
+                    opt.textContent = `${v.name} (${v.lang})`;
+                    if (v.lang === 'zh-TW' || v.lang === 'zh_TW') opt.selected = true;
+                    select.appendChild(opt);
+                });
+            }
+
+            populate();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = populate;
+            }
+        }
+
+        function updateTTSSpeed(speed) {
+            currentTTSSpeed = parseFloat(speed);
+        }
+
+        function speakChineseText(text, onEndCallback = null) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel(); // Stop any playing audio
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = currentTTSSpeed;
+
+            const selectedVoiceName = document.getElementById('tts-voice').value;
+            if (selectedVoiceName) {
+                const voiceObj = ttsVoices.find(v => v.name === selectedVoiceName);
+                if (voiceObj) utterance.voice = voiceObj;
+            } else {
+                // Auto-detect best zh-TW voice
+                const twVoice = ttsVoices.find(v => v.lang === 'zh-TW' || v.lang === 'zh_TW') ||
+                                ttsVoices.find(v => v.lang.startsWith('zh'));
+                if (twVoice) utterance.voice = twVoice;
+            }
+            utterance.lang = utterance.voice ? utterance.voice.lang : 'zh-TW';
+
+            if (onEndCallback) {
+                utterance.onend = onEndCallback;
+                utterance.onerror = onEndCallback;
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function stopAudio() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            isSpeakingDialogue = false;
+            if (dialogueTimeout) clearTimeout(dialogueTimeout);
+            document.querySelectorAll('.speaking-active').forEach(el => el.classList.remove('speaking-active'));
+        }
+
+        /* ==================== DIALOGUE PLAYBACK LOGIC ==================== */
+        function playDialogue(dialogueId) {
+            stopAudio();
+            isSpeakingDialogue = true;
+
+            const list = dialogueId === 'd1' ? DIALOGUE_1 : DIALOGUE_2;
+            let index = 0;
+
+            function playNextLine() {
+                if (!isSpeakingDialogue || index >= list.length) {
+                    stopAudio();
+                    return;
+                }
+
+                // Remove highlight from previous
+                document.querySelectorAll('.speaking-active').forEach(el => el.classList.remove('speaking-active'));
+
+                const lineEl = document.getElementById(`${dialogueId}-line-${index}`);
+                if (lineEl) {
+                    lineEl.classList.add('speaking-active');
+                    lineEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                speakChineseText(list[index].zh, () => {
+                    index++;
+                    dialogueTimeout = setTimeout(playNextLine, 400);
+                });
+            }
+
+            playNextLine();
+        }
+
+        function playSingleLine(zhText, elementId) {
+            stopAudio();
+            document.querySelectorAll('.speaking-active').forEach(el => el.classList.remove('speaking-active'));
+            const lineEl = document.getElementById(elementId);
+            if (lineEl) lineEl.classList.add('speaking-active');
+
+            speakChineseText(zhText, () => {
+                if (lineEl) lineEl.classList.remove('speaking-active');
+            });
+        }
+
+        /* ==================== INTERACTIVE DICTIONARY MODAL ==================== */
+        function handleWordClick(word) {
+            // Speak the word immediately
+            speakChineseText(word);
+
+            const modal = document.getElementById('dict-modal');
+            const modalZh = document.getElementById('modal-zh');
+            const modalPinyin = document.getElementById('modal-pinyin');
+            const modalPos = document.getElementById('modal-pos');
+            const modalMeanings = document.getElementById('modal-meanings');
+            const modalNote = document.getElementById('modal-note');
+
+            modalZh.textContent = word;
+
+            const entry = DICTIONARY[word] || SINGLE_CHAR_FALLBACKS[word];
+            if (entry) {
+                modalPinyin.textContent = entry.pinyin || "";
+                modalPos.textContent = entry.pos || "Từ vựng";
+                
+                modalMeanings.innerHTML = entry.meanings.map((m, idx) => `
+                    <div class="flex items-start gap-2">
+                        <span class="text-sky-600 font-bold">•</span>
+                        <span>${m}</span>
+                    </div>
+                `).join('');
+
+                modalNote.textContent = entry.note || "Văn hóa Đài Loan: Sử dụng phổ biến trong giao tiếp hàng ngày.";
+            } else {
+                modalPinyin.textContent = "";
+                modalPos.textContent = "Hán tự";
+                modalMeanings.innerHTML = `<div>Chữ Hán phồn thể trong bài học.</div>`;
+                modalNote.textContent = "Tra cứu chi tiết từ vựng theo giáo trình TOCFL A1.";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeDictModal() {
+            document.getElementById('dict-modal').classList.add('hidden');
+        }
+
+        function speakModalWord() {
+            const word = document.getElementById('modal-zh').textContent;
+            if (word) speakChineseText(word);
+        }
+
+        /* ==================== RENDERING UI ==================== */
+        function renderDialogues() {
+            // Render Dialogue 1
+            const d1Container = document.getElementById('dialogue1-container');
+            d1Container.innerHTML = DIALOGUE_1.map((item, idx) => `
+                <div id="d1-line-${idx}" class="py-3 px-2 flex items-start gap-3 transition rounded-lg">
+                    <button onclick="playSingleLine('${item.zh}', 'd1-line-${idx}')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center flex-shrink-0 transition" title="Nghe câu này">
+                        ▶
+                    </button>
+                    <div class="space-y-1">
+                        <div class="font-bold text-sky-800 text-sm sm:text-base">${item.speaker}</div>
+                        <div class="text-lg sm:text-xl font-medium font-zh tracking-wide text-slate-900 leading-snug">
+                            ${tokenizeChinese(item.zh)}
+                        </div>
+                        <div class="pinyin-text text-slate-500 font-mono text-xs sm:text-sm">${item.pinyin}</div>
+                        <div class="vi-text text-slate-600 text-xs sm:text-sm font-sans">${item.vi}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Dialogue 2
+            const d2Container = document.getElementById('dialogue2-container');
+            d2Container.innerHTML = DIALOGUE_2.map((item, idx) => `
+                <div id="d2-line-${idx}" class="py-3 px-2 flex items-start gap-3 transition rounded-lg">
+                    <button onclick="playSingleLine('${item.zh}', 'd2-line-${idx}')" class="mt-1 w-8 h-8 rounded-full bg-sky-100 hover:bg-sky-200 text-sky-700 flex items-center justify-center flex-shrink-0 transition" title="Nghe câu này">
+                        ▶
+                    </button>
+                    <div class="space-y-1">
+                        <div class="font-bold text-sky-800 text-sm sm:text-base">${item.speaker}</div>
+                        <div class="text-lg sm:text-xl font-medium font-zh tracking-wide text-slate-900 leading-snug">
+                            ${tokenizeChinese(item.zh)}
+                        </div>
+                        <div class="pinyin-text text-slate-500 font-mono text-xs sm:text-sm">${item.pinyin}</div>
+                        <div class="vi-text text-slate-600 text-xs sm:text-sm font-sans">${item.vi}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderVocab() {
+            // Render Vocab 1 Card list
+            const v1Container = document.getElementById('vocab1-container');
+            v1Container.innerHTML = VOCAB_PART_1.map((item, idx) => `
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:border-sky-300 transition space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-bold text-sky-700 font-zh cursor-pointer hover:underline" onclick="handleWordClick('${item.word}')">${item.word}</span>
+                            <span class="pinyin-text text-slate-500 font-semibold text-sm">${item.pinyin}</span>
+                            <span class="bg-sky-50 text-sky-700 text-xs px-2 py-0.5 rounded font-medium">${item.pos}</span>
+                        </div>
+                        <button onclick="speakChineseText('${item.word}')" class="w-8 h-8 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-600 flex items-center justify-center transition" title="Nghe phát âm từ vựng">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-slate-800 font-semibold text-sm">${item.vi}</div>
+                    
+                    <!-- 3 Cumulative Examples -->
+                    <div class="space-y-2 pt-1">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ví dụ tích lũy (L1+L2+L3P1):</div>
+                        ${item.examples.map((ex, exIdx) => `
+                            <div class="bg-slate-50 p-2.5 rounded-lg text-xs space-y-1 border border-slate-100">
+                                <div class="flex items-center justify-between">
+                                    <div class="font-medium text-slate-800 text-sm font-zh">${tokenizeChinese(ex.zh)}</div>
+                                    <button onclick="speakChineseText('${ex.zh}')" class="text-sky-600 hover:text-sky-800 font-bold px-1.5 py-0.5 rounded bg-white border border-slate-200 text-xs">▶</button>
+                                </div>
+                                <div class="pinyin-text text-slate-400 font-mono">${ex.pinyin}</div>
+                                <div class="vi-text text-slate-600">${ex.vi}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Vocab 2 Card list
+            const v2Container = document.getElementById('vocab2-container');
+            v2Container.innerHTML = VOCAB_PART_2.map((item, idx) => `
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:border-sky-300 transition space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-bold text-sky-700 font-zh cursor-pointer hover:underline" onclick="handleWordClick('${item.word}')">${item.word}</span>
+                            <span class="pinyin-text text-slate-500 font-semibold text-sm">${item.pinyin}</span>
+                            <span class="bg-sky-50 text-sky-700 text-xs px-2 py-0.5 rounded font-medium">${item.pos}</span>
+                        </div>
+                        <button onclick="speakChineseText('${item.word}')" class="w-8 h-8 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-600 flex items-center justify-center transition" title="Nghe phát âm từ vựng">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-slate-800 font-semibold text-sm">${item.vi}</div>
+                    
+                    <!-- 3 Cumulative Examples -->
+                    <div class="space-y-2 pt-1">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ví dụ tích lũy (L1..L3P2):</div>
+                        ${item.examples.map((ex, exIdx) => `
+                            <div class="bg-slate-50 p-2.5 rounded-lg text-xs space-y-1 border border-slate-100">
+                                <div class="flex items-center justify-between">
+                                    <div class="font-medium text-slate-800 text-sm font-zh">${tokenizeChinese(ex.zh)}</div>
+                                    <button onclick="speakChineseText('${ex.zh}')" class="text-sky-600 hover:text-sky-800 font-bold px-1.5 py-0.5 rounded bg-white border border-slate-200 text-xs">▶</button>
+                                </div>
+                                <div class="pinyin-text text-slate-400 font-mono">${ex.pinyin}</div>
+                                <div class="vi-text text-slate-600">${ex.vi}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderGrammar() {
+            const gContainer = document.getElementById('grammar-container');
+            gContainer.innerHTML = GRAMMAR_POINTS.map((g, idx) => `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-sky-50 px-5 py-3 border-b border-sky-100 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-sky-600 text-white font-bold rounded-full flex items-center justify-center text-xs shadow-sm">${g.num}</span>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">${g.title}</h3>
+                    </div>
+                    <div class="p-5 space-y-4 text-xs sm:text-sm">
+                        <p class="text-slate-700 leading-relaxed font-medium">${g.desc}</p>
+                        
+                        <div class="space-y-1.5 bg-slate-50 p-3.5 rounded-lg border border-slate-100">
+                            ${g.points.map(p => `
+                                <div class="flex items-start gap-2 text-slate-700">
+                                    <span class="text-sky-600 font-bold">•</span>
+                                    <div>${p}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Examples -->
+                        <div class="space-y-2">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ví dụ minh họa:</div>
+                            ${g.examples.map(ex => `
+                                <div class="p-3 bg-sky-50/50 rounded-lg border border-sky-100 flex items-start justify-between gap-3">
+                                    <div class="space-y-1">
+                                        <div class="font-bold text-slate-900 text-sm font-zh">${tokenizeChinese(ex.zh)}</div>
+                                        <div class="pinyin-text text-slate-500 font-mono text-xs">${ex.pinyin}</div>
+                                        <div class="vi-text text-slate-600 text-xs">${ex.vi}</div>
+                                    </div>
+                                    <button onclick="speakChineseText('${ex.zh}')" class="px-2.5 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded font-medium text-xs shadow-sm transition flex-shrink-0">
+                                        ▶ Nghe
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* ==================== TAB NAVIGATION & GLOBAL TOGGLES ==================== */
+        function switchTab(tabId) {
+            stopAudio();
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-600 hover:text-sky-700 hover:bg-sky-50 transition";
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-3 py-1.5 rounded-lg font-semibold transition bg-sky-600 text-white shadow-sm";
+            }
+        }
+
+        function togglePinyin() {
+            showPinyin = !showPinyin;
+            document.body.classList.toggle('hide-pinyin', !showPinyin);
+            const btn = document.getElementById('btn-toggle-pinyin');
+            btn.innerHTML = `🔤 <span>Pinyin: ${showPinyin ? 'Hiện' : 'Ẩn'}</span>`;
+        }
+
+        function toggleTranslation() {
+            showTranslation = !showTranslation;
+            document.body.classList.toggle('hide-translation', !showTranslation);
+            const btn = document.getElementById('btn-toggle-trans');
+            btn.innerHTML = `🌐 <span>Dịch: ${showTranslation ? 'Hiện' : 'Ẩn'}</span>`;
+        }
+
+        /* ==================== FONT ZOOM CONTROLLER ==================== */
+        function setZoom(val) {
+            const zoomVal = Math.min(300, Math.max(80, parseInt(val)));
+            document.documentElement.style.fontSize = `${zoomVal}%`;
+            document.getElementById('zoom-slider').value = zoomVal;
+            document.getElementById('zoom-badge').textContent = `${zoomVal}%`;
+            localStorage.setItem('mandarin_lesson_zoom', zoomVal);
+        }
+
+        function adjustZoom(delta) {
+            const current = parseInt(document.getElementById('zoom-slider').value) || 100;
+            setZoom(current + delta);
+        }
+
+        function loadZoomSetting() {
+            const saved = localStorage.getItem('mandarin_lesson_zoom');
+            if (saved) setZoom(saved);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第四課：請問一共多少錢？ (Bài 4: Xin hỏi tổng cộng là bao nhiêu tiền?)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                        zh: ['Noto Sans TC', 'sans-serif']
+                    },
+                    colors: {
+                        sky: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            font-size: 16px;
+            overflow-wrap: anywhere;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .zh-word {
+            cursor: pointer;
+            border-bottom: 1.5px dashed #0284c7;
+            padding-bottom: 1px;
+            transition: all 0.15s ease-in-out;
+            display: inline-block;
+        }
+        .zh-word:hover {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border-bottom-style: solid;
+            border-radius: 2px;
+        }
+        .speaking-active {
+            background-color: #fef08a !important;
+            color: #0f172a !important;
+            box-shadow: 0 0 0 2px #facc15;
+            border-radius: 4px;
+        }
+        .hidden-pinyin .pinyin-text {
+            display: none !important;
+        }
+        .hidden-vi .vi-text {
+            display: none !important;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col font-sans text-slate-800 bg-slate-50 antialiased selection:bg-sky-200 selection:text-sky-900">
+
+    <!-- STICKY TOP NAVBAR (2 ROWS) -->
+    <header class="sticky top-0 z-40 bg-white shadow-md border-b border-sky-100">
+        <!-- ROW 1: Title & Main Global Controls -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-100">
+            <!-- Left: Badge & Title -->
+            <div class="flex items-center gap-3 min-w-0">
+                <span class="shrink-0 bg-sky-600 text-white font-bold text-xs sm:text-sm px-2.5 py-1 rounded-md shadow-sm">
+                    TOCFL A1
+                </span>
+                <h1 class="text-base sm:text-lg lg:text-xl font-bold text-slate-800 truncate" title="第四課：請問一共多少錢？">
+                    第四課：請問一共多少錢？ <span class="text-xs sm:text-sm font-normal text-slate-500 hidden sm:inline">(Bài 4: Xin hỏi tổng cộng là bao nhiêu tiền?)</span>
+                </h1>
+            </div>
+
+            <!-- Right: Speech & View Toggles -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+                <!-- TTS Speed Dropdown -->
+                <div class="flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200">
+                    <span class="px-1.5 text-slate-500 hidden md:inline">Tốc độ:</span>
+                    <select id="tts-speed" class="bg-transparent font-medium text-slate-700 focus:outline-none cursor-pointer pr-1">
+                        <option value="0.75">0.75x Chậm</option>
+                        <option value="0.9" selected>0.9x Vừa</option>
+                        <option value="1.0">1.0x Chuẩn</option>
+                        <option value="1.15">1.15x Nhanh</option>
+                    </select>
+                </div>
+
+                <!-- Voice Selection Dropdown -->
+                <div class="flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200 max-w-[140px] sm:max-w-[200px]">
+                    <span class="px-1.5 text-slate-500 hidden md:inline">Giọng:</span>
+                    <select id="voice-select" class="bg-transparent font-medium text-slate-700 focus:outline-none cursor-pointer truncate w-full">
+                        <option value="">Tự động (zh-TW)</option>
+                    </select>
+                </div>
+
+                <!-- Global Toggles -->
+                <button id="toggle-pinyin-btn" onclick="togglePinyin()" class="px-2.5 py-1.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 font-medium transition flex items-center gap-1 shadow-sm">
+                    <span>🔤 Pinyin:</span> <span id="pinyin-status-text" class="font-bold">Hiện</span>
+                </button>
+
+                <button id="toggle-vi-btn" onclick="toggleVi()" class="px-2.5 py-1.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 font-medium transition flex items-center gap-1 shadow-sm">
+                    <span>🌐 Dịch:</span> <span id="vi-status-text" class="font-bold">Hiện</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ROW 2: Navigation Tabs & Page Zoom Controller -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col md:flex-row items-center justify-between gap-3">
+            <!-- Tabs -->
+            <nav class="flex items-center gap-1 sm:gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0" aria-label="Tabs">
+                <button id="tab-btn-1" onclick="switchTab(1)" class="tab-btn active shrink-0 px-3 py-1.5 rounded-lg font-semibold text-xs sm:text-sm bg-sky-600 text-white shadow-sm transition">
+                    Phần 1: Bài khóa 1 & 19 Từ vựng
+                </button>
+                <button id="tab-btn-2" onclick="switchTab(2)" class="tab-btn shrink-0 px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm text-slate-600 hover:bg-sky-50 hover:text-sky-700 transition">
+                    Phần 2: Bài khóa 2 & 17 Từ vựng
+                </button>
+                <button id="tab-btn-3" onclick="switchTab(3)" class="tab-btn shrink-0 px-3 py-1.5 rounded-lg font-medium text-xs sm:text-sm text-slate-600 hover:bg-sky-50 hover:text-sky-700 transition">
+                    Ngữ pháp trọng tâm (8 điểm)
+                </button>
+            </nav>
+
+            <!-- Page-wide Text Zoom Control -->
+            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs sm:text-sm w-full md:w-auto justify-end">
+                <span class="text-slate-600 font-medium shrink-0">Cỡ chữ:</span>
+                <button onclick="changeZoom(-10)" class="w-6 h-6 rounded bg-white hover:bg-slate-200 border border-slate-300 font-bold text-slate-700 flex items-center justify-center shadow-sm">A-</button>
+                <input type="range" id="zoom-range" min="80" max="300" step="10" value="100" oninput="setZoom(this.value)" class="w-20 sm:w-28 accent-sky-600 cursor-pointer">
+                <span id="zoom-badge" class="font-bold text-sky-700 min-w-[42px] text-center">100%</span>
+                <button onclick="changeZoom(10)" class="w-6 h-6 rounded bg-white hover:bg-slate-200 border border-slate-300 font-bold text-slate-700 flex items-center justify-center shadow-sm">A+</button>
+
+                <!-- Quick Presets -->
+                <div class="hidden lg:flex items-center gap-1 border-l border-slate-300 pl-2 ml-1">
+                    <button onclick="setZoom(100)" class="px-1.5 py-0.5 rounded text-[11px] bg-white hover:bg-slate-200 border border-slate-300 font-medium">100%</button>
+                    <button onclick="setZoom(150)" class="px-1.5 py-0.5 rounded text-[11px] bg-white hover:bg-slate-200 border border-slate-300 font-medium">150%</button>
+                    <button onclick="setZoom(200)" class="px-1.5 py-0.5 rounded text-[11px] bg-white hover:bg-slate-200 border border-slate-300 font-medium">200%</button>
+                    <button onclick="setZoom(300)" class="px-1.5 py-0.5 rounded text-[11px] bg-white hover:bg-slate-200 border border-slate-300 font-medium">300%</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- INSTRUCTION BANNER -->
+    <div class="bg-sky-50 border-b border-sky-100 py-2.5 px-4 sm:px-6 lg:px-8 text-xs sm:text-sm text-sky-900">
+        <div class="max-w-7xl mx-auto flex items-center gap-2">
+            <span class="text-base sm:text-lg shrink-0">💡</span>
+            <span><strong>Mẹo học tập:</strong> Nhấp vào bất kỳ từ tiếng Trung nào (có gạch chân nét đứt) để nghe đọc, xem phiên âm Pinyin, nghĩa tiếng Việt đầy đủ và chú thích văn hóa Đài Loan. Dùng nút <strong class="text-sky-700">▶</strong> để phát âm từng câu hoặc toàn bộ bài khóa.</span>
+        </div>
+    </div>
+
+    <!-- MAIN MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ==================== TAB 1: BÀI KHÓA 1 & TỪ VỰNG 1 ==================== -->
+        <section id="tab-content-1" class="tab-content space-y-8">
+            <!-- Dialogue Section 1 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100">Bài khóa 1</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">課文一：買咖啡和包子</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Mua cà phê và bánh bao (Tại cửa hàng tiện lợi / Tiệm cà phê Đài Loan)</p>
+                    </div>
+                    <!-- Dialogue Controls -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="playFullDialogue('dialogue-1')" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition">
+                            <span>▶ Nghe cả bài khóa</span>
+                        </button>
+                        <button onclick="stopTTS()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm flex items-center gap-1 transition">
+                            <span>⏹️ Dừng</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dialogue Lines List -->
+                <div id="dialogue-1" class="mt-6 space-y-4">
+                    <!-- Line 1 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="老闆：請問你要買什麼？">
+                        <button onclick="speakLine(this.parentElement, '老闆：請問你要買什麼？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-sky-700 uppercase tracking-wide">老闆 (Ông chủ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">請問你要買什麼？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Qǐngwèn nǐ yào mǎi shénme?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Ông chủ: Xin hỏi bạn muốn mua gì?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 2 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：一杯熱咖啡。兩個包子。">
+                        <button onclick="speakLine(this.parentElement, '明華：一杯熱咖啡。兩個包子。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">一杯熱咖啡。兩個包子。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Yì bēi rè kāfēi. Liǎng ge bāozi.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Một ly cà phê nóng. Hai cái bánh bao.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 3 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="老闆：你要大杯、中杯還是小杯？">
+                        <button onclick="speakLine(this.parentElement, '老闆：你要大杯、中杯還是小杯？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-sky-700 uppercase tracking-wide">老闆 (Ông chủ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">你要大杯、中杯還是小杯？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Nǐ yào dà bēi, zhōng bēi háishì xiǎo bēi?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Ông chủ: Bạn muốn ly lớn, ly vừa hay ly nhỏ?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 4 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：大杯。包子請幫我微波。">
+                        <button onclick="speakLine(this.parentElement, '明華：大杯。包子請幫我微波。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">大杯。包子請幫我微波。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Dà bēi. Bāozi qǐng bāng wǒ wéibō.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Ly lớn. Bánh bao làm ơn hâm vi sóng giúp tôi.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 5 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="老闆：好的。請問外帶還是內用？">
+                        <button onclick="speakLine(this.parentElement, '老闆：好的。請問外帶還是內用？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-sky-700 uppercase tracking-wide">老闆 (Ông chủ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">好的。請問外帶還是內用？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Hǎode. Qǐngwèn wàidài háishì nèiyòng?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Ông chủ: Được ạ. Xin hỏi mang đi hay dùng tại chỗ?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 6 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：外帶，一共多少錢？">
+                        <button onclick="speakLine(this.parentElement, '明華：外帶，一共多少錢？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">外帶，一共多少錢？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Wàidài, yígòng duōshǎo qián?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Mang đi, tổng cộng bao nhiêu tiền?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 7 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="老闆：咖啡八十，包子四十，一共一百二十塊。">
+                        <button onclick="speakLine(this.parentElement, '老闆：咖啡八十，包子四十，一共一百二十塊。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-sky-700 uppercase tracking-wide">老闆 (Ông chủ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">咖啡八十，包子四十，一共一百二十塊。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Kāfēi bāshí, bāozi sìshí, yígòng yìbǎi èrshí kuài.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Ông chủ: Cà phê 80, bánh bao 40, tổng cộng 120 đồng (Đài tệ).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vocabulary Section 1 (19 Words) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+                <div class="pb-4 border-b border-slate-100 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100">Từ vựng 1</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">生詞一 (19 Từ vựng Bài khóa 1)</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">Mỗi từ vựng kèm 3 ví dụ thực tế sử dụng từ tích lũy. Nhấp từ để tra chi tiết.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6" id="vocab-grid-1">
+                    <!-- Vocab 1: 一共 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">01</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('一共')">一共</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">yígòng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Phó từ</span>
+                            </div>
+                            <button onclick="speakText('一共')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Tổng cộng, tất cả</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這兩杯咖啡一共一百塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這兩杯咖啡一共一百塊。</div><div class="pinyin-text text-slate-500">Zhè liǎng bēi kāfēi yígòng yìbǎi kuài.</div><div class="vi-text text-slate-600">Hai ly cà phê này tổng cộng 100 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我們班一共有一十個學生。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我們班一共有一十個學生。</div><div class="pinyin-text text-slate-500">Wǒmen bān yígòng yǒu yìshí ge xuéshēng.</div><div class="vi-text text-slate-600">Lớp chúng tôi tổng cộng có 10 học sinh.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('一共多少錢？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">一共多少錢？</div><div class="pinyin-text text-slate-500">Yígòng duōshǎo qián?</div><div class="vi-text text-slate-600">Tổng cộng bao nhiêu tiền?</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 2: 多少 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">02</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('多少')">多少</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">duōshǎo</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Đại từ nghi vấn</span>
+                            </div>
+                            <button onclick="speakText('多少')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Bao nhiêu (hỏi số lượng, giá cả)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請問這杯咖啡多少錢？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請問這杯咖啡多少錢？</div><div class="pinyin-text text-slate-500">Qǐngwèn zhè bēi kāfēi duōshǎo qián?</div><div class="vi-text text-slate-600">Xin hỏi ly cà phê này bao nhiêu tiền?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你家有多少人？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你家有多少人？</div><div class="pinyin-text text-slate-500">Nǐ jiā yǒu duōshǎo rén?</div><div class="vi-text text-slate-600">Nhà bạn có bao nhiêu người?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你要買多少？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你要買多少？</div><div class="pinyin-text text-slate-500">Nǐ yào mǎi duōshǎo?</div><div class="vi-text text-slate-600">Bạn muốn mua bao nhiêu?</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 3: 錢 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">03</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('錢')">錢</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">qián</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Danh từ</span>
+                            </div>
+                            <button onclick="speakText('錢')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Tiền, tiền bạc</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我沒有錢。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我沒有錢。</div><div class="pinyin-text text-slate-500">Wǒ méiyǒu qián.</div><div class="vi-text text-slate-600">Tôi không có tiền.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這包子多少錢？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這包子多少錢？</div><div class="pinyin-text text-slate-500">Zhè bāozi duōshǎo qián?</div><div class="vi-text text-slate-600">Bánh bao này bao nhiêu tiền?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這是我家人的錢。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這是我家人的錢。</div><div class="pinyin-text text-slate-500">Zhè shì wǒ jiārén de qián.</div><div class="vi-text text-slate-600">Đây là tiền của người nhà tôi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 4: 老闆 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">04</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('老闆')">老闆</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">lǎobǎn</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Danh từ</span>
+                            </div>
+                            <button onclick="speakText('老闆')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Ông chủ, chủ quán, sếp</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('老闆，我要買兩個包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">老闆，我要買兩個包子。</div><div class="pinyin-text text-slate-500">Lǎobǎn, wǒ yào mǎi liǎng ge bāozi.</div><div class="vi-text text-slate-600">Ông chủ, tôi muốn mua hai cái bánh bao.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('老闆人很好。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">老闆人很好。</div><div class="pinyin-text text-slate-500">Lǎobǎn rén hěn hǎo.</div><div class="vi-text text-slate-600">Ông chủ rất tốt tính.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請問老闆在嗎？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請問老闆在嗎？</div><div class="pinyin-text text-slate-500">Qǐngwèn lǎobǎn zài ma?</div><div class="vi-text text-slate-600">Xin hỏi ông chủ có ở đây không?</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 5: 買 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">05</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('買')">買</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">mǎi</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ</span>
+                            </div>
+                            <button onclick="speakText('買')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Mua</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我想買一杯熱咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我想買一杯熱咖啡。</div><div class="pinyin-text text-slate-500">Wǒ xiǎng mǎi yì bēi rè kāfēi.</div><div class="vi-text text-slate-600">Tôi muốn mua một ly cà phê nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你要買什麼？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你要買什麼？</div><div class="pinyin-text text-slate-500">Nǐ yào mǎi shénme?</div><div class="vi-text text-slate-600">Bạn muốn mua gì?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我不買包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我不買包子。</div><div class="pinyin-text text-slate-500">Wǒ bù mǎi bāozi.</div><div class="vi-text text-slate-600">Tôi không mua bánh bao.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 6: 杯 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">06</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('杯')">杯</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">bēi</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Lượng từ / DT</span>
+                            </div>
+                            <button onclick="speakText('杯')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Cốc, ly (lượng từ cho thức uống)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請給我一大杯水。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請給我一大杯水。</div><div class="pinyin-text text-slate-500">Qǐng gěi wǒ yí dà bēi shuǐ.</div><div class="vi-text text-slate-600">Cho tôi một cốc nước lớn.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我喝了兩杯熱茶。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我喝了兩杯熱茶。</div><div class="pinyin-text text-slate-500">Wǒ hē le liǎng bēi rè chá.</div><div class="vi-text text-slate-600">Tôi đã uống hai cốc trà nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡八十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡八十塊。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi bāshí kuài.</div><div class="vi-text text-slate-600">Ly cà phê này 80 đồng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 7: 熱 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">07</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('熱')">熱</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">rè</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('熱')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Nóng (nhiệt độ, đồ ăn/uống)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡很熱。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡很熱。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi hěn rè.</div><div class="vi-text text-slate-600">Ly cà phê này rất nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我想喝熱茶。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我想喝熱茶。</div><div class="pinyin-text text-slate-500">Wǒ xiǎng hē rè chá.</div><div class="vi-text text-slate-600">Tôi muốn uống trà nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('熱包子很好吃。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">熱包子很好吃。</div><div class="pinyin-text text-slate-500">Rè bāozi hěn hǎochī.</div><div class="vi-text text-slate-600">Bánh bao nóng rất ngon.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 8: 包子 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">08</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('包子')">包子</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">bāozi</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Danh từ</span>
+                            </div>
+                            <button onclick="speakText('包子')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Bánh bao</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這是一個大包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這是一個大包子。</div><div class="pinyin-text text-slate-500">Zhè shì yí ge dà bāozi.</div><div class="vi-text text-slate-600">Đây là một cái bánh bao lớn.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要買兩個包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要買兩個包子。</div><div class="pinyin-text text-slate-500">Wǒ yào mǎi liǎng ge bāozi.</div><div class="vi-text text-slate-600">Tôi muốn mua hai cái bánh bao.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('包子一個二十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">包子一個二十塊。</div><div class="pinyin-text text-slate-500">Bāozi yí ge èrshí kuài.</div><div class="vi-text text-slate-600">Bánh bao một cái 20 đồng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 9: 要 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">09</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('要')">要</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">yào</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ / Trợ DT</span>
+                            </div>
+                            <button onclick="speakText('要')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Muốn, cần, lấy; phải; sắp</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你要買大杯還是小杯？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你要買大杯還是小杯？</div><div class="pinyin-text text-slate-500">Nǐ yào mǎi dà bēi háishì xiǎo bēi?</div><div class="vi-text text-slate-600">Bạn muốn mua ly lớn hay ly nhỏ?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要外帶。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要外帶。</div><div class="pinyin-text text-slate-500">Wǒ yào wàidài.</div><div class="vi-text text-slate-600">Tôi muốn mang đi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你要去學校嗎？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你要去學校嗎？</div><div class="pinyin-text text-slate-500">Nǐ yào qù xuéxiào ma?</div><div class="vi-text text-slate-600">Bạn có muốn đến trường không?</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 10: 大 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">10</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('大')">大</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">dà</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('大')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">To, lớn (kích cỡ, tuổi tác)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡很大。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡很大。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi hěn dà.</div><div class="vi-text text-slate-600">Cốc cà phê này rất to.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要一大杯熱咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要一大杯熱咖啡。</div><div class="pinyin-text text-slate-500">Wǒ yào yí dà bēi rè kāfēi.</div><div class="vi-text text-slate-600">Tôi muốn một ly cà phê nóng cỡ lớn.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這家學校很大。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這家學校很大。</div><div class="pinyin-text text-slate-500">Zhè jiā xuéxiào hěn dà.</div><div class="vi-text text-slate-600">Trường học này rất lớn.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 11: 中 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">11</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('中')">中</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">zhōng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ / DT</span>
+                            </div>
+                            <button onclick="speakText('中')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Vừa, cỡ trung; ở giữa</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要中杯咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要中杯咖啡。</div><div class="pinyin-text text-slate-500">Wǒ yào zhōng bēi kāfēi.</div><div class="vi-text text-slate-600">Tôi muốn ly cà phê cỡ vừa.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這不是大杯，是中杯。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這不是大杯，是中杯。</div><div class="pinyin-text text-slate-500">Zhè bú shì dà bēi, shì zhōng bēi.</div><div class="vi-text text-slate-600">Đây không phải ly lớn, là ly vừa.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('中杯六十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">中杯六十塊。</div><div class="pinyin-text text-slate-500">Zhōng bēi liùshí kuài.</div><div class="vi-text text-slate-600">Ly vừa 60 đồng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 12: 小 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">12</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('小')">小</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">xiǎo</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('小')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Nhỏ, bé (kích cỡ, tuổi tác)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡太小了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡太小了。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi tài xiǎo le.</div><div class="vi-text text-slate-600">Cốc cà phê này nhỏ quá rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這是一個小包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這是一個小包子。</div><div class="pinyin-text text-slate-500">Zhè shì yí ge xiǎo bāozi.</div><div class="vi-text text-slate-600">Đây là một chiếc bánh bao nhỏ.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('小杯四十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">小杯四十塊。</div><div class="pinyin-text text-slate-500">Xiǎo bēi sìshí kuài.</div><div class="vi-text text-slate-600">Ly nhỏ 40 đồng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 13: 幫 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">13</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('幫')">幫</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">bāng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ</span>
+                            </div>
+                            <button onclick="speakText('幫')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Giúp, giúp đỡ</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請幫我買一杯熱咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請幫我買一杯熱咖啡。</div><div class="pinyin-text text-slate-500">Qǐng bāng wǒ mǎi yì bēi rè kāfēi.</div><div class="vi-text text-slate-600">Làm ơn mua giúp tôi một ly cà phê nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我幫你問老闆。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我幫你問老闆。</div><div class="pinyin-text text-slate-500">Wǒ bāng nǐ wèn lǎobǎn.</div><div class="vi-text text-slate-600">Tôi giúp bạn hỏi ông chủ.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請幫我微波包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請幫我微波包子。</div><div class="pinyin-text text-slate-500">Qǐng bāng wǒ wéibō bāozi.</div><div class="vi-text text-slate-600">Xin hâm vi sóng bánh bao giúp tôi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 14: 微波 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">14</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('微波')">微波</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">wéibō</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ / DT</span>
+                            </div>
+                            <button onclick="speakText('微波')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Hâm nóng bằng lò vi sóng; sóng vi ba</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請幫我微波這個包子。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請幫我微波這個包子。</div><div class="pinyin-text text-slate-500">Qǐng bāng wǒ wéibō zhè ge bāozi.</div><div class="vi-text text-slate-600">Vui lòng hâm vi sóng chiếc bánh bao này giúp tôi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('包子要微波嗎？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">包子要微波嗎？</div><div class="pinyin-text text-slate-500">Bāozi yào wéibō ma?</div><div class="vi-text text-slate-600">Bánh bao có cần hâm vi sóng không?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要微波。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要微波。</div><div class="pinyin-text text-slate-500">Wǒ yào wéibō.</div><div class="vi-text text-slate-600">Tôi muốn hâm nóng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 15: 百 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">15</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('百')">百</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">bǎi</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Số từ</span>
+                            </div>
+                            <button onclick="speakText('百')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Trăm (100)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡一百塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡一百塊。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi yìbǎi kuài.</div><div class="vi-text text-slate-600">Cốc cà phê này 100 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('一共一百二十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">一共一百二十塊。</div><div class="pinyin-text text-slate-500">Yígòng yìbǎi èrshí kuài.</div><div class="vi-text text-slate-600">Tổng cộng 120 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這學校有一百位學生。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這學校有一百位學生。</div><div class="pinyin-text text-slate-500">Zhè xuéxiào yǒu yìbǎi wèi xuéshēng.</div><div class="vi-text text-slate-600">Trường học này có 100 học sinh.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 16: 塊 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">16</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('塊')">塊</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">kuài</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Lượng từ</span>
+                            </div>
+                            <button onclick="speakText('塊')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Đồng (đơn vị tiền tệ khẩu ngữ Đài Loan = 元); miếng, cục</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這包子一個二十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這包子一個二十塊。</div><div class="pinyin-text text-slate-500">Zhè bāozi yí ge èrshí kuài.</div><div class="vi-text text-slate-600">Bánh bao này một cái 20 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請給我五十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請給我五十塊。</div><div class="pinyin-text text-slate-500">Qǐng gěi wǒ wǔshí kuài.</div><div class="vi-text text-slate-600">Làm ơn đưa tôi 50 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('一共八十塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">一共八十塊。</div><div class="pinyin-text text-slate-500">Yígòng bāshí kuài.</div><div class="vi-text text-slate-600">Tổng cộng 80 đồng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 17: 好的 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">17</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('好的')">好的</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">hǎo de</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Cụm từ</span>
+                            </div>
+                            <button onclick="speakText('好的')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Được, đồng ý, vâng ạ</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('好的，我幫你買。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">好的，我幫你買。</div><div class="pinyin-text text-slate-500">Hǎode, wǒ bāng nǐ mǎi.</div><div class="vi-text text-slate-600">Được ạ, tôi sẽ mua giúp bạn.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('好的，沒問題。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">好的，沒問題。</div><div class="pinyin-text text-slate-500">Hǎode, méi wèntí.</div><div class="vi-text text-slate-600">Vâng ạ, không vấn đề gì.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('好的，請等一下。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">好的，請等一下。</div><div class="pinyin-text text-slate-500">Hǎode, qǐng děng yíxià.</div><div class="vi-text text-slate-600">Vâng ạ, xin chờ một chút.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 18: 外帶 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">18</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('外帶')">外帶</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">wàidài</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ</span>
+                            </div>
+                            <button onclick="speakText('外帶')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Mang đi (đồ ăn, thức uống)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('請問你要內用還是外帶？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">請問你要內用還是外帶？</div><div class="pinyin-text text-slate-500">Qǐngwèn nǐ yào nèiyòng háishì wàidài?</div><div class="vi-text text-slate-600">Xin hỏi bạn dùng tại chỗ hay mang đi?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要外帶一杯熱咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要外帶一杯熱咖啡。</div><div class="pinyin-text text-slate-500">Wǒ yào wàidài yì bēi rè kāfēi.</div><div class="vi-text text-slate-600">Tôi muốn mang đi một ly cà phê nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('包子外帶。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">包子外帶。</div><div class="pinyin-text text-slate-500">Bāozi wàidài.</div><div class="vi-text text-slate-600">Bánh bao mang đi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 19: 內用 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">19</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('內用')">內用</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">nèiyòng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ</span>
+                            </div>
+                            <button onclick="speakText('內用')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Dùng tại chỗ (ăn uống tại quán)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我們要在這裡內用。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我們要在這裡內用。</div><div class="pinyin-text text-slate-500">Wǒmen yào zài zhèlǐ nèiyòng.</div><div class="vi-text text-slate-600">Chúng tôi muốn dùng tại chỗ ở đây.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('內用一杯咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">內用一杯咖啡。</div><div class="pinyin-text text-slate-500">Nèiyòng yì bēi kāfēi.</div><div class="vi-text text-slate-600">Dùng tại chỗ một ly cà phê.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('內用還是外帶？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">內用還是外帶？</div><div class="pinyin-text text-slate-500">Nèiyòng háishì wàidài?</div><div class="vi-text text-slate-600">Dùng tại chỗ hay mang đi?</div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 2: BÀI KHÓA 2 & TỪ VỰNG 2 ==================== -->
+        <section id="tab-content-2" class="tab-content space-y-8 hidden">
+            <!-- Dialogue Section 2 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100">Bài khóa 2</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">課文二：買新手機</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Mua điện thoại mới (Trao đổi giữa Nguyệt Mỹ và Minh Hoa)</p>
+                    </div>
+                    <!-- Dialogue Controls -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="playFullDialogue('dialogue-2')" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition">
+                            <span>▶ Nghe cả bài khóa</span>
+                        </button>
+                        <button onclick="stopTTS()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm flex items-center gap-1 transition">
+                            <span>⏹️ Dừng</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dialogue Lines List -->
+                <div id="dialogue-2" class="mt-6 space-y-4">
+                    <!-- Line 1 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="月美：我想買一支新手機。">
+                        <button onclick="speakLine(this.parentElement, '月美：我想買一支新手機。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-purple-700 uppercase tracking-wide">月美 (Nguyệt Mỹ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">我想買一支新手機。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Wǒ xiǎng mǎi yì zhī xīn shǒujī.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Nguyệt Mỹ: Mình muốn mua một chiếc điện thoại mới.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 2 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：妳的手機很好。為什麼要買新的？">
+                        <button onclick="speakLine(this.parentElement, '明華：妳的手機很好。為什麼要買新的？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">妳的手機很好。為什麼要買新的？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Nǐ de shǒujī hěn hǎo. Wèishénme yào mǎi xīn de?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Điện thoại của bạn rất tốt mà. Tại sao lại muốn mua cái mới?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 3 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="月美：我這支手機太舊了，不好看。">
+                        <button onclick="speakLine(this.parentElement, '月美：我這支手機太舊了，不好看。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-purple-700 uppercase tracking-wide">月美 (Nguyệt Mỹ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">我這支手機太舊了，不好看。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Wǒ zhè zhī shǒujī tài jiù le, bù hǎokàn.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Nguyệt Mỹ: Chiếc điện thoại này của mình cũ quá rồi, không đẹp nữa.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 4 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：妳想買哪種手機？">
+                        <button onclick="speakLine(this.parentElement, '明華：妳想買哪種手機？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">妳想買哪種手機？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Nǐ xiǎng mǎi nǎ zhǒng shǒujī?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Bạn muốn mua loại điện thoại nào?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 5 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="月美：能照相也能上網。">
+                        <button onclick="speakLine(this.parentElement, '月美：能照相也能上網。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-purple-700 uppercase tracking-wide">月美 (Nguyệt Mỹ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">能照相也能上網。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Néng zhàoxiàng yě néng shàngwǎng.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Nguyệt Mỹ: Có thể chụp ảnh và cũng có thể lên mạng.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 6 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：那種手機很好，我哥哥有一支。">
+                        <button onclick="speakLine(this.parentElement, '明華：那種手機很好，我哥哥有一支。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">那種手機很好，我哥哥有一支。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Nà zhǒng shǒujī hěn hǎo, wǒ gēge yǒu yì zhī.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Loại điện thoại đó rất tốt, anh trai mình có một chiếc.</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 7 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="月美：貴不貴？一支賣多少錢？">
+                        <button onclick="speakLine(this.parentElement, '月美：貴不貴？一支賣多少錢？')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-purple-700 uppercase tracking-wide">月美 (Nguyệt Mỹ)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">貴不貴？一支賣多少錢？</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Guì bù guì? Yì zhī mài duōshǎo qián?</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Nguyệt Mỹ: Có đắt không? Một chiếc bán bao nhiêu tiền?</div>
+                        </div>
+                    </div>
+
+                    <!-- Line 8 -->
+                    <div class="dialogue-line p-3.5 rounded-xl border border-slate-100 hover:border-sky-200 hover:bg-sky-50/30 transition flex gap-3 items-start group" data-sentence="明華：那種手機不便宜。一支要一萬五千多。">
+                        <button onclick="speakLine(this.parentElement, '明華：那種手機不便宜。一支要一萬五千多。')" class="mt-1 shrink-0 w-8 h-8 rounded-full bg-sky-100 text-sky-700 group-hover:bg-sky-600 group-hover:text-white flex items-center justify-center font-bold text-xs transition shadow-sm" title="Nghe câu này">▶</button>
+                        <div class="flex-grow space-y-1">
+                            <div class="text-xs font-bold text-emerald-700 uppercase tracking-wide">明華 (Minh Hoa)</div>
+                            <div class="text-base sm:text-lg lg:text-xl font-medium text-slate-900 zh-text">那種手機不便宜。一支要一萬五千多。</div>
+                            <div class="pinyin-text text-xs sm:text-sm text-sky-800 font-medium">Nà zhǒng shǒujī bù piányi. Yì zhī yào yíwàn wǔqiān duō.</div>
+                            <div class="vi-text text-xs sm:text-sm text-slate-600">Minh Hoa: Loại điện thoại đó không rẻ đâu. Một chiếc tốn hơn 15.000 đồng (Đài tệ).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vocabulary Section 2 (17 Words) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+                <div class="pb-4 border-b border-slate-100 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100">Từ vựng 2</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">生詞二 (17 Từ vựng Bài khóa 2)</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">Mỗi từ vựng kèm 3 ví dụ tích lũy. Nhấp vào từ để xem tra cứu từ điển.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6" id="vocab-grid-2">
+                    <!-- Vocab 1: 支 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">01</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('支')">支</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">zhī</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Lượng từ</span>
+                            </div>
+                            <button onclick="speakText('支')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Chiếc, cây (lượng từ cho điện thoại, bút, đồ vật dạng thon dài tại Đài Loan)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我有一支新手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我有一支新手機。</div><div class="pinyin-text text-slate-500">Wǒ yǒu yì zhī xīn shǒujī.</div><div class="vi-text text-slate-600">Tôi có một chiếc điện thoại mới.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機多少錢？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機多少錢？</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī duōshǎo qián?</div><div class="vi-text text-slate-600">Chiếc điện thoại này bao nhiêu tiền?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('哥哥有兩支手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">哥哥有兩支手機。</div><div class="pinyin-text text-slate-500">Gēge yǒu liǎng zhī shǒujī.</div><div class="vi-text text-slate-600">Anh trai có hai chiếc điện thoại.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 2: 新 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">02</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('新')">新</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">xīn</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('新')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Mới</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我要買新手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我要買新手機。</div><div class="pinyin-text text-slate-500">Wǒ yào mǎi xīn shǒujī.</div><div class="vi-text text-slate-600">Tôi muốn mua điện thoại mới.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這是一本新書。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這是一本新書。</div><div class="pinyin-text text-slate-500">Zhè shì yì běn xīn shū.</div><div class="vi-text text-slate-600">Đây là một cuốn sách mới.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('他是我們的新老師。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">他是我們的新老師。</div><div class="pinyin-text text-slate-500">Tā shì wǒmen de xīn lǎoshī.</div><div class="vi-text text-slate-600">Thầy ấy là giáo viên mới của chúng tôi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 3: 手機 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">03</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('手機')">手機</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">shǒujī</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Danh từ</span>
+                            </div>
+                            <button onclick="speakText('手機')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Điện thoại di động</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('妳的手機很好看。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">妳的手機很好看。</div><div class="pinyin-text text-slate-500">Nǐ de shǒujī hěn hǎokàn.</div><div class="vi-text text-slate-600">Điện thoại của bạn rất đẹp.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我想買手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我想買手機。</div><div class="pinyin-text text-slate-500">Wǒ xiǎng mǎi shǒujī.</div><div class="vi-text text-slate-600">Tôi muốn mua điện thoại.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機很貴。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機很貴。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī hěn guì.</div><div class="vi-text text-slate-600">Chiếc điện thoại này rất đắt.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 4: 太 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">04</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('太')">太</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">tài</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Phó từ</span>
+                            </div>
+                            <button onclick="speakText('太')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Quá, lắm (thường dùng trong cấu trúc 太...了)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡太熱了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡太熱了。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi tài rè le.</div><div class="vi-text text-slate-600">Cốc cà phê này nóng quá rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機太貴了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機太貴了。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī tài guì le.</div><div class="vi-text text-slate-600">Chiếc điện thoại này đắt quá rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('包子太小了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">包子太小了。</div><div class="pinyin-text text-slate-500">Bāozi tài xiǎo le.</div><div class="vi-text text-slate-600">Bánh bao nhỏ quá rồi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 5: 舊 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">05</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('舊')">舊</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">jiù</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('舊')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Cũ (đồ vật, nhà cửa)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我的手機太舊了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我的手機太舊了。</div><div class="pinyin-text text-slate-500">Wǒ de shǒujī tài jiù le.</div><div class="vi-text text-slate-600">Điện thoại của tôi cũ quá rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這本書很舊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這本書很舊。</div><div class="pinyin-text text-slate-500">Zhè běn shū hěn jiù.</div><div class="vi-text text-slate-600">Cuốn sách này rất cũ.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我不要舊手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我不要舊手機。</div><div class="pinyin-text text-slate-500">Wǒ bú yào jiù shǒujī.</div><div class="vi-text text-slate-600">Tôi không lấy điện thoại cũ.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 6: 了 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">06</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('了')">了</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">le</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Trợ từ</span>
+                            </div>
+                            <button onclick="speakText('了')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Rồi (biểu thị sự thay đổi trạng thái hoặc hoàn thành)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我買了新手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我買了新手機。</div><div class="pinyin-text text-slate-500">Wǒ mǎi le xīn shǒujī.</div><div class="vi-text text-slate-600">Tôi đã mua điện thoại mới rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('手機太舊了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">手機太舊了。</div><div class="pinyin-text text-slate-500">Shǒujī tài jiù le.</div><div class="vi-text text-slate-600">Điện thoại cũ quá rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我喝了熱咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我喝了熱咖啡。</div><div class="pinyin-text text-slate-500">Wǒ hē le rè kāfēi.</div><div class="vi-text text-slate-600">Tôi đã uống cà phê nóng rồi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 7: 種 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">07</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('種')">種</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">zhǒng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Lượng từ</span>
+                            </div>
+                            <button onclick="speakText('種')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Loại, kiểu, chủng loại</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你喜歡哪種手機？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你喜歡哪種手機？</div><div class="pinyin-text text-slate-500">Nǐ xǐhuān nǎ zhǒng shǒujī?</div><div class="vi-text text-slate-600">Bạn thích loại điện thoại nào?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('那種手機很好。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">那種手機很好。</div><div class="pinyin-text text-slate-500">Nà zhǒng shǒujī hěn hǎo.</div><div class="vi-text text-slate-600">Loại điện thoại đó rất tốt.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這種包子很好吃。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這種包子很好吃。</div><div class="pinyin-text text-slate-500">Zhè zhǒng bāozi hěn hǎochī.</div><div class="vi-text text-slate-600">Loại bánh bao này rất ngon.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 8: 能 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">08</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('能')">能</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">néng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Trợ động từ</span>
+                            </div>
+                            <button onclick="speakText('能')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Có thể (năng lực, điều kiện, chức năng)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機能照相。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機能照相。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī néng zhàoxiàng.</div><div class="vi-text text-slate-600">Chiếc điện thoại này có thể chụp ảnh.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我能幫你買。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我能幫你買。</div><div class="pinyin-text text-slate-500">Wǒ néng bāng nǐ mǎi.</div><div class="vi-text text-slate-600">Tôi có thể mua giúp bạn.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('能照相也能上網。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">能照相也能上網。</div><div class="pinyin-text text-slate-500">Néng zhàoxiàng yě néng shàngwǎng.</div><div class="vi-text text-slate-600">Có thể chụp ảnh cũng có thể lên mạng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 9: 上網 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">09</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('上網')">上網</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">shàngwǎng</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ</span>
+                            </div>
+                            <button onclick="speakText('上網')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Lên mạng, truy cập Internet</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('我想用手機上網。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">我想用手機上網。</div><div class="pinyin-text text-slate-500">Wǒ xiǎng yòng shǒujī shàngwǎng.</div><div class="vi-text text-slate-600">Tôi muốn dùng điện thoại để lên mạng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機能上網嗎？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機能上網嗎？</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī néng shàngwǎng ma?</div><div class="vi-text text-slate-600">Chiếc điện thoại này có thể lên mạng không?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('在學校可以上網。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">在學校可以上網。</div><div class="pinyin-text text-slate-500">Zài xuéxiào kěyǐ shàngwǎng.</div><div class="vi-text text-slate-600">Ở trường có thể lên mạng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 10: 那 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">10</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('那')">那</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">nà</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Đại từ</span>
+                            </div>
+                            <button onclick="speakText('那')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Kia, đó (chỉ đối tượng ở xa); vậy thì</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('那種手機太貴了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">那種手機太貴了。</div><div class="pinyin-text text-slate-500">Nà zhǒng shǒujī tài guì le.</div><div class="vi-text text-slate-600">Loại điện thoại đó đắt quá rồi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('那是我的手機。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">那是我的手機。</div><div class="pinyin-text text-slate-500">Nà shì wǒ de shǒujī.</div><div class="vi-text text-slate-600">Kia là điện thoại của tôi.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('那是我們老師。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">那是我們老師。</div><div class="pinyin-text text-slate-500">Nà shì wǒmen lǎoshī.</div><div class="vi-text text-slate-600">Kia là thầy giáo của chúng tôi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 11: 貴 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">11</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('貴')">貴</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">guì</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('貴')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Đắt, mắc; quý, tôn quý (như 貴姓)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機太貴了，我不買。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機太貴了，我不買。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī tài guì le, wǒ bù mǎi.</div><div class="vi-text text-slate-600">Chiếc điện thoại này đắt quá rồi, tôi không mua.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('貴不貴？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">貴不貴？</div><div class="pinyin-text text-slate-500">Guì bù guì?</div><div class="vi-text text-slate-600">Có đắt không?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這杯咖啡不貴。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這杯咖啡不貴。</div><div class="pinyin-text text-slate-500">Zhè bēi kāfēi bú guì.</div><div class="vi-text text-slate-600">Cốc cà phê này không đắt.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 12: 賣 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">12</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('賣')">賣</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">mài</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Động từ</span>
+                            </div>
+                            <button onclick="speakText('賣')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Bán</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機賣一萬塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機賣一萬塊。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī mài yí wàn kuài.</div><div class="vi-text text-slate-600">Chiếc điện thoại này bán 10.000 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('老闆賣熱咖啡。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">老闆賣熱咖啡。</div><div class="pinyin-text text-slate-500">Lǎobǎn mài rè kāfēi.</div><div class="vi-text text-slate-600">Ông chủ bán cà phê nóng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這包子怎麼賣？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這包子怎麼賣？</div><div class="pinyin-text text-slate-500">Zhè bāozi zěnme mài?</div><div class="vi-text text-slate-600">Bánh bao này bán thế nào?</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 13: 便宜 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">13</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('便宜')">便宜</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">piányi</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Tính từ</span>
+                            </div>
+                            <button onclick="speakText('便宜')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Rẻ, giá hời</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機很便宜。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機很便宜。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī hěn piányi.</div><div class="vi-text text-slate-600">Chiếc điện thoại này rất rẻ.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('包子不貴，很便宜。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">包子不貴，很便宜。</div><div class="pinyin-text text-slate-500">Bāozi bú guì, hěn piányi.</div><div class="vi-text text-slate-600">Bánh bao không đắt, rất rẻ.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('那種手機不便宜。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">那種手機不便宜。</div><div class="pinyin-text text-slate-500">Nà zhǒng shǒujī bù piányi.</div><div class="vi-text text-slate-600">Loại điện thoại đó không rẻ.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 14: 萬 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">14</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('萬')">萬</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">wàn</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Số từ</span>
+                            </div>
+                            <button onclick="speakText('萬')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Vạn (10.000)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('一萬五千塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">一萬五千塊。</div><div class="pinyin-text text-slate-500">Yí wàn wǔ qiān kuài.</div><div class="vi-text text-slate-600">15.000 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('這支手機一萬塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">這支手機一萬塊。</div><div class="pinyin-text text-slate-500">Zhè zhī shǒujī yí wàn kuài.</div><div class="vi-text text-slate-600">Chiếc điện thoại này 10.000 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('兩萬塊太貴了。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">兩萬塊太貴了。</div><div class="pinyin-text text-slate-500">Liǎng wàn kuài tài guì le.</div><div class="vi-text text-slate-600">20.000 đồng đắt quá rồi.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 15: 千 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">15</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('千')">千</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">qiān</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Số từ</span>
+                            </div>
+                            <button onclick="speakText('千')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Nghìn (1.000)</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('八千塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">八千塊。</div><div class="pinyin-text text-slate-500">Bā qiān kuài.</div><div class="vi-text text-slate-600">8.000 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('一千五百塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">一千五百塊。</div><div class="pinyin-text text-slate-500">Yì qiān wǔ bǎi kuài.</div><div class="vi-text text-slate-600">1.500 đồng.</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('五千多塊。')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">五千多塊。</div><div class="pinyin-text text-slate-500">Wǔ qiān duō kuài.</div><div class="vi-text text-slate-600">Hơn 5.000 đồng.</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vocab 16: 為什麼 -->
+                    <div class="vocab-card bg-slate-50/70 border border-slate-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400">16</span>
+                                <span class="zh-word text-xl font-bold text-sky-700 ml-1" onclick="openDict('為什麼')">為什麼</span>
+                                <span class="pinyin-text text-xs font-semibold text-sky-800 ml-2">wèishénme</span>
+                                <span class="ml-2 text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Đại từ nghi vấn</span>
+                            </div>
+                            <button onclick="speakText('為什麼')" class="text-sky-600 hover:text-sky-800 text-sm font-bold">▶</button>
+                        </div>
+                        <div class="vi-text text-sm font-medium text-slate-700 mt-1">Tại sao, vì sao</div>
+                        <div class="mt-3 space-y-2 border-t border-slate-200 pt-2.5 text-xs sm:text-sm">
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你為什麼要買新手機？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你為什麼要買新手機？</div><div class="pinyin-text text-slate-500">Nǐ wèishénme yào mǎi xīn shǒujī?</div><div class="vi-text text-slate-600">Tại sao bạn lại muốn mua điện thoại mới?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('為什麼這杯咖啡這麼貴？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">為什麼這杯咖啡這麼貴？</div><div class="pinyin-text text-slate-500">Wèishénme zhè bēi kāfēi zhème guì?</div><div class="vi-text text-slate-600">Tại sao cốc cà phê này lại đắt thế?</div></div></div>
+                            <div class="flex gap-2 items-start"><button onclick="speakText('你為什麼不去學校？')" class="text-sky-600 hover:text-sky-800 shrink-0 font-bold">▶</button><div><div class="zh-text">你為什麼不去學校？</div><div class="pinyin-text text-slate-500">Nǐ wèishénme bú qù xuéxiào?</div><div class="vi-text text-slate-600">Tại sao bạn không đi học?</div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 3: NGỮ PHÁP TRỌNG TÂM (8 ĐIỂM) ==================== -->
+        <section id="tab-content-3" class="tab-content space-y-8 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+                <div class="pb-4 border-b border-slate-100 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100">Ngữ pháp Bài 4</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">Ngữ pháp trọng tâm (8 điểm quan trọng)</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">Tổng hợp toàn bộ các mẫu câu, quy tắc giá tiền, lượng từ và từ nghi vấn trong Bài 4.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Point 1 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">1</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Hỏi giá tiền & số lượng với「多少錢」và「一共」</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            Để hỏi giá tiền của một vật hoặc tổng số tiền của nhiều đồ vật, ta dùng công thức:
+                            <code class="bg-white px-2 py-1 rounded border text-sky-700 font-semibold text-xs sm:text-sm">Vật phẩm + (一共) + 多少錢？</code>
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('請問這杯咖啡多少錢？')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">請問這杯咖啡多少錢？</div>
+                                    <div class="pinyin-text text-sky-800">Qǐngwèn zhè bēi kāfēi duōshǎo qián?</div>
+                                    <div class="vi-text text-slate-600">Xin hỏi ly cà phê này bao nhiêu tiền?</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('兩個包子和一杯咖啡，一共多少錢？')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">兩個包子和一杯咖啡，一共多少錢？</div>
+                                    <div class="pinyin-text text-sky-800">Liǎng ge bāozi hé yì bēi kāfēi, yígòng duōshǎo qián?</div>
+                                    <div class="vi-text text-slate-600">Hai cái bánh bao và một ly cà phê, tổng cộng bao nhiêu tiền?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">2</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Cách đọc số đếm lớn (百 trăm, 千 nghìn, 萬 vạn) và đơn vị tiền Đài Loan「塊 / 元」</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            Tiếng Trung chia đơn vị tiền tệ/số đếm theo nhóm 4 chữ số (萬 = 10.000). Trong khẩu ngữ Đài Loan dùng <strong class="text-sky-700">塊 (kuài)</strong>, trên hoá đơn / niêm yết giá dùng <strong class="text-sky-700">元 (yuán)</strong> hoặc NT$.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm bg-white p-3 rounded-lg border border-slate-200">
+                            <div>• 100 = <strong>一百 (yìbǎi)</strong></div>
+                            <div>• 1,000 = <strong>一千 (yìqiān)</strong></div>
+                            <div>• 10,000 = <strong>一萬 (yíwàn)</strong></div>
+                            <div>• 15,000 = <strong>一萬五千 (yíwàn wǔqiān)</strong></div>
+                        </div>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('咖啡八十，包子四十，一共一百二十塊。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">咖啡八十，包子四十，一共一百二十塊。</div>
+                                    <div class="pinyin-text text-sky-800">Kāfēi bāshí, bāozi sìshí, yígòng yìbǎi èrshí kuài.</div>
+                                    <div class="vi-text text-slate-600">Cà phê 80, bánh bao 40, tổng cộng 120 đồng.</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('這支手機一萬五千塊。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">這支手機一萬五千塊。</div>
+                                    <div class="pinyin-text text-sky-800">Zhè zhī shǒujī yíwàn wǔqiān kuài.</div>
+                                    <div class="vi-text text-slate-600">Chiếc điện thoại này 15.000 đồng.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">3</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Câu hỏi lựa chọn với「還是」(A 還是 B？)</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            Dùng để đưa ra 2 hoặc nhiều phương án lựa chọn trong câu hỏi:
+                            <code class="bg-white px-2 py-1 rounded border text-sky-700 font-semibold text-xs sm:text-sm">A 還是 B？</code>
+                            (Chú ý: 還是 chỉ dùng trong câu hỏi nghi vấn lựa chọn, không dùng trong câu khẳng định).
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('你要大杯、中杯還是小杯？')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">你要大杯、中杯還是小杯？</div>
+                                    <div class="pinyin-text text-sky-800">Nǐ yào dà bēi, zhōng bēi háishì xiǎo bēi?</div>
+                                    <div class="vi-text text-slate-600">Bạn muốn ly lớn, ly vừa hay ly nhỏ?</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('請問外帶還是內用？')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">請問外帶還是內用？</div>
+                                    <div class="pinyin-text text-sky-800">Qǐngwèn wàidài háishì nèiyòng?</div>
+                                    <div class="vi-text text-slate-600">Xin hỏi mang đi hay dùng tại chỗ?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 4 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">4</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Cấu trúc nhờ vả lịch sự「請幫我 + Động từ」</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            Cấu trúc giao tiếp rất phổ biến tại Đài Loan khi nhờ ai đó thực hiện hành động phục vụ hoặc hỗ trợ mình:
+                            <code class="bg-white px-2 py-1 rounded border text-sky-700 font-semibold text-xs sm:text-sm">請 + 幫我 + Động từ...</code>
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('包子請幫我微波。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">包子請幫我微波。</div>
+                                    <div class="pinyin-text text-sky-800">Bāozi qǐng bāng wǒ wéibō.</div>
+                                    <div class="vi-text text-slate-600">Bánh bao làm ơn hâm vi sóng giúp tôi.</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('請幫我買一杯熱咖啡。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">請幫我買一杯熱咖啡。</div>
+                                    <div class="pinyin-text text-sky-800">Qǐng bāng wǒ mǎi yì bēi rè kāfēi.</div>
+                                    <div class="vi-text text-slate-600">Làm ơn mua giúp tôi một ly cà phê nóng.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 5 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">5</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Cấu trúc cảm thán mức độ「太 + Tính từ + 了」& Phủ định「不太 + Tính từ」</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            • Khẳng định: <code class="bg-white px-2 py-0.5 rounded border text-sky-700 font-semibold">太 + Adj + 了</code> (Quá... rồi! - biểu thị sự quá mức hoặc cảm thán).<br>
+                            • Phủ định: <code class="bg-white px-2 py-0.5 rounded border text-sky-700 font-semibold">不太 + Adj</code> (Không... lắm - biểu thị mức độ vừa phải, lịch sự).
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('我這支手機太舊了！')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">我這支手機太舊了！</div>
+                                    <div class="pinyin-text text-sky-800">Wǒ zhè zhī shǒujī tài jiù le!</div>
+                                    <div class="vi-text text-slate-600">Chiếc điện thoại này của mình cũ quá rồi!</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('這支手機不太貴。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">這支手機不太貴。</div>
+                                    <div class="pinyin-text text-sky-800">Zhè zhī shǒujī bú tài guì.</div>
+                                    <div class="vi-text text-slate-600">Chiếc điện thoại này không đắt lắm.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 6 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">6</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Trợ động từ「能」(có thể) & Câu song song「能...也能...」</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            <strong class="text-sky-700">能 (néng)</strong> biểu thị có khả năng, đủ điều kiện hoặc chức năng làm gì. Cấu trúc song song <code class="bg-white px-2 py-0.5 rounded border text-sky-700 font-semibold">能 A 也能 B</code> dùng để liệt kê hai tính năng/khả năng cùng lúc.
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('這支手機能照相，也能上網。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">這支手機能照相，也能上網。</div>
+                                    <div class="pinyin-text text-sky-800">Zhè zhī shǒujī néng zhàoxiàng, yě néng shàngwǎng.</div>
+                                    <div class="vi-text text-slate-600">Chiếc điện thoại này có thể chụp ảnh, cũng có thể lên mạng.</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('我今天能去買手機。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">我今天能去買手機。</div>
+                                    <div class="pinyin-text text-sky-800">Wǒ jīntiān néng qù mǎi shǒujī.</div>
+                                    <div class="vi-text text-slate-600">Hôm nay tôi có thể đi mua điện thoại.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 7 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">7</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Lượng từ「杯 / 支 / 種」& Đại từ chỉ định「這 / 那 / 哪 + Lượng từ」</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            Mỗi nhóm danh từ đi kèm với lượng từ chuyên biệt:<br>
+                            • <strong class="text-sky-700">杯 (bēi)</strong>: Cốc, ly (thức uống).<br>
+                            • <strong class="text-sky-700">支 (zhī)</strong>: Chiếc, cây (điện thoại, bút).<br>
+                            • <strong class="text-sky-700">種 (zhǒng)</strong>: Loại, chủng loại.<br>
+                            Khi kết hợp đại từ: <code class="bg-white px-2 py-0.5 rounded border text-sky-700 font-semibold">這 / 那 / 哪 + Lượng từ + Danh từ</code>.
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('妳想買哪種手機？')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">妳想買哪種手機？</div>
+                                    <div class="pinyin-text text-sky-800">Nǐ xiǎng mǎi nǎ zhǒng shǒujī?</div>
+                                    <div class="vi-text text-slate-600">Bạn muốn mua loại điện thoại nào?</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('那種手機很貴。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">那種手機很貴。</div>
+                                    <div class="pinyin-text text-sky-800">Nà zhǒng shǒujī hěn guì.</div>
+                                    <div class="vi-text text-slate-600">Loại điện thoại đó rất đắt.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 8 -->
+                    <div class="p-4 sm:p-5 rounded-xl border border-sky-100 bg-sky-50/40 hover:bg-sky-50/70 transition space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold text-xs flex items-center justify-center">8</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-800">Hỏi nguyên nhân với「為什麼」(Tại sao?) & Động từ「要」chỉ giá tiền (一支要...)</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            • <strong class="text-sky-700">為什麼 (wèishénme)</strong>: Dùng hỏi lý do/nguyên nhân.<br>
+                            • <strong class="text-sky-700">要 (yào) + Số tiền</strong>: Trong ngữ cảnh mua bán, ngoài nghĩa "muốn/cần", 「要」 còn mang nghĩa là "có giá là / tốn/mất" (ví dụ: 一支要一萬五 = một chiếc có giá/tốn 15.000 đồng).
+                        </p>
+                        <div class="space-y-2 pt-1 border-t border-sky-100/80">
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('妳為什麼要買新手機？')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">妳為什麼要買新手機？</div>
+                                    <div class="pinyin-text text-sky-800">Nǐ wèishénme yào mǎi xīn shǒujī?</div>
+                                    <div class="vi-text text-slate-600">Tại sao bạn lại muốn mua điện thoại mới?</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs sm:text-sm">
+                                <button onclick="speakText('一支要一萬五千多。')" class="text-sky-600 hover:text-sky-800 font-bold shrink-0">▶</button>
+                                <div>
+                                    <div class="zh-text font-medium text-slate-900">一支要一萬五千多。</div>
+                                    <div class="pinyin-text text-sky-800">Yì zhī yào yíwàn wǔqiān duō.</div>
+                                    <div class="vi-text text-slate-600">Một chiếc tốn hơn 15.000 đồng.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-medium text-slate-700 mb-1">Giáo trình Tiếng Trung Phồn Thể TOCFL A1 — Bài 4: 請問一共多少錢？</p>
+            <p>Ứng dụng tương tác hỗ trợ sinh viên Việt Nam luyện thi TOCFL & giao tiếp đời sống tại Đài Loan.</p>
+        </div>
+    </footer>
+
+    <!-- DICTIONARY MODAL -->
+    <div id="dict-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm hidden" onclick="closeDictOnBackdrop(event)">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 max-w-lg w-full overflow-hidden transform transition-all duration-200 scale-95 opacity-0" id="modal-box">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-sky-600 to-sky-700 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span id="modal-zh" class="text-3xl font-bold font-zh">--</span>
+                    <button id="modal-speak-btn" onclick="speakModalWord()" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold flex items-center justify-center text-sm transition">▶</button>
+                </div>
+                <button onclick="closeDict()" class="text-white/80 hover:text-white text-2xl font-bold leading-none">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+                <!-- Pinyin & POS -->
+                <div class="flex flex-wrap items-center gap-3 pb-3 border-b border-slate-100">
+                    <div class="text-sm">
+                        <span class="text-slate-400 text-xs font-semibold uppercase">Pinyin:</span>
+                        <span id="modal-pinyin" class="text-sky-700 font-bold ml-1 text-base">--</span>
+                    </div>
+                    <div class="text-sm">
+                        <span class="text-slate-400 text-xs font-semibold uppercase">Từ loại:</span>
+                        <span id="modal-pos" class="bg-sky-100 text-sky-800 font-medium px-2 py-0.5 rounded text-xs ml-1">--</span>
+                    </div>
+                </div>
+
+                <!-- Meanings List -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nghĩa tiếng Việt:</h4>
+                    <ol id="modal-meanings" class="list-decimal list-inside space-y-1.5 text-sm font-medium text-slate-800">
+                        <!-- Dynamic meanings -->
+                    </ol>
+                </div>
+
+                <!-- Taiwan Usage / Cultural Note -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-900 space-y-1">
+                    <div class="font-bold flex items-center gap-1.5 text-amber-800">
+                        <span>💡 Chú thích văn hóa / Khẩu ngữ Đài Loan:</span>
+                    </div>
+                    <p id="modal-note" class="leading-relaxed">--</p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 text-right">
+                <button onclick="closeDict()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs transition">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        /* ==================== DICTIONARY DATA (36 Lesson 4 words + Cumulative Words) ==================== */
+        const dictionary = {
+            // Part 1 Vocab
+            "一共": { pinyin: "yígòng", pos: "Phó từ", meanings: ["Tổng cộng", "Tất cả"], note: "Dùng trước số từ hoặc cụm động từ để tổng kết số lượng hay giá tiền." },
+            "多少": { pinyin: "duōshǎo", pos: "Đại từ nghi vấn", meanings: ["Bao nhiêu"], note: "Dùng hỏi số lượng hoặc giá tiền. Khác với 幾 (mấy) dùng cho số lượng nhỏ dưới 10." },
+            "錢": { pinyin: "qián", pos: "Danh từ", meanings: ["Tiền", "Tiền bạc"], note: "Đơn vị tiền tại Đài Loan là 新臺幣 (NTD). 口語 gọi là 塊 (kuài)." },
+            "老闆": { pinyin: "lǎobǎn", pos: "Danh từ", meanings: ["Ông chủ", "Chủ quán", "Sếp"], note: "Ở Đài Loan, khi đi ăn mua đồ gọi người bán là 老闆 (nam) hoặc 老闆娘 (nữ) rất thân thiện. Sinh viên cũng hay gọi giáo sư hướng dẫn là 老闆." },
+            "買": { pinyin: "mǎi", pos: "Động từ", meanings: ["Mua"], note: "Ngược nghĩa với 賣 (mài - bán)." },
+            "杯": { pinyin: "bēi", pos: "Lượng từ / Danh từ", meanings: ["Cốc", "Ly"], note: "Lượng từ dùng cho đồ uống như 咖啡, 茶, 水." },
+            "熱": { pinyin: "rè", pos: "Tính từ", meanings: ["Nóng"], note: "Khi gọi đồ uống tại Đài Loan: 熱的 (uống nóng), 冰的 (uống lạnh)." },
+            "包子": { pinyin: "bāozi", pos: "Danh từ", meanings: ["Bánh bao"], note: "Bánh bao nhân thịt (肉包) hoặc nhân rau (菜包) là món ăn sáng phổ biến ở Đài Loan." },
+            "要": { pinyin: "yào", pos: "Động từ / Trợ DT", meanings: ["Muốn", "Cần", "Lấy", "Tốn (tiền)"], note: "Trong ngữ cảnh mua bán: 我要... (Tôi lấy...); 一支要一萬 (Một chiếc có giá/tốn 1 vạn)." },
+            "大": { pinyin: "dà", pos: "Tính từ", meanings: ["To", "Lớn", "Cỡ lớn"], note: "Khi chọn cỡ đồ uống: 大杯 (ly lớn/size L)." },
+            "中": { pinyin: "zhōng", pos: "Tính từ / Danh từ", meanings: ["Vừa", "Cỡ trung", "Ở giữa"], note: "Khi chọn cỡ đồ uống: 中杯 (ly vừa/size M)." },
+            "小": { pinyin: "xiǎo", pos: "Tính từ", meanings: ["Nhỏ", "Bé", "Cỡ nhỏ"], note: "Khi chọn cỡ đồ uống: 小杯 (ly nhỏ/size S)." },
+            "幫": { pinyin: "bāng", pos: "Động từ", meanings: ["Giúp", "Giúp đỡ"], note: "Thường dùng mẫu câu: 請幫我 + Hành động (Làm ơn giúp tôi...)." },
+            "微波": { pinyin: "wéibō", pos: "Động từ / Danh từ", meanings: ["Hâm nóng bằng lò vi sóng", "Sóng vi ba"], note: "Rất hay dùng khi mua đồ ăn sẵn tại các cửa hàng tiện lợi 7-Eleven / FamilyMart ở Đài Loan." },
+            "百": { pinyin: "bǎi", pos: "Số từ", meanings: ["Trăm (100)"], note: "100 = 一百 (yìbǎi)." },
+            "塊": { pinyin: "kuài", pos: "Lượng từ", meanings: ["Đồng (đơn vị tiền)", "Miếng", "Cục"], note: "Đơn vị tiền tệ khẩu ngữ tại Đài Loan, tương đương 元 (yuán)." },
+            "好的": { pinyin: "hǎo de", pos: "Cụm từ", meanings: ["Được", "Đồng ý", "Vâng ạ"], note: "Cách trả lời lịch sự và tự nhiên khi đồng ý với lời đề nghị." },
+            "外帶": { pinyin: "wàidài", pos: "Động từ", meanings: ["Mang đi (đồ ăn, thức uống)"], note: "Khi mua đồ ăn thức uống tại Đài Loan, nhân viên luôn hỏi: 內用還是外帶？" },
+            "內用": { pinyin: "nèiyòng", pos: "Động từ", meanings: ["Dùng tại chỗ"], note: "Ăn uống ngay tại quán." },
+
+            // Part 2 Vocab
+            "支": { pinyin: "zhī", pos: "Lượng từ", meanings: ["Chiếc", "Cây"], note: "Lượng từ chuẩn ở Đài Loan dành cho điện thoại (一支手機), bút (一支筆), ô dù." },
+            "新": { pinyin: "xīn", pos: "Tính từ", meanings: ["Mới"], note: "Trái nghĩa với 舊 (jiù - cũ)." },
+            "手機": { pinyin: "shǒujī", pos: "Danh từ", meanings: ["Điện thoại di động"], note: "Người Đài Loan sử dụng điện thoại thông minh (智慧型手機) rất phổ biến." },
+            "太": { pinyin: "tài", pos: "Phó từ", meanings: ["Quá", "Lắm"], note: "Thường đi thành cấu trúc: 太 + Tính từ + 了." },
+            "舊": { pinyin: "jiù", pos: "Tính từ", meanings: ["Cũ"], note: "Dùng cho đồ vật, quần áo, điện thoại, sách vở." },
+            "了": { pinyin: "le", pos: "Trợ từ", meanings: ["Rồi"], note: "Đặt cuối câu biểu thị sự thay đổi trạng thái hoặc hoàn thành." },
+            "種": { pinyin: "zhǒng", pos: "Lượng từ", meanings: ["Loại", "Kiểu", "Chủng loại"], note: "Dùng biểu thị loại hình: 哪種 (loại nào), 那種 (loại đó)." },
+            "能": { pinyin: "néng", pos: "Trợ động từ", meanings: ["Có thể"], note: "Biểu thị năng lực, chức năng thiết bị hoặc điều kiện cho phép." },
+            "上網": { pinyin: "shàngwǎng", pos: "Động từ", meanings: ["Lên mạng", "Truy cập Internet"], note: "Đài Loan có WiFi công cộng iTaiwan rất phổ biến." },
+            "那": { pinyin: "nà", pos: "Đại từ", meanings: ["Kia", "Đó", "Vậy thì"], note: "Chỉ đối tượng ở xa người nói." },
+            "貴": { pinyin: "guì", pos: "Tính từ", meanings: ["Đắt", "Mắc", "Quý"], note: "Trái nghĩa với 便宜 (piányi - rẻ)." },
+            "賣": { pinyin: "mài", pos: "Động từ", meanings: ["Bán"], note: "Trái nghĩa với 買 (mǎi - mua)." },
+            "便宜": { pinyin: "piányi", pos: "Tính từ", meanings: ["Rẻ", "Giá hời"], note: "Phát âm thanh nhẹ: piányi." },
+            "萬": { pinyin: "wàn", pos: "Số từ", meanings: ["Vạn (10.000)"], note: "Đơn vị số đếm hàng vạn trong tiếng Trung. 15.000 = 一萬五千." },
+            "千": { pinyin: "qiān", pos: "Số từ", meanings: ["Nghìn (1.000)"], note: "1.000 = 一千 (yìqiān)." },
+            "為什麼": { pinyin: "wèishénme", pos: "Đại từ nghi vấn", meanings: ["Tại sao", "Vì sao"], note: "Dùng hỏi nguyên nhân. Trả lời thường dùng 因為 (vì)." },
+
+            // Extra Cumulative & Fallback single characters
+            "我": { pinyin: "wǒ", pos: "Đại từ", meanings: ["Tôi", "Mình"], note: "Đại từ nhân xưng ngôi thứ nhất." },
+            "你": { pinyin: "nǐ", pos: "Đại từ", meanings: ["Bạn", "Anh", "Chị"], note: "Đại từ nhân xưng ngôi thứ hai (nam/chung)." },
+            "妳": { pinyin: "nǐ", pos: "Đại từ", meanings: ["Bạn (nữ)", "Chị", "Em"], note: "Đại từ nhân xưng ngôi thứ hai dành riêng cho nữ trong chữ Phồn thể." },
+            "他": { pinyin: "tā", pos: "Đại từ", meanings: ["Anh ấy", "Ông ấy"], note: "Đại từ nhân xưng ngôi thứ ba nam." },
+            "她": { pinyin: "tā", pos: "Đại từ", meanings: ["Cô ấy", "Bà ấy"], note: "Đại từ nhân xưng ngôi thứ ba nữ." },
+            "請問": { pinyin: "qǐngwèn", pos: "Cụm từ", meanings: ["Xin hỏi"], note: "Cách mở đầu lịch sự khi hỏi thông tin." },
+            "咖啡": { pinyin: "kāfēi", pos: "Danh từ", meanings: ["Cà phê"], note: "Đài Loan có nét văn hóa cà phê tiện lợi rất phát triển." },
+            "照相": { pinyin: "zhàoxiàng", pos: "Động từ", meanings: ["Chụp ảnh"], note: "Có thể tách ra: 照相 (chụp ảnh)." },
+            "哥哥": { pinyin: "gēge", pos: "Danh từ", meanings: ["Anh trai"], note: "Từ xưng hô gia đình." },
+            "這": { pinyin: "zhè", pos: "Đại từ", meanings: ["Này", "Đây"], note: "Chỉ đối tượng ở gần." },
+            "哪": { pinyin: "nǎ", pos: "Đại từ nghi vấn", meanings: ["Nào"], note: "Dùng trong câu hỏi: 哪種 (loại nào)." },
+            "哪種": { pinyin: "nǎ zhǒng", pos: "Cụm đại từ", meanings: ["Loại nào"], note: "Dùng để hỏi về chủng loại." },
+            "那種": { pinyin: "nà zhǒng", pos: "Cụm đại từ", meanings: ["Loại đó", "Loại kia"], note: "Dùng để chỉ loại ở xa hoặc đã đề cập." },
+            "好看": { pinyin: "hǎokàn", pos: "Tính từ", meanings: ["Đẹp", "Hay (xem)"], note: "Dùng cho đồ vật, quần áo, điện thoại hoặc phim ảnh." },
+            "人": { pinyin: "rén", pos: "Danh từ", meanings: ["Người"], note: "Ví dụ: 臺灣人, 越南人." },
+            "家": { pinyin: "jiā", pos: "Danh từ", meanings: ["Nhà", "Gia đình"], note: "Ví dụ: 你家 (nhà bạn)." },
+            "有": { pinyin: "yǒu", pos: "Động từ", meanings: ["Có"], note: "Phủ định là 沒有." },
+            "沒": { pinyin: "méi", pos: "Phó từ", meanings: ["Không"], note: "Dùng phủ định cho 有 (沒有)." },
+            "是": { pinyin: "shì", pos: "Động từ", meanings: ["Là"], note: "Động từ liên kết." },
+            "不": { pinyin: "bù", pos: "Phó từ", meanings: ["Không"], note: "Phủ định tính từ/động từ. Đứng trước thanh 4 đọc thành bú (bú guì)." },
+            "好": { pinyin: "hǎo", pos: "Tính từ", meanings: ["Tốt", "Ngon", "Được"], note: "Từ dùng vô cùng phổ biến." },
+            "水": { pinyin: "shuǐ", pos: "Danh từ", meanings: ["Nước"], note: "Ví dụ: 熱水 (nước nóng)." },
+            "茶": { pinyin: "chá", pos: "Danh từ", meanings: ["Trà"], note: "Văn hóa uống trà rất nổi tiếng tại Đài Loan." },
+            "喝": { pinyin: "hē", pos: "Động từ", meanings: ["Uống"], note: "Ví dụ: 喝咖啡 (uống cà phê)." },
+            "學生": { pinyin: "xuéshēng", pos: "Danh từ", meanings: ["Học sinh", "Sinh viên"], note: "Ví dụ: 大學生 (sinh viên đại học)." },
+            "學校": { pinyin: "xuéxiào", pos: "Danh từ", meanings: ["Trường học"], note: "Nơi học tập." },
+            "書": { pinyin: "shū", pos: "Danh từ", meanings: ["Sách"], note: "Ví dụ: 新書 (sách mới)." },
+            "本": { pinyin: "běn", pos: "Lượng từ", meanings: ["Cuốn", "Quyển"], note: "Lượng từ cho sách." },
+            "個": { pinyin: "ge", pos: "Lượng từ", meanings: ["Cái", "Chiếc", "Con"], note: "Lượng từ chung phổ biến nhất." },
+            "兩": { pinyin: "liǎng", pos: "Số từ", meanings: ["Hai (2)"], note: "Dùng trước lượng từ thay cho 二 (Ví dụ: 兩個, 兩 domestic...)." },
+            "一": { pinyin: "yī", pos: "Số từ", meanings: ["Một (1)"], note: "Đổi thanh điệu thành yí/yì tùy từ theo sau." },
+            "二": { pinyin: "èr", pos: "Số từ", meanings: ["Hai (2)"], note: "Dùng khi đếm số: 一, 二, 三..." },
+            "三": { pinyin: "sān", pos: "Số từ", meanings: ["Ba (3)"], note: "Số đếm." },
+            "四": { pinyin: "sì", pos: "Số từ", meanings: ["Bốn (4)"], note: "Số đếm." },
+            "五": { pinyin: "wǔ", pos: "Số từ", meanings: ["Năm (5)"], note: "Số đếm." },
+            "六": { pinyin: "liù", pos: "Số từ", meanings: ["Sáu (6)"], note: "Số đếm." },
+            "七": { pinyin: "qī", pos: "Số từ", meanings: ["Bảy (7)"], note: "Số đếm." },
+            "八": { pinyin: "bā", pos: "Số từ", meanings: ["Tám (8)"], note: "Số đếm." },
+            "九": { pinyin: "jiǔ", pos: "Số từ", meanings: ["Chín (9)"], note: "Số đếm." },
+            "十": { pinyin: "shí", pos: "Số từ", meanings: ["Mười (10)"], note: "Số đếm." },
+            "零": { pinyin: "líng", pos: "Số từ", meanings: ["Không (0)"], note: "Số 0." }
+        };
+
+        /* Add single character fallbacks dynamically for safety */
+        Object.keys(dictionary).forEach(key => {
+            if (key.length > 1) {
+                for (let char of key) {
+                    if (!dictionary[char]) {
+                        dictionary[char] = {
+                            pinyin: "zh-char",
+                            pos: "Chữ Hán",
+                            meanings: [`Ký tự chữ Hán nằm trong từ "${key}"`],
+                            note: `Thành tố cấu tạo nên từ ${key}.`
+                        };
+                    }
+                }
+            }
+        });
+
+        /* ==================== TOKENIZER (LONGEST MATCH FIRST) ==================== */
+        const dictKeysSorted = Object.keys(dictionary).sort((a, b) => b.length - a.length);
+
+        function tokenizeText(text) {
+            let result = "";
+            let i = 0;
+            while (i < text.length) {
+                let matched = false;
+                for (let key of dictKeysSorted) {
+                    if (text.substr(i, key.length) === key) {
+                        result += `<span class="zh-word" onclick="openDict('${key}')">${key}</span>`;
+                        i += key.length;
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched) {
+                    result += text[i];
+                    i++;
+                }
+            }
+            return result;
+        }
+
+        function runTokenizerOnPage() {
+            const elements = document.querySelectorAll('.zh-text');
+            elements.forEach(el => {
+                const originalText = el.textContent;
+                el.innerHTML = tokenizeText(originalText);
+            });
+        }
+
+        /* ==================== WEB SPEECH API (TTS ENGINE) ==================== */
+        let synth = window.speechSynthesis;
+        let voices = [];
+        let currentUtterance = null;
+        let dialogueSequence = [];
+        let dialogueIndex = 0;
+        let isSequencePlaying = false;
+
+        function populateVoiceList() {
+            if (!synth) return;
+            voices = synth.getVoices();
+            const voiceSelect = document.getElementById('voice-select');
+            voiceSelect.innerHTML = '<option value="">Tự động (Ưu tiên giọng zh-TW)</option>';
+
+            // Sort voices: zh-TW first, then zh-CN, then others
+            let twVoices = voices.filter(v => v.lang.includes('zh-TW') || v.lang.includes('TW') || v.name.includes('Taiwan'));
+            let otherZhVoices = voices.filter(v => v.lang.startsWith('zh') && !twVoices.includes(v));
+
+            let priorityVoices = [...twVoices, ...otherZhVoices];
+
+            priorityVoices.forEach(v => {
+                const option = document.createElement('option');
+                option.textContent = `${v.name} (${v.lang})`;
+                option.setAttribute('data-name', v.name);
+                option.setAttribute('data-lang', v.lang);
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+
+        function getSelectedVoice() {
+            const voiceSelect = document.getElementById('voice-select');
+            const selectedName = voiceSelect.value;
+            if (selectedName) {
+                return voices.find(v => v.name === selectedName);
+            }
+            // Auto detect zh-TW
+            return voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('TW') || v.name.includes('Taiwan')) 
+                || voices.find(v => v.lang.startsWith('zh')) 
+                || null;
+        }
+
+        function getTTSSpeed() {
+            return parseFloat(document.getElementById('tts-speed').value) || 0.9;
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.speaking-active').forEach(el => {
+                el.classList.remove('speaking-active');
+            });
+        }
+
+        function stopTTS() {
+            if (synth) {
+                synth.cancel();
+            }
+            isSequencePlaying = false;
+            clearHighlights();
+        }
+
+        function speakText(text, onEndCallback = null) {
+            if (!synth) return;
+            synth.cancel();
+
+            // Clean speaker prefix if present (e.g. 老闆：)
+            let cleanText = text.replace(/^[^：:+]+[：:+]/, '').trim();
+
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            const voice = getSelectedVoice();
+            if (voice) utterance.voice = voice;
+            utterance.lang = voice ? voice.lang : 'zh-TW';
+            utterance.rate = getTTSSpeed();
+
+            utterance.onend = () => {
+                if (onEndCallback) onEndCallback();
+            };
+
+            utterance.onerror = () => {
+                clearHighlights();
+                isSequencePlaying = false;
+            };
+
+            synth.speak(utterance);
+        }
+
+        function speakLine(containerEl, fullSentenceText) {
+            stopTTS();
+            clearHighlights();
+            containerEl.classList.add('speaking-active');
+
+            speakText(fullSentenceText, () => {
+                containerEl.classList.remove('speaking-active');
+            });
+        }
+
+        function playFullDialogue(dialogueContainerId) {
+            stopTTS();
+            const container = document.getElementById(dialogueContainerId);
+            const lines = Array.from(container.querySelectorAll('.dialogue-line'));
+            if (lines.length === 0) return;
+
+            dialogueSequence = lines;
+            dialogueIndex = 0;
+            isSequencePlaying = true;
+
+            playNextDialogueLine();
+        }
+
+        function playNextDialogueLine() {
+            if (!isSequencePlaying || dialogueIndex >= dialogueSequence.length) {
+                isSequencePlaying = false;
+                clearHighlights();
+                return;
+            }
+
+            clearHighlights();
+            const lineEl = dialogueSequence[dialogueIndex];
+            lineEl.classList.add('speaking-active');
+            lineEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            const sentenceText = lineEl.getAttribute('data-sentence');
+
+            speakText(sentenceText, () => {
+                if (isSequencePlaying) {
+                    dialogueIndex++;
+                    setTimeout(playNextDialogueLine, 400);
+                }
+            });
+        }
+
+
+        /* ==================== DICTIONARY MODAL ==================== */
+        let currentModalWord = "";
+
+        function openDict(word) {
+            const entry = dictionary[word];
+            if (!entry) return;
+
+            currentModalWord = word;
+            document.getElementById('modal-zh').textContent = word;
+            document.getElementById('modal-pinyin').textContent = entry.pinyin;
+            document.getElementById('modal-pos').textContent = entry.pos;
+            document.getElementById('modal-note').textContent = entry.note;
+
+            const meaningsOl = document.getElementById('modal-meanings');
+            meaningsOl.innerHTML = "";
+            entry.meanings.forEach(m => {
+                const li = document.createElement('li');
+                li.textContent = m;
+                meaningsOl.appendChild(li);
+            });
+
+            // Speak word immediately on open
+            speakText(word);
+
+            // Show modal
+            const modal = document.getElementById('dict-modal');
+            const box = document.getElementById('modal-box');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+                box.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function speakModalWord() {
+            if (currentModalWord) {
+                speakText(currentModalWord);
+            }
+        }
+
+        function closeDict() {
+            const modal = document.getElementById('dict-modal');
+            const box = document.getElementById('modal-box');
+            box.classList.remove('scale-100', 'opacity-100');
+            box.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150);
+        }
+
+        function closeDictOnBackdrop(e) {
+            if (e.target.id === 'dict-modal') {
+                closeDict();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDict();
+            }
+        });
+
+
+        /* ==================== UI STATE TOGGLES & TABS ==================== */
+        let isPinyinVisible = true;
+        let isViVisible = true;
+
+        function togglePinyin() {
+            isPinyinVisible = !isPinyinVisible;
+            const body = document.body;
+            const statusText = document.getElementById('pinyin-status-text');
+
+            if (isPinyinVisible) {
+                body.classList.remove('hidden-pinyin');
+                statusText.textContent = "Hiện";
+            } else {
+                body.classList.add('hidden-pinyin');
+                statusText.textContent = "Ẩn";
+            }
+        }
+
+        function toggleVi() {
+            isViVisible = !isViVisible;
+            const body = document.body;
+            const statusText = document.getElementById('vi-status-text');
+
+            if (isViVisible) {
+                body.classList.remove('hidden-vi');
+                statusText.textContent = "Hiện";
+            } else {
+                body.classList.add('hidden-vi');
+                statusText.textContent = "Ẩn";
+            }
+        }
+
+        function switchTab(tabIndex) {
+            stopTTS();
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-sky-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'hover:bg-sky-50', 'hover:text-sky-700');
+            });
+
+            const activeContent = document.getElementById(`tab-content-${tabIndex}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabIndex}`);
+
+            if (activeContent && activeBtn) {
+                activeContent.classList.remove('hidden');
+                activeBtn.classList.add('active', 'bg-sky-600', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-sky-50', 'hover:text-sky-700');
+            }
+        }
+
+
+        /* ==================== PAGE TEXT ZOOM CONTROLLER ==================== */
+        function setZoom(value) {
+            const zoomVal = Math.min(Math.max(parseInt(value), 80), 300);
+            document.getElementById('zoom-range').value = zoomVal;
+            document.getElementById('zoom-badge').textContent = `${zoomVal}%`;
+            document.documentElement.style.fontSize = `${(zoomVal / 100) * 16}px`;
+            localStorage.setItem('tocfl_lesson4_zoom', zoomVal);
+        }
+
+        function changeZoom(delta) {
+            const currentVal = parseInt(document.getElementById('zoom-range').value) || 100;
+            setZoom(currentVal + delta);
+        }
+
+        function loadSavedZoom() {
+            const savedZoom = localStorage.getItem('tocfl_lesson4_zoom');
+            if (savedZoom) {
+                setZoom(savedZoom);
+            }
+        }
+
+
+        /* ==================== INITIALIZATION ==================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            runTokenizerOnPage();
+            populateVoiceList();
+            loadSavedZoom();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二課：我的家人 (Gia đình tôi) - TOCFL A1</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            skybrand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts: Inter & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome CDN for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      overflow-wrap: anywhere;
+    }
+    
+    /* Highlight state for active audio playing */
+    .speaking-active {
+      background-color: #e0f2fe !important;
+      border-left: 4px solid #0284c7 !important;
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Word token interactive styling */
+    .word-token {
+      display: inline-block;
+      cursor: pointer;
+      padding: 1px 2px;
+      border-radius: 4px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .word-token:hover {
+      background-color: #bae6fd;
+      color: #0369a1;
+      text-decoration: underline;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Hide Pinyin / Translation classes */
+    .hide-pinyin .pinyin-text { display: none !important; }
+    .hide-translation .trans-text { display: none !important; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-full min-w-0">
+
+  <!-- ==================== STICKY TOP TOOLBAR ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-sky-100 shadow-sm transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 space-y-2">
+      
+      <!-- ROW 1: Title, Voice & Speed, Global Toggles -->
+      <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+        <!-- Badge & Title -->
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="px-2.5 py-1 text-xs font-bold bg-sky-600 text-white rounded-full shadow-sm shrink-0">TOCFL A1</span>
+          <h1 class="text-base sm:text-lg font-bold text-sky-900 truncate tracking-tight">第二課：我的家人 (Bài 2: Gia đình tôi)</h1>
+        </div>
+
+        <!-- Controls: Speed, Voice Select, Toggles -->
+        <div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm shrink-0">
+          <!-- Voice Selector -->
+          <div class="flex items-center gap-1 bg-slate-100 rounded-lg p-1 border border-slate-200">
+            <i class="fa-solid fa-headset text-sky-600 pl-1"></i>
+            <select id="ttsVoiceSelect" class="bg-transparent border-none text-slate-700 font-medium focus:ring-0 text-xs pr-1 cursor-pointer max-w-[130px] sm:max-w-[170px] truncate" title="Chọn giọng đọc TTS">
+              <option value="">Đang tải giọng đọc...</option>
+            </select>
+          </div>
+
+          <!-- Speed Selector -->
+          <div class="flex items-center gap-1 bg-slate-100 rounded-lg p-1 border border-slate-200">
+            <i class="fa-solid fa-gauge-high text-sky-600 pl-1"></i>
+            <select id="ttsSpeedSelect" class="bg-transparent border-none text-slate-700 font-medium focus:ring-0 text-xs pr-1 cursor-pointer" title="Tốc độ đọc">
+              <option value="0.75">0.75x Chậm</option>
+              <option value="0.9" selected>0.9x Vừa</option>
+              <option value="1.0">1.0x Chuẩn</option>
+              <option value="1.15">1.15x Nhanh</option>
+            </select>
+          </div>
+
+          <!-- Global Visibility Toggles -->
+          <button id="togglePinyinBtn" onclick="toggleGlobalPinyin()" class="px-2.5 py-1.5 bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 rounded-lg font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-font"></i> <span id="pinyinBtnText">Pinyin: Hiện</span>
+          </button>
+          <button id="toggleTransBtn" onclick="toggleGlobalTrans()" class="px-2.5 py-1.5 bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 rounded-lg font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-language"></i> <span id="transBtnText">Dịch: Hiện</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2: Navigation Tabs & Font Resizer -->
+      <div class="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-2">
+        <!-- Tabs Nav -->
+        <nav class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto pb-1 max-w-full" aria-label="Tabs">
+          <button onclick="switchTab('tab1')" id="tabBtn-tab1" class="tab-btn px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg text-white bg-sky-700 shadow-sm transition whitespace-nowrap">
+            <i class="fa-solid fa-book-open mr-1"></i> Phần 1: Bài khóa 1 & 21 Từ vựng
+          </button>
+          <button onclick="switchTab('tab2')" id="tabBtn-tab2" class="tab-btn px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition whitespace-nowrap">
+            <i class="fa-solid fa-users mr-1"></i> Phần 2: Bài khóa 2 & 14 Từ vựng
+          </button>
+          <button onclick="switchTab('tab3')" id="tabBtn-tab3" class="tab-btn px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition whitespace-nowrap">
+            <i class="fa-solid fa-graduation-cap mr-1"></i> Ngữ pháp trọng tâm (8 điểm)
+          </button>
+        </nav>
+
+        <!-- Dynamic Font Resizer (80% - 300%) -->
+        <div class="flex items-center gap-1.5 bg-slate-100 rounded-lg px-2 py-1 text-xs shrink-0">
+          <span class="text-slate-500 font-medium">Cỡ chữ:</span>
+          <button onclick="adjustFontSize(-10)" class="w-6 h-6 bg-white hover:bg-slate-200 rounded border border-slate-300 font-bold flex items-center justify-center text-slate-700">A-</button>
+          <input type="range" id="fontRange" min="80" max="300" step="10" value="100" oninput="setFontSize(this.value)" class="w-16 sm:w-24 accent-sky-600 cursor-pointer">
+          <span id="fontValBadge" class="w-10 text-center font-bold text-sky-700">100%</span>
+          <button onclick="adjustFontSize(10)" class="w-6 h-6 bg-white hover:bg-slate-200 rounded border border-slate-300 font-bold flex items-center justify-center text-slate-700">A+</button>
+          
+          <div class="hidden sm:flex items-center space-x-1 pl-1 border-l border-slate-300 ml-1">
+            <button onclick="setFontSize(100)" class="px-1.5 py-0.5 text-[10px] bg-white hover:bg-slate-200 rounded border border-slate-300">100%</button>
+            <button onclick="setFontSize(150)" class="px-1.5 py-0.5 text-[10px] bg-white hover:bg-slate-200 rounded border border-slate-300">150%</button>
+            <button onclick="setFontSize(200)" class="px-1.5 py-0.5 text-[10px] bg-white hover:bg-slate-200 rounded border border-slate-300">200%</button>
+            <button onclick="setFontSize(300)" class="px-1.5 py-0.5 text-[10px] bg-white hover:bg-slate-200 rounded border border-slate-300">300%</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== BANNER HƯỚNG DẪN ==================== -->
+  <div class="bg-gradient-to-r from-sky-800 via-sky-700 to-sky-900 text-white py-3 px-4 shadow-inner">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-circle-info text-sky-300 text-base"></i>
+        <span><strong>Mẹo học tương tác:</strong> Nhấp vào bất kỳ chữ Hán nào để tra Từ điển phồn thể & nghe phát âm chuẩn giọng Đài Loan!</span>
+      </div>
+      <div class="flex items-center gap-3 text-xs text-sky-100">
+        <span class="flex items-center gap-1"><i class="fa-solid fa-volume-high text-sky-300"></i> Tra từ nhanh</span>
+        <span class="flex items-center gap-1"><i class="fa-solid fa-sliders text-sky-300"></i> Tùy chỉnh Pinyin/Dịch</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6">
+
+    <!-- TAB 1: BÀI KHÓA 1 & 21 TỪ VỰNG -->
+    <section id="tab1" class="tab-content space-y-8">
+      
+      <!-- Dialogue 1 Header & Box -->
+      <div class="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden">
+        <div class="bg-sky-50 px-4 sm:px-6 py-4 border-b border-sky-100 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Bài khóa 1</span>
+            <h2 class="text-xl font-bold text-sky-900">課文（一）：拜訪朋友家 (Đến thăm nhà bạn)</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="playFullDialogue('dialogue1', this)" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
+              <i class="fa-solid fa-play"></i> Nghe cả bài khóa 1
+            </button>
+            <button onclick="stopTTS()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-square"></i> Dừng
+            </button>
+          </div>
+        </div>
+
+        <!-- Dialogue 1 Sentences List -->
+        <div id="dialogue1" class="p-4 sm:p-6 space-y-4">
+          <!-- Line 1 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="怡君：這是我家。請進！">
+            <button onclick="speakText('怡君：這是我家。請進！', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Zhāng Yíjūn: Zhè shì wǒ jiā. Qǐng jìn!</div>
+              <div class="trans-text text-sm text-slate-600">Di Quân: Đây là nhà tôi. Mời vào!</div>
+            </div>
+          </div>
+
+          <!-- Line 2 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="安同：很漂亮的房子！">
+            <button onclick="speakText('安同：很漂亮的房子！', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Mǎ Āntóng: Hěn piàoliang de fángzi!</div>
+              <div class="trans-text text-sm text-slate-600">An Đồng: Ngôi nhà thật đẹp!</div>
+            </div>
+          </div>
+
+          <!-- Line 3 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="怡君：請坐！要不要喝茶？">
+            <button onclick="speakText('怡君：請坐！要不要喝茶？', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Zhāng Yíjūn: Qǐng zuò! Yào bú yào hē chá?</div>
+              <div class="trans-text text-sm text-slate-600">Di Quân: Mời ngồi! Bạn có muốn uống trà không?</div>
+            </div>
+          </div>
+
+          <!-- Line 4 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="安同：好，謝謝你。你家有很多照片。">
+            <button onclick="speakText('安同：好，謝謝你。你家有很多照片。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Mǎ Āntóng: Hǎo, xièxie nǐ. Nǐ jiā yǒu hěn duō zhàopiàn.</div>
+              <div class="trans-text text-sm text-slate-600">An Đồng: Vâng, cảm ơn bạn. Nhà bạn có rất nhiều ảnh.</div>
+            </div>
+          </div>
+
+          <!-- Line 5 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="怡君：我家人都很喜歡照相。">
+            <button onclick="speakText('怡君：我家人都很喜歡照相。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Zhāng Yíjūn: Wǒ jiārén dōu hěn xǐhuān zhàoxiàng.</div>
+              <div class="trans-text text-sm text-slate-600">Di Quân: Người nhà tôi đều rất thích chụp ảnh.</div>
+            </div>
+          </div>
+
+          <!-- Line 6 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="安同：這張照片很好看。這是誰？你姐姐嗎？">
+            <button onclick="speakText('安同：這張照片很好看。這是誰？你姐姐嗎？', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Mǎ Āntóng: Zhè zhāng zhàopiàn hěn hǎokàn. Zhè shì shéi? Nǐ jiějie ma?</div>
+              <div class="trans-text text-sm text-slate-600">An Đồng: Bức ảnh này rất đẹp. Đây là ai? Chị gái bạn à?</div>
+            </div>
+          </div>
+
+          <!-- Line 7 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="怡君：不是，是我妹妹。這是我爸爸、媽媽。">
+            <button onclick="speakText('怡君：不是，是我妹妹。這是我爸爸、媽媽。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Zhāng Yíjūn: Bú shì, shì wǒ mèimei. Zhè shì wǒ bàba, māma.</div>
+              <div class="trans-text text-sm text-slate-600">Di Quân: Không phải, là em gái tôi. Đây là bố và mẹ tôi.</div>
+            </div>
+          </div>
+
+          <!-- Line 8 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="安同：你家人都很好看。">
+            <button onclick="speakText('安同：你家人都很好看。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Mǎ Āntóng: Nǐ jiārén dōu hěn hǎokàn.</div>
+              <div class="trans-text text-sm text-slate-600">An Đồng: Người nhà bạn ai cũng đẹp / ưa nhìn cả.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vocabulary 1 Header & Grid -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <h2 class="text-xl font-bold text-sky-900 flex items-center gap-2">
+            <i class="fa-solid fa-spell-check text-sky-600"></i> 生詞（一）：21 Từ vựng Phần 1
+          </h2>
+          <span class="text-xs text-slate-500 font-medium">Click chữ Hán để xem chi tiết từ điển</span>
+        </div>
+
+        <div id="vocabGrid1" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 2: BÀI KHÓA 2 & 14 TỪ VỰNG -->
+    <section id="tab2" class="tab-content space-y-8 hidden">
+      
+      <!-- Dialogue 2 Header & Box -->
+      <div class="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden">
+        <div class="bg-sky-50 px-4 sm:px-6 py-4 border-b border-sky-100 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Bài khóa 2</span>
+            <h2 class="text-xl font-bold text-sky-900">課文（二）：認識朋友的家人 (Làm quen với gia đình bạn)</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="playFullDialogue('dialogue2', this)" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
+              <i class="fa-solid fa-play"></i> Nghe cả bài khóa 2
+            </button>
+            <button onclick="stopTTS()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-square"></i> Dừng
+            </button>
+          </div>
+        </div>
+
+        <!-- Dialogue 2 Sentences List -->
+        <div id="dialogue2" class="p-4 sm:p-6 space-y-4">
+          <!-- Line 1 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="明華：田中，歡迎！歡迎！請進。">
+            <button onclick="speakText('明華：田中，歡迎！歡迎！請進。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Lǐ Mínghuá: Tiánzhōng, huānyíng! Huānyíng! Qǐng jìn.</div>
+              <div class="trans-text text-sm text-slate-600">Minh Hoa: Điền Trung, chào mừng! Chào mừng! Mời vào.</div>
+            </div>
+          </div>
+
+          <!-- Line 2 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="田中：謝謝。">
+            <button onclick="speakText('田中：謝謝。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Tiánzhōng: Xièxie.</div>
+              <div class="trans-text text-sm text-slate-600">Điền Trung: Cảm ơn.</div>
+            </div>
+          </div>
+
+          <!-- Line 3 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="明華：田中，這是我媽媽。">
+            <button onclick="speakText('明華：田中，這是我媽媽。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Lǐ Mínghuá: Tiánzhōng, zhè shì wǒ māma.</div>
+              <div class="trans-text text-sm text-slate-600">Minh Hoa: Điền Trung, đây là mẹ tôi.</div>
+            </div>
+          </div>
+
+          <!-- Line 4 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="田中：伯母，您好。">
+            <button onclick="speakText('田中：伯母，您好。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Tiánzhōng: Bómǔ, nín hǎo.</div>
+              <div class="trans-text text-sm text-slate-600">Điền Trung: Bác gái, cháu chào bác ạ.</div>
+            </div>
+          </div>
+
+          <!-- Line 5 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="明華的媽媽：你好，你好。來！來！來！請坐。你叫什麼名字？">
+            <button onclick="speakText('明華的媽媽：你好，你好。來！來！來！請坐。你叫什麼名字？', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Mínghuá de māma: Nǐ hǎo, nǐ hǎo. Lái! Lái! Lái! Qǐng zuò. Nǐ jiào shénme míngzi?</div>
+              <div class="trans-text text-sm text-slate-600">Mẹ Minh Hoa: Chào cháu, chào cháu. Lại đây! Mời ngồi. Cháu tên là gì?</div>
+            </div>
+          </div>
+
+          <!-- Line 6 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="田中：我叫誠一。你們家有很多書。">
+            <button onclick="speakText('田中：我叫誠一。你們家有很多書。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Tiánzhōng: Wǒ jiào Chéngyī. Nǐmen jiā yǒu hěn duō shū.</div>
+              <div class="trans-text text-sm text-slate-600">Điền Trung: Cháu tên là Thành Nhất. Nhà bác có rất nhiều sách.</div>
+            </div>
+          </div>
+
+          <!-- Line 7 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="明華：都是我哥哥的書。他是老師，他很喜歡看書。">
+            <button onclick="speakText('明華：都是我哥哥的書。他是老師，他很喜歡看書。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Lǐ Mínghuá: Dōu shì wǒ gēge de shū. Tā shì lǎoshī, tā hěn xǐhuān kànshū.</div>
+              <div class="trans-text text-sm text-slate-600">Minh Hoa: Đều là sách của anh trai mình. Anh ấy là giáo viên, anh ấy rất thích đọc sách.</div>
+            </div>
+          </div>
+
+          <!-- Line 8 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="明華的媽媽：誠一，你家有幾個人？你有沒有兄弟姐妹？">
+            <button onclick="speakText('明華的媽媽：誠一，你家有幾個人？你有沒有兄弟姐妹？', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Mínghuá de māma: Chéngyī, nǐ jiā yǒu jǐ ge rén? Nǐ yǒu méiyǒu xiōngdì jiěmèi?</div>
+              <div class="trans-text text-sm text-slate-600">Mẹ Minh Hoa: Thành Nhất, nhà cháu có mấy người? Cháu có anh chị em không?</div>
+            </div>
+          </div>
+
+          <!-- Line 9 -->
+          <div class="d-line group flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-sky-100 transition" data-zh="田中：我家有五個人，我有兩個妹妹。">
+            <button onclick="speakText('田中：我家有五個人，我有兩個妹妹。', this)" class="mt-1 w-8 h-8 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+            <div class="flex-grow space-y-1">
+              <div class="text-lg font-medium text-slate-900 dialogue-zh"></div>
+              <div class="pinyin-text text-sm text-sky-700 font-mono">Tiánzhōng: Wǒ jiā yǒu wǔ ge rén, wǒ yǒu liǎng ge mèimei.</div>
+              <div class="trans-text text-sm text-slate-600">Điền Trung: Nhà cháu có năm người, cháu có hai em gái.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vocabulary 2 Header & Grid -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <h2 class="text-xl font-bold text-sky-900 flex items-center gap-2">
+            <i class="fa-solid fa-spell-check text-sky-600"></i> 生詞（二）：14 Từ vựng Phần 2
+          </h2>
+          <span class="text-xs text-slate-500 font-medium">Click chữ Hán để tra từ điển</span>
+        </div>
+
+        <div id="vocabGrid2" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 3: NGỮ PHÁP TRỌNG TÂM (8 ĐIỂM) -->
+    <section id="tab3" class="tab-content space-y-6 hidden">
+      <div class="border-b border-sky-100 pb-3">
+        <h2 class="text-2xl font-bold text-sky-900 flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap text-sky-600"></i> 文法重點：8 Điểm ngữ pháp trọng tâm Bài 2
+        </h2>
+        <p class="text-sm text-slate-600">Tổng hợp toàn bộ cấu trúc ngữ pháp chuẩn TOCFL A1 được giải thích ngắn gọn, dễ hiểu kèm ví dụ minh họa tích lũy.</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6">
+
+        <!-- Point 1 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">1</span>
+            <h3 class="text-lg font-bold text-sky-900">Trợ từ kết cấu「的」(de): Sở hữu & Định ngữ</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Danh từ / Đại từ + 的 + Danh từ trung tâm</code></p>
+            <p><strong>Cấu trúc định ngữ:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Tính từ + 的 + Danh từ</code></p>
+            <p class="text-xs text-sky-800">💡 <em>Lưu ý Đài Loan:</em> Có thể lược bỏ 「的」 khi thể hiện mối quan hệ gia đình thân thiết hoặc nơi chốn trực thuộc (như: 我家, 我媽媽, 我哥哥).</p>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+            
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('這是我的書。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="這是我的書。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Zhè shì wǒ de shū.</div>
+                <div class="trans-text text-xs text-slate-600">Đây là sách của tôi.</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('這是很漂亮的房子。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="這是很漂亮的房子。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Zhè shì hěn piàoliang de fángzi.</div>
+                <div class="trans-text text-xs text-slate-600">Đây là ngôi nhà rất đẹp.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">2</span>
+            <h3 class="text-lg font-bold text-sky-900">Động từ sở hữu「有」(yǒu) & Phủ định「沒有」(méiyǒu)</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Khẳng định:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Chủ ngữ + 有 + Tân ngữ</code> (Có...)</p>
+            <p><strong>Phủ định:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Chủ ngữ + 沒有 + Tân ngữ</code> (Không có... — Tuyệt đối KHÔNG dùng *不有*!)</p>
+            <p><strong>Hỏi chính phản:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Chủ ngữ + 有沒有 + Tân ngữ?</code> (Có... hay không?)</p>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('你有沒有兄弟姐妹？', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="你有沒有兄弟姐妹？"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Nǐ yǒu méiyǒu xiōngdì jiěmèi?</div>
+                <div class="trans-text text-xs text-slate-600">Bạn có anh chị em không?</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('我沒有照片。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="我沒有照片。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Wǒ méiyǒu zhàopiàn.</div>
+                <div class="trans-text text-xs text-slate-600">Tôi không có ảnh.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">3</span>
+            <h3 class="text-lg font-bold text-sky-900">Phó từ phạm vi「都」(dōu): Đều</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Chủ ngữ (Số nhiều) + 都 + Động từ / Tính từ</code></p>
+            <p class="text-xs text-sky-800">💡 「都」 luôn đứng TRƯỚC động từ hoặc tính từ để tổng quát hóa toàn bộ thành phần số nhiều phía trước.</p>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('我家人都很喜歡照相。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="我家人都很喜歡照相。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Wǒ jiārén dōu hěn xǐhuān zhàoxiàng.</div>
+                <div class="trans-text text-xs text-slate-600">Người nhà tôi đều rất thích chụp ảnh.</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('我們都是台灣人。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="我們都是台灣人。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Wǒmen dōu shì Táiwān rén.</div>
+                <div class="trans-text text-xs text-slate-600">Chúng tôi đều là người Đài Loan.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 4 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">4</span>
+            <h3 class="text-lg font-bold text-sky-900">Lượng từ「張」(zhāng) và lượng từ chung「個」(ge)</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">Số từ / 這 / 那 + Lượng từ + Danh từ</code></p>
+            <ul class="list-disc pl-5 text-xs text-sky-900 space-y-1">
+              <li><strong>張 (zhāng):</strong> Dùng cho vật thể mỏng, bẹt, có bề mặt phẳng (như: 照片 tấm ảnh, 紙 tờ giấy, 桌子 cái bàn).</li>
+              <li><strong>個 (ge):</strong> Lượng từ phổ biến nhất dùng cho người, gia đình, vật dụng chung.</li>
+            </ul>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('這張照片很好看。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="這張照片很好看。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Zhè zhāng zhàopiàn hěn hǎokàn.</div>
+                <div class="trans-text text-xs text-slate-600">Bức ảnh này rất đẹp / ưa nhìn.</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('我家有五個人。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="我家有五個人。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Wǒ jiā yǒu wǔ ge rén.</div>
+                <div class="trans-text text-xs text-slate-600">Nhà tôi có 5 người.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 5 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">5</span>
+            <h3 class="text-lg font-bold text-sky-900">Đại từ nghi vấn「誰」(shéi / shuí): Ai</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">這 / 他 + 是 + 誰？</code> Hoặc <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">誰 + 是 + Tân ngữ?</code></p>
+            <p class="text-xs text-sky-800">💡 Ở Đài Loan phát âm phổ biến là <strong>shéi</strong> trong giao tiếp hằng ngày.</p>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('這是誰？', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="這是誰？"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Zhè shì shéi?</div>
+                <div class="trans-text text-xs text-slate-600">Đây là ai?</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('這是誰的書？', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="這是誰的書？"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Zhè shì shéi de shū?</div>
+                <div class="trans-text text-xs text-slate-600">Đây là sách của ai?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 6 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">6</span>
+            <h3 class="text-lg font-bold text-sky-900">Đại từ nghi vấn「幾」(jǐ): Mấy (Hỏi số lượng ít &lt; 10)</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">幾 + Lượng từ + Danh từ?</code></p>
+            <p class="text-xs text-sky-800">💡 Khác với 「多少」, 「幾」 LUÔN LUÔN phải đi kèm lượng từ phía sau và dùng khi ước lượng số lượng nhỏ dưới 10.</p>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('你家有幾個人？', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="你家有幾個人？"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Nǐ jiā yǒu jǐ ge rén?</div>
+                <div class="trans-text text-xs text-slate-600">Nhà bạn có mấy người?</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('你有幾張照片？', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="你有幾張照片？"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Nǐ yǒu jǐ zhāng zhàopiàn?</div>
+                <div class="trans-text text-xs text-slate-600">Bạn có mấy bức ảnh?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 7 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">7</span>
+            <h3 class="text-lg font-bold text-sky-900">Phân biệt số 2:「兩」(liǎng) vs「二」(èr)</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">兩 + Lượng từ + Danh từ</code> (Số lượng hai)</p>
+            <ul class="list-disc pl-5 text-xs text-sky-900 space-y-1">
+              <li><strong>兩 (liǎng):</strong> Dùng khi đếm số lượng đứng trước lượng từ (như: 兩個妹妹, 兩張照片).</li>
+              <li><strong>二 (èr):</strong> Dùng khi đọc thứ tự, số nhà, số điện thoại hoặc phép tính toán (như: 第二課, 二十).</li>
+            </ul>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('我有兩個妹妹。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="我有兩個妹妹。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Wǒ yǒu liǎng ge mèimei.</div>
+                <div class="trans-text text-xs text-slate-600">Tôi có hai người em gái.</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('這有兩張照片。', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="這有兩張照片。"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Zhè yǒu liǎng zhāng zhàopiàn.</div>
+                <div class="trans-text text-xs text-slate-600">Ở đây có hai bức ảnh.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Point 8 -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-sky-100 shadow-sm space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center shrink-0">8</span>
+            <h3 class="text-lg font-bold text-sky-900">Câu cầu khiến lịch sự「請」& Văn hóa giao tiếp gia đình Đài Loan</h3>
+          </div>
+          <div class="bg-sky-50 p-4 rounded-xl text-sm text-sky-900 space-y-2 border border-sky-100">
+            <p><strong>Cấu trúc:</strong> <code class="bg-white px-2 py-0.5 rounded font-mono text-sky-700">請 + Động từ</code> (Mời...)</p>
+            <ul class="list-disc pl-5 text-xs text-sky-900 space-y-1">
+              <li><strong>請進 (qǐng jìn):</strong> Mời vào.</li>
+              <li><strong>請坐 (qǐng zuò):</strong> Mời ngồi.</li>
+              <li><strong>伯母，您好 (bómǔ, nín hǎo):</strong> Chào bác gái ạ — Khi đến nhà bạn ở Đài Loan, chào hỏi bố mẹ bạn bằng 「伯父」「伯母」 kèm đại từ kính trọng 「您」 là biểu hiện rất lịch sự!</li>
+            </ul>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-slate-700 text-sm">Ví dụ minh họa:</h4>
+
+            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-3">
+              <button onclick="speakText('伯母，您好。請進！請坐！', this)" class="mt-0.5 w-7 h-7 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center shrink-0 hover:bg-sky-600 hover:text-white"><i class="fa-solid fa-volume-high text-xs"></i></button>
+              <div>
+                <div class="text-base text-slate-900 g-zh" data-zh="伯母，您好。請進！請坐！"></div>
+                <div class="pinyin-text text-xs text-sky-700 font-mono">Bómǔ, nín hǎo. Qǐng jìn! Qǐng zuò!</div>
+                <div class="trans-text text-xs text-slate-600">Cháu chào bác gái ạ. Mời vào! Mời ngồi!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 mt-12 text-center text-xs">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-medium text-slate-300">Bài 2: 第二課：我的家人 (Gia đình tôi) — Chuẩn Giáo trình TOCFL A1 (Đài Loan)</p>
+      <p>Hệ thống tự động tra từ vựng phồn thể, tokenize câu và hỗ trợ tổng hợp giọng đọc Tiếng Trung Đài Loan (zh-TW).</p>
+    </div>
+  </footer>
+
+  <!-- ==================== DICTIONARY MODAL ==================== -->
+  <div id="dictModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-sky-100 max-w-lg w-full overflow-hidden transform transition-all">
+      <!-- Modal Header -->
+      <div class="bg-sky-700 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-book-bookmark text-sky-200"></i>
+          <h3 class="font-bold text-lg">Từ điển Phồn thể Đài Loan</h3>
+        </div>
+        <button onclick="closeDictModal()" class="w-8 h-8 bg-sky-800 hover:bg-sky-900 rounded-full flex items-center justify-center text-sky-100 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <!-- Term & Audio Header -->
+        <div class="flex items-center justify-between bg-sky-50 p-4 rounded-xl border border-sky-100">
+          <div>
+            <div id="modalHanzi" class="text-3xl font-bold text-sky-950 font-serif"></div>
+            <div id="modalPinyin" class="text-sm font-semibold text-sky-700 font-mono mt-0.5"></div>
+          </div>
+          <button id="modalAudioBtn" class="w-12 h-12 bg-sky-600 hover:bg-sky-700 text-white rounded-full flex items-center justify-center text-xl shadow-md transition">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+        </div>
+
+        <!-- Part of speech badge -->
+        <div>
+          <span id="modalPos" class="px-2.5 py-1 bg-slate-100 text-slate-700 font-semibold text-xs rounded-md border border-slate-200"></span>
+        </div>
+
+        <!-- Vietnamese Meanings -->
+        <div class="space-y-1">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ý nghĩa Tiếng Việt:</h4>
+          <div id="modalMeaning" class="text-base text-slate-800 font-medium leading-relaxed"></div>
+        </div>
+
+        <!-- Cultural Notes & Usage -->
+        <div id="modalNoteBox" class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 space-y-1 hidden">
+          <div class="font-bold flex items-center gap-1 text-amber-700">
+            <i class="fa-solid fa-lightbulb"></i> Ghi chú văn hóa & Cách dùng Đài Loan:
+          </div>
+          <p id="modalNotes" class="leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-slate-50 border-t border-slate-100 p-3 text-right">
+        <button onclick="closeDictModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg transition">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    /* ==========================================================================
+       1. DICTIONARY DATABASE (Lesson 1 Cumulative + 35 Words Lesson 2 + Hanzi)
+       ========================================================================== */
+    const dictionary = {
+      // PART 1 LESSON 2 VOCABULARY (21 words)
+      "張怡君": { pinyin: "Zhāng Yíjūn", pos: "Tên riêng", meaning: "Trương Di Quân (Tên riêng nữ người Đài Loan).", notes: "Họ Trương (張) là một trong những họ lớn nhất của người Hoa." },
+      "馬安同": { pinyin: "Mǎ Āntóng", pos: "Tên riêng", meaning: "Mã An Đồng (Tên riêng của bạn nam nước ngoài).", notes: "Họ Mã (馬) thường dùng làm họ dịch tên người phương Tây." },
+      "的": { pinyin: "de", pos: "Trợ từ", meaning: "Của (trợ từ sở hữu); liên kết định ngữ và danh từ.", notes: "Trong giao tiếp gia đình thân thiết (như 我家, 我媽媽), người Đài Loan hay lược bỏ 「的」." },
+      "家人": { pinyin: "jiārén", pos: "Danh từ", meaning: "Người nhà, thành viên trong gia đình.", notes: "Dùng để chỉ chung tất cả người thân trong nhà." },
+      "家": { pinyin: "jiā", pos: "Danh từ", meaning: "Nhà, gia đình.", notes: "Vừa có nghĩa là ngôi nhà thể chất, vừa có nghĩa là tổ ấm gia đình." },
+      "漂亮": { pinyin: "piàoliang", pos: "Tính từ", meaning: "Đẹp, xinh đẹp.", notes: "Thường khen phụ nữ, phong cảnh, đồ vật, ngôi nhà." },
+      "房子": { pinyin: "fángzi", pos: "Danh từ", meaning: "Ngôi nhà, căn nhà, tòa nhà.", notes: "Lượng từ thường dùng là 間 (jiān) hoặc 所 (suǒ)." },
+      "坐": { pinyin: "zuò", pos: "Động từ", meaning: "Ngồi.", notes: "「請坐」 (Qǐng zuò) là câu lịch sự mời khách ngồi." },
+      "有": { pinyin: "yǒu", pos: "Động từ", meaning: "Có (sở hữu, tồn tại).", notes: "Phủ định của 有 bắt buộc phải dùng 沒有 (méiyǒu), không được nói 不有." },
+      "多": { pinyin: "duō", pos: "Tính từ / Phó từ", meaning: "Nhiều.", notes: "Trái nghĩa với 少 (shǎo). 「很多」 nghĩa là rất nhiều." },
+      "照片": { pinyin: "zhàopiàn", pos: "Danh từ", meaning: "Bức ảnh, tấm hình.", notes: "Lượng từ đi kèm là 張 (zhāng)." },
+      "都": { pinyin: "dōu", pos: "Phó từ", meaning: "Đều (tổng quát hóa số nhiều).", notes: "Luôn đứng trước động từ/tính từ: 「我們 đều...」." },
+      "照相": { pinyin: "zhàoxiàng", pos: "Động từ / Danh từ", meaning: "Chụp ảnh, chụp hình.", notes: "Động từ ly hợp: 照 (chụp) + 相 (ảnh)." },
+      "張": { pinyin: "zhāng", pos: "Lượng từ", meaning: "Tấm, bức, tờ, chiếc (cho vật phẳng).", notes: "Dùng cho bức ảnh (照片), tờ giấy (紙), cái bàn (桌子)..." },
+      "好看": { pinyin: "hǎokàn", pos: "Tính từ", meaning: "Đẹp, ưa nhìn, hay (phim/sách).", notes: "Khen ngoại hình người hoặc khen tác phẩm nghệ thuật, ảnh chụp." },
+      "誰": { pinyin: "shéi / shuí", pos: "Đại từ", meaning: "Ai?", notes: "Ở Đài Loan khẩu ngữ đọc chuẩn là shéi." },
+      "姐姐": { pinyin: "jiějie", pos: "Danh từ", meaning: "Chị gái.", notes: "Thường đọc thanh nhẹ âm cuối (jiějie)." },
+      "妹妹": { pinyin: "mèimei", pos: "Danh từ", meaning: "Em gái.", notes: "Thường đọc thanh nhẹ âm cuối (mèimei)." },
+      "爸爸": { pinyin: "bàba", pos: "Danh từ", meaning: "Bố, ba.", notes: "Xưng hô thân mật trong gia đình." },
+      "媽媽": { pinyin: "māma", pos: "Danh từ", meaning: "Mẹ, má.", notes: "Xưng hô thân mật trong gia đình." },
+      "請進": { pinyin: "qǐng jìn", pos: "Cụm động từ", meaning: "Mời vào.", notes: "Câu khách khí chào đón khách vào nhà." },
+
+      // PART 2 LESSON 2 VOCABULARY (14 words)
+      "田中誠一": { pinyin: "Tiánzhōng Chéngyī", pos: "Tên riêng", meaning: "Điền Trung Thành Nhất (Tên riêng nam người Nhật Bản).", notes: "Họ Điền Trung (田中 - Tanaka) là họ Nhật rất phổ biến." },
+      "伯母": { pinyin: "bómǔ", pos: "Danh từ", meaning: "Bác gái (mẹ của bạn bè).", notes: "Văn hóa Đài Loan: Khi đến nhà bạn chơi, xưng hô với mẹ của bạn là 伯母 (bómǔ) tỏ ý rất kính trọng và lịch sự." },
+      "名字": { pinyin: "míngzi", pos: "Danh từ", meaning: "Tên, họ tên.", notes: "「你叫什麼名字？」 là câu hỏi tên chuẩn TOCFL A1." },
+      "書": { pinyin: "shū", pos: "Danh từ", meaning: "Sách, cuốn sách.", notes: "Lượng từ dùng 本 (běn)." },
+      "哥哥": { pinyin: "gēge", pos: "Danh từ", meaning: "Anh trai.", notes: "Thường đọc thanh nhẹ âm cuối (gēge)." },
+      "老師": { pinyin: "lǎoshī", pos: "Danh từ", meaning: "Thầy giáo, cô giáo, giáo viên.", notes: "Kính ngữ tôn xưng nghề nghiệp cao quý." },
+      "看書": { pinyin: "kànshū", pos: "Động từ", meaning: "Đọc sách.", notes: "Kàn (xem/đọc) + Shū (sách)." },
+      "幾": { pinyin: "jǐ", pos: "Đại từ nghi vấn", meaning: "Mấy? (Hỏi số lượng ít dưới 10).", notes: "Luôn phải đi kèm Lượng từ: 「幾個人」「幾張照片」." },
+      "個": { pinyin: "ge / gè", pos: "Lượng từ", meaning: "Cái, con, người (lượng từ chung).", notes: "Lượng từ thông dụng nhất trong tiếng Trung." },
+      "沒": { pinyin: "méi", pos: "Phó từ", meaning: "Không (phủ định cho 有).", notes: "Chuyên đi với 有 thành 沒有 (không có)." },
+      "兄弟": { pinyin: "xiōngdì", pos: "Danh từ", meaning: "Anh em trai.", notes: "Gồm 兄 (anh) và 弟 (em)." },
+      "姐妹": { pinyin: "jiěmèi", pos: "Danh từ", meaning: "Chị em gái.", notes: "Gồm 姐 (chị) và 妹 (em)." },
+      "五": { pinyin: "wǔ", pos: "Số từ", meaning: "Số 5 (năm).", notes: "Số đếm tự nhiên." },
+      "兩": { pinyin: "liǎng", pos: "Số từ", meaning: "Hai (dùng trước lượng từ).", notes: "Đứng trước lượng từ dùng 兩 (liǎng) như 兩個, không dùng 二 (èr)." },
+
+      // LESSON 1 CUMULATIVE VOCABULARY & SINGLE CHARACTERS
+      "陳月美": { pinyin: "Chén Yuèměi", pos: "Tên riêng", meaning: "Trần Nguyệt Mỹ.", notes: "" },
+      "李明華": { pinyin: "Lǐ Mínghuá", pos: "Tên riêng", meaning: "Lý Minh Hoa.", notes: "" },
+      "王凱文": { pinyin: "Wáng Kǎiwén", pos: "Tên riêng", meaning: "Vương Khải Văn.", notes: "" },
+      "王開文": { pinyin: "Wáng Kāiwén", pos: "Tên riêng", meaning: "Vương Khải Văn.", notes: "" },
+      "你": { pinyin: "nǐ", pos: "Đại từ", meaning: "Bạn, anh, chị (ngôi thứ 2 số ít).", notes: "" },
+      "來": { pinyin: "lái", pos: "Động từ", meaning: "Đến, tới, lại đây.", notes: "" },
+      "是": { pinyin: "shì", pos: "Động từ", meaning: "Là, đúng.", notes: "" },
+      "小姐": { pinyin: "xiǎojiě", pos: "Danh từ", meaning: "Cô, cô gái, tiểu thư.", notes: "" },
+      "嗎": { pinyin: "ma", pos: "Trợ từ", meaning: "Không? Phải không? (Trợ từ nghi vấn).", notes: "" },
+      "接": { pinyin: "jiē", pos: "Động từ", meaning: "Đón, tiếp đón.", notes: "" },
+      "我們": { pinyin: "wǒmen", pos: "Đại từ", meaning: "Chúng tôi, chúng ta.", notes: "" },
+      "我": { pinyin: "wǒ", pos: "Đại từ", meaning: "Tôi, tớ, ta.", notes: "" },
+      "這": { pinyin: "zhè", pos: "Đại từ", meaning: "Đây, này.", notes: "" },
+      "先生": { pinyin: "xiānsheng", pos: "Danh từ", meaning: "Ông, ngài, anh (xưng hô lịch sự).", notes: "" },
+      "好": { pinyin: "hǎo", pos: "Tính từ", meaning: "Tốt, hay, khỏe.", notes: "" },
+      "姓": { pinyin: "xìng", pos: "Động từ / Danh từ", meaning: "Họ là..., họ.", notes: "" },
+      "叫": { pinyin: "jiào", pos: "Động từ", meaning: "Tên là, gọi là.", notes: "" },
+      "你們": { pinyin: "nǐmen", pos: "Đại từ", meaning: "Các bạn, các anh/chị.", notes: "" },
+      "臺灣": { pinyin: "Táiwān", pos: "Tên riêng", meaning: "Đài Loan.", notes: "" },
+      "台灣": { pinyin: "Táiwān", pos: "Tên riêng", meaning: "Đài Loan.", notes: "" },
+      "歡迎": { pinyin: "huānyíng", pos: "Động từ", meaning: "Hoan nghênh, chào mừng.", notes: "" },
+      "請問": { pinyin: "qǐngwèn", pos: "Cụm từ", meaning: "Xin hỏi...", notes: "" },
+      "是的": { pinyin: "shìde", pos: "Cụm từ", meaning: "Vâng, đúng vậy.", notes: "" },
+      "謝謝": { pinyin: "xièxie", pos: "Động từ", meaning: "Cảm ơn.", notes: "" },
+      "不客氣": { pinyin: "bú kèqi", pos: "Cụm từ", meaning: "Đừng khách khí, không có gì.", notes: "" },
+      "你好": { pinyin: "nǐ hǎo", pos: "Cụm từ", meaning: "Xin chào.", notes: "" },
+      "請": { pinyin: "qǐng", pos: "Động từ", meaning: "Xin, mời.", notes: "" },
+      "喝": { pinyin: "hē", pos: "Động từ", meaning: "Uống.", notes: "" },
+      "茶": { pinyin: "chá", pos: "Danh từ", meaning: "Trà.", notes: "" },
+      "很": { pinyin: "hěn", pos: "Phó từ", meaning: "Rất.", notes: "" },
+      "好喝": { pinyin: "hǎohē", pos: "Tính từ", meaning: "Ngon (đồ uống).", notes: "" },
+      "什麼": { pinyin: "shénme", pos: "Đại từ nghi vấn", meaning: "Cái gì, gì.", notes: "" },
+      "人": { pinyin: "rén", pos: "Danh từ", meaning: "Người.", notes: "" },
+      "喜歡": { pinyin: "xǐhuān", pos: "Động từ", meaning: "Thích.", notes: "" },
+      "呢": { pinyin: "ne", pos: "Trợ từ", meaning: "Còn... thì sao?", notes: "" },
+      "他": { pinyin: "tā", pos: "Đại từ", meaning: "Anh ấy, ông ấy.", notes: "" },
+      "不": { pinyin: "bù / bú", pos: "Phó từ", meaning: "Không.", notes: "" },
+      "哪": { pinyin: "nǎ", pos: "Đại từ nghi vấn", meaning: "Nào, đâu.", notes: "" },
+      "要": { pinyin: "yào", pos: "Động từ", meaning: "Muốn, cần.", notes: "" },
+      "咖啡": { pinyin: "kāfēi", pos: "Danh từ", meaning: "Cà phê.", notes: "" },
+      "烏龍茶": { pinyin: "wūlóngchá", pos: "Danh từ", meaning: "Trà Ô Long.", notes: "" },
+      "日本": { pinyin: "Rìběn", pos: "Tên riêng", meaning: "Nhật Bản.", notes: "" },
+      "美國": { pinyin: "Měiguó", pos: "Tên riêng", meaning: "Nước Mỹ.", notes: "" },
+      "對不起": { pinyin: "duìbùqǐ", pos: "Cụm từ", meaning: "Xin lỗi.", notes: "" },
+      "哪國": { pinyin: "nǎ guó", pos: "Cụm từ", meaning: "Nước nào.", notes: "" },
+      "您": { pinyin: "nín", pos: "Đại từ", meaning: "Ngài, bác, ông/bà (kính trọng).", notes: "" },
+      "田中": { pinyin: "Tiánzhōng", pos: "Tên riêng", meaning: "Điền Trung (Họ người Nhật).", notes: "" },
+      "誠一": { pinyin: "Chéngyī", pos: "Tên riêng", meaning: "Thành Nhất (Tên người).", notes: "" },
+      "安同": { pinyin: "Āntóng", pos: "Tên riêng", meaning: "An Đồng.", notes: "" },
+      "怡君": { pinyin: "Yíjūn", pos: "Tên riêng", meaning: "Di Quân.", notes: "" },
+      "明華": { pinyin: "Mínghuá", pos: "Tên riêng", meaning: "Minh Hoa.", notes: "" }
+    };
+
+    /* Full Vocab Data Array for Grid Rendering */
+    const vocabList1 = [
+      { hz: "張怡君", py: "Zhāng Yíjūn", pos: "Tên riêng", mean: "Trương Di Quân", ex: [
+        { zh: "這是我家，我是張怡君。", py: "Zhè shì wǒ jiā, wǒ shì Zhāng Yíjūn.", vi: "Đây là nhà tôi, tôi là Trương Di Quân." },
+        { zh: "張怡君很喜歡喝茶。", py: "Zhāng Yíjūn hěn xǐhuān hē chá.", vi: "Trương Di Quân rất thích uống trà." },
+        { zh: "張怡君家人都很好看。", py: "Zhāng Yíjūn jiārén dōu hěn hǎokàn.", vi: "Người nhà Trương Di Quân đều rất đẹp." }
+      ]},
+      { hz: "馬安同", py: "Mǎ Āntóng", pos: "Tên riêng", mean: "Mã An Đồng", ex: [
+        { zh: "馬安同是美國人。", py: "Mǎ Āntóng shì Měiguó rén.", vi: "Mã An Đồng là người Mỹ." },
+        { zh: "馬安同要喝烏龍茶。", py: "Mǎ Āntóng yào hē wūlóngchá.", vi: "Mã An Đồng muốn uống trà Ô Long." },
+        { zh: "馬安同喜歡這張照片。", py: "Mǎ Āntóng xǐhuān zhè zhāng zhàopiàn.", vi: "Mã An Đồng thích bức ảnh này." }
+      ]},
+      { hz: "的", py: "de", pos: "Trợ từ", mean: "Của (sở hữu); trợ từ định ngữ", ex: [
+        { zh: "這是我的照片。", py: "Zhè shì wǒ de zhàopiàn.", vi: "Đây là ảnh của tôi." },
+        { zh: "他是我媽媽的老師。", py: "Tā shì wǒ māma de lǎoshī.", vi: "Thầy ấy là giáo viên của mẹ tôi." },
+        { zh: "很漂亮的房子。", py: "Hěn piàoliang de fángzi.", vi: "Ngôi nhà rất đẹp." }
+      ]},
+      { hz: "家人", py: "jiārén", pos: "Danh từ", mean: "Người nhà, thành viên gia đình", ex: [
+        { zh: "我家人都很喜歡照相。", py: "Wǒ jiārén dōu hěn xǐhuān zhàoxiàng.", vi: "Người nhà tôi đều rất thích chụp ảnh." },
+        { zh: "你家人好嗎？", py: "Nǐ jiārén hǎo ma?", vi: "Người nhà bạn có khỏe không?" },
+        { zh: "這是我家人。", py: "Zhè shì wǒ jiārén.", vi: "Đây là người nhà của tôi." }
+      ]},
+      { hz: "家", py: "jiā", pos: "Danh từ", mean: "Nhà, gia đình", ex: [
+        { zh: "這是我家。請進！", py: "Zhè shì wǒ jiā. Qǐng jìn!", vi: "Đây là nhà tôi. Mời vào!" },
+        { zh: "你家有幾個人？", py: "Nǐ jiā yǒu jǐ ge rén?", vi: "Nhà bạn có mấy người?" },
+        { zh: "我們去他家喝茶。", py: "Wǒmen qù tā jiā hē chá.", vi: "Chúng tôi đến nhà anh ấy uống trà." }
+      ]},
+      { hz: "漂亮", py: "piàoliang", pos: "Tính từ", mean: "Đẹp, xinh đẹp", ex: [
+        { zh: "很漂亮的房子！", py: "Hěn piàoliang de fángzi!", vi: "Ngôi nhà thật là đẹp!" },
+        { zh: "這張照片很漂亮。", py: "Zhè zhāng zhàopiàn hěn piàoliang.", vi: "Bức ảnh này rất đẹp." },
+        { zh: "她是我妹妹，她很漂亮。", py: "Tā shì wǒ mèimei, tā hěn piàoliang.", vi: "Nó là em gái tôi, nó rất đẹp." }
+      ]},
+      { hz: "房子", py: "fángzi", pos: "Danh từ", mean: "Ngôi nhà, căn nhà", ex: [
+        { zh: "這是我家的房子。", py: "Zhè shì wǒ jiā de fángzi.", vi: "Đây là ngôi nhà của gia đình tôi." },
+        { zh: "他的房子很大很漂亮。", py: "Tā de fángzi hěn dà hěn piàoliang.", vi: "Nhà của anh ấy rất to rất đẹp." },
+        { zh: "這不是我的房子。", py: "Zhè bú shì wǒ de fángzi.", vi: "Đây không phải là nhà của tôi." }
+      ]},
+      { hz: "坐", py: "zuò", pos: "Động từ", mean: "Ngồi", ex: [
+        { zh: "請進！請坐！", py: "Qǐng jìn! Qǐng zuò!", vi: "Mời vào! Mời ngồi!" },
+        { zh: "請坐，喝茶。", py: "Qǐng zuò, hē chá.", vi: "Mời ngồi, uống trà." },
+        { zh: "伯母，請坐。", py: "Bómǔ, qǐng zuò.", vi: "Bác gái, mời bác ngồi." }
+      ]},
+      { hz: "有", py: "yǒu", pos: "Động từ", mean: "Có", ex: [
+        { zh: "你家有很多照片。", py: "Nǐ jiā yǒu hěn duō zhàopiàn.", vi: "Nhà bạn có rất nhiều ảnh." },
+        { zh: "我有兩個妹妹。", py: "Wǒ yǒu liǎng ge mèimei.", vi: "Tôi có hai em gái." },
+        { zh: "你有沒有烏龍茶？", py: "Nǐ yǒu méiyǒu wūlóngchá?", vi: "Bạn có trà Ô Long không?" }
+      ]},
+      { hz: "多", py: "duō", pos: "Tính từ", mean: "Nhiều", ex: [
+        { zh: "這裡有很多書。", py: "Zhèlǐ yǒu hěn duō shū.", vi: "Ở đây có rất nhiều sách." },
+        { zh: "他家有很多照片。", py: "Tā jiā yǒu hěn duō zhàopiàn.", vi: "Nhà anh ấy có nhiều ảnh." },
+        { zh: "你有很多朋友嗎？", py: "Nǐ yǒu hěn duō péngyǒu ma?", vi: "Bạn có nhiều bạn không?" }
+      ]},
+      { hz: "照片", py: "zhàopiàn", pos: "Danh từ", mean: "Bức ảnh, tấm hình", ex: [
+        { zh: "這張照片很好看。", py: "Zhè zhāng zhàopiàn hěn hǎokàn.", vi: "Bức ảnh này rất đẹp." },
+        { zh: "我有你家的照片。", py: "Wǒ yǒu nǐ jiā de zhàopiàn.", vi: "Tôi có ảnh nhà của bạn." },
+        { zh: "這是誰的照片？", py: "Zhè shì shéi de zhàopiàn?", vi: "Đây là ảnh của ai?" }
+      ]},
+      { hz: "都", py: "dōu", pos: "Phó từ", mean: "Đều", ex: [
+        { zh: "我們都是台灣人。", py: "Wǒmen dōu shì Táiwān rén.", vi: "Chúng tôi đều là người Đài Loan." },
+        { zh: "我家人都很喜歡照相。", py: "Wǒ jiārén dōu hěn xǐhuān zhàoxiàng.", vi: "Người nhà tôi đều rất thích chụp ảnh." },
+        { zh: "這都是哥哥的書。", py: "Zhè dōu shì gēge de shū.", vi: "Đây đều là sách của anh trai." }
+      ]},
+      { hz: "照相", py: "zhàoxiàng", pos: "Động từ", mean: "Chụp ảnh", ex: [
+        { zh: "我很喜歡照相。", py: "Wǒ hěn xǐhuān zhàoxiàng.", vi: "Tôi rất thích chụp ảnh." },
+        { zh: "你要不要照相？", py: "Nǐ yào bú yào zhàoxiàng?", vi: "Bạn có muốn chụp ảnh không?" },
+        { zh: "他們都在這裡照相。", py: "Tāmen dōu zài zhèlǐ zhàoxiàng.", vi: "Họ đều chụp ảnh ở đây." }
+      ]},
+      { hz: "張", py: "zhāng", pos: "Lượng từ", mean: "Tấm, bức, tờ (cho vật phẳng)", ex: [
+        { zh: "這張照片是誰的？", py: "Zhè zhāng zhàopiàn shì shéi de?", vi: "Bức ảnh này là của ai?" },
+        { zh: "我有兩張照片。", py: "Wǒ yǒu liǎng zhāng zhàopiàn.", vi: "Tôi có hai tấm ảnh." },
+        { zh: "這張照片很好看。", py: "Zhè zhāng zhàopiàn hěn hǎokàn.", vi: "Bức ảnh này rất đẹp." }
+      ]},
+      { hz: "好看", py: "hǎokàn", pos: "Tính từ", mean: "Đẹp, ưa nhìn", ex: [
+        { zh: "這張照片很好看。", py: "Zhè zhāng zhàopiàn hěn hǎokàn.", vi: "Bức ảnh này rất đẹp." },
+        { zh: "你家人都很好看。", py: "Nǐ jiārén dōu hěn hǎokàn.", vi: "Người nhà bạn ai cũng đẹp cả." },
+        { zh: "這本書好看嗎？", py: "Zhè běn shū hǎokàn ma?", vi: "Cuốn sách này có hay không?" }
+      ]},
+      { hz: "誰", py: "shéi / shuí", pos: "Đại từ", mean: "Ai?", ex: [
+        { zh: "這是誰？", py: "Zhè shì shéi?", vi: "Đây là ai?" },
+        { zh: "誰是你的老師？", py: "Shéi shì nǐ de lǎoshī?", vi: "Ai là giáo viên của bạn?" },
+        { zh: "這張照片裡的是誰？", py: "Zhè zhāng zhàopiàn lǐ de shì shéi?", vi: "Người trong bức ảnh này là ai?" }
+      ]},
+      { hz: "姐姐", py: "jiějie", pos: "Danh từ", mean: "Chị gái", ex: [
+        { zh: "這是我姐姐。", py: "Zhè shì wǒ jiějie.", vi: "Đây là chị gái tôi." },
+        { zh: "你有沒有姐姐？", py: "Nǐ yǒu méiyǒu jiějie?", vi: "Bạn có chị gái không?" },
+        { zh: "我姐姐很喜歡喝咖啡。", py: "Wǒ jiějie hěn xǐhuān hē kāfēi.", vi: "Chị gái tôi rất thích uống cà phê." }
+      ]},
+      { hz: "妹妹", py: "mèimei", pos: "Danh từ", mean: "Em gái", ex: [
+        { zh: "這是我妹妹。", py: "Zhè shì wǒ mèimei.", vi: "Đây là em gái tôi." },
+        { zh: "我有兩個妹妹。", py: "Wǒ yǒu liǎng ge mèimei.", vi: "Tôi có hai em gái." },
+        { zh: "妹妹很漂亮。", py: "Mèimei hěn piàoliang.", vi: "Em gái rất xinh đẹp." }
+      ]},
+      { hz: "爸爸", py: "bàba", pos: "Danh từ", mean: "Bố, ba", ex: [
+        { zh: "這是我爸爸。", py: "Zhè shì wǒ bàba.", vi: "Đây là bố tôi." },
+        { zh: "我爸爸是老師。", py: "Wǒ bàba shì lǎoshī.", vi: "Bố tôi là giáo viên." },
+        { zh: "爸爸喜歡喝烏龍茶。", py: "Bàba xǐhuān hē wūlóngchá.", vi: "Bố thích uống trà Ô Long." }
+      ]},
+      { hz: "媽媽", py: "māma", pos: "Danh từ", mean: "Mẹ, má", ex: [
+        { zh: "這是我媽媽。", py: "Zhè shì wǒ māma.", vi: "Đây là mẹ tôi." },
+        { zh: "我媽媽很漂亮。", py: "Wǒ māma hěn piàoliang.", vi: "Mẹ tôi rất đẹp." },
+        { zh: "媽媽，這是我朋友。", py: "Māma, zhè shì wǒ péngyǒu.", vi: "Mẹ ơi, đây là bạn của con." }
+      ]},
+      { hz: "請進", py: "qǐng jìn", pos: "Cụm động từ", mean: "Mời vào", ex: [
+        { zh: "這是我家，請進！", py: "Zhè shì wǒ jiā, qǐng jìn!", vi: "Đây là nhà tôi, mời vào!" },
+        { zh: "歡迎！歡迎！請進。", py: "Huānyíng! Huānyíng! Qǐng jìn.", vi: "Chào mừng! Chào mừng! Mời vào." },
+        { zh: "先生，請進！", py: "Xiānsheng, qǐng jìn!", vi: "Ngài / Tiên sinh, mời vào!" }
+      ]}
+    ];
+
+    const vocabList2 = [
+      { hz: "田中誠一", py: "Tiánzhōng Chéngyī", pos: "Tên riêng", mean: "Điền Trung Thành Nhất (Nhật Bản)", ex: [
+        { zh: "我叫田中誠一。", py: "Wǒ jiào Tiánzhōng Chéngyī.", vi: "Tôi tên là Điền Trung Thành Nhất." },
+        { zh: "田中誠一交很多台灣朋友。", py: "Tiánzhōng Chéngyī jiāo hěn duō Táiwān péngyǒu.", vi: "Điền Trung Thành Nhất kết giao nhiều bạn Đài Loan." },
+        { zh: "田中誠一是日本人。", py: "Tiánzhōng Chéngyī shì Rìběn rén.", vi: "Điền Trung Thành Nhất là người Nhật Bản." }
+      ]},
+      { hz: "伯母", py: "bómǔ", pos: "Danh từ", mean: "Bác gái (mẹ của bạn)", ex: [
+        { zh: "伯母，您好！", py: "Bómǔ, nín hǎo!", vi: "Cháu chào bác gái ạ!" },
+        { zh: "伯母請我們喝茶。", py: "Bómǔ qǐng wǒmen hē chá.", vi: "Bác gái mời chúng cháu uống trà." },
+        { zh: "這是我伯母。", py: "Zhè shì wǒ bómǔ.", vi: "Đây là bác gái tôi." }
+      ]},
+      { hz: "名字", py: "míngzi", pos: "Danh từ", mean: "Tên, họ tên", ex: [
+        { zh: "你叫什麼名字？", py: "Nǐ jiào shénme míngzi?", vi: "Bạn tên là gì?" },
+        { zh: "我的名字叫張怡君。", py: "Wǒ de míngzi jiào Zhāng Yíjūn.", vi: "Tên của tôi là Trương Di Quân." },
+        { zh: "這個名字很好聽。", py: "Zhège míngzi hěn hǎotīng.", vi: "Tên này rất hay." }
+      ]},
+      { hz: "書", py: "shū", pos: "Danh từ", mean: "Sách", ex: [
+        { zh: "你們家有很多書。", py: "Nǐmen jiā yǒu hěn duō shū.", vi: "Nhà các bạn có rất nhiều sách." },
+        { zh: "這是我哥哥的書。", py: "Zhè shì wǒ gēge de shū.", vi: "Đây là sách của anh trai tôi." },
+        { zh: "你有幾本書？", py: "Nǐ yǒu jǐ běn shū?", vi: "Bạn có mấy cuốn sách?" }
+      ]},
+      { hz: "哥哥", py: "gēge", pos: "Danh từ", mean: "Anh trai", ex: [
+        { zh: "我哥哥是老師。", py: "Wǒ gēge shì lǎoshī.", vi: "Anh trai tôi là giáo viên." },
+        { zh: "哥哥很喜歡看書。", py: "Gēge hěn xǐhuān kànshū.", vi: "Anh trai rất thích đọc sách." },
+        { zh: "這都是我哥哥的書。", py: "Zhè dōu shì wǒ gēge de shū.", vi: "Đây đều là sách của anh trai tôi." }
+      ]},
+      { hz: "老師", py: "lǎoshī", pos: "Danh từ", mean: "Thầy giáo, cô giáo", ex: [
+        { zh: "李先生是我的老師。", py: "Lǐ xiānsheng shì wǒ de lǎoshī.", vi: "Ông Lý là thầy giáo của tôi." },
+        { zh: "老師好！", py: "Lǎoshī hǎo!", vi: "Em chào thầy/cô ạ!" },
+        { zh: "我媽媽也是老師。", py: "Wǒ māma yě shì lǎoshī.", vi: "Mẹ tôi cũng là giáo viên." }
+      ]},
+      { hz: "看書", py: "kànshū", pos: "Động từ", mean: "Đọc sách", ex: [
+        { zh: "他很喜歡看書。", py: "Tā hěn xǐhuān kànshū.", vi: "Anh ấy rất thích đọc sách." },
+        { zh: "我們在家看書。", py: "Wǒmen zài jiā kànshū.", vi: "Chúng tôi đọc sách ở nhà." },
+        { zh: "你要不要看書？", py: "Nǐ yào bú yào kànshū?", vi: "Bạn có muốn đọc sách không?" }
+      ]},
+      { hz: "幾", py: "jǐ", pos: "Đại từ nghi vấn", mean: "Mấy? (dưới 10)", ex: [
+        { zh: "你家有幾個人？", py: "Nǐ jiā yǒu jǐ ge rén?", vi: "Nhà bạn có mấy người?" },
+        { zh: "你有幾張照片？", py: "Nǐ yǒu jǐ zhāng zhàopiàn?", vi: "Bạn có mấy bức ảnh?" },
+        { zh: "他有幾個妹妹？", py: "Tā yǒu jǐ ge mèimei?", vi: "Anh ấy có mấy em gái?" }
+      ]},
+      { hz: "個", py: "ge / gè", pos: "Lượng từ", mean: "Cái, người (lượng từ chung)", ex: [
+        { zh: "我家有五個人。", py: "Wǒ jiā yǒu wǔ ge rén.", vi: "Nhà tôi có 5 người." },
+        { zh: "我有兩個妹妹。", py: "Wǒ yǒu liǎng ge mèimei.", vi: "Tôi có hai em gái." },
+        { zh: "這家店有五個老師。", py: "Zhè jiā diàn yǒu wǔ ge lǎoshī.", vi: "Tiệm này có 5 thầy giáo." }
+      ]},
+      { hz: "沒", py: "méi", pos: "Phó từ", mean: "Không (dùng với 有)", ex: [
+        { zh: "我沒有照片。", py: "Wǒ méiyǒu zhàopiàn.", vi: "Tôi không có ảnh." },
+        { zh: "你有沒有兄弟姐妹？", py: "Nǐ yǒu méiyǒu xiōngdì jiěmèi?", vi: "Bạn có anh chị em không?" },
+        { zh: "他沒有哥哥。", py: "Tā méiyǒu gēge.", vi: "Anh ấy không có anh trai." }
+      ]},
+      { hz: "兄弟", py: "xiōngdì", pos: "Danh từ", mean: "Anh em trai", ex: [
+        { zh: "你有沒有兄弟？", py: "Nǐ yǒu méiyǒu xiōngdì?", vi: "Bạn có anh em trai không?" },
+        { zh: "我們是好兄弟。", py: "Wǒmen shì hǎo xiōngdì.", vi: "Chúng tôi là anh em tốt." },
+        { zh: "他沒有兄弟姐妹。", py: "Tā méiyǒu xiōngdì jiěmèi.", vi: "Anh ấy không có anh chị em." }
+      ]},
+      { hz: "姐妹", py: "jiěmèi", pos: "Danh từ", mean: "Chị em gái", ex: [
+        { zh: "我有兩個姐妹。", py: "Wǒ yǒu liǎng ge jiěmèi.", vi: "Tôi có hai chị em gái." },
+        { zh: "你有沒有姐妹？", py: "Nǐ yǒu méiyǒu jiěmèi?", vi: "Bạn có chị em gái không?" },
+        { zh: "她們是姐妹。", py: "Tāmen shì jiěmèi.", vi: "Họ là chị em gái." }
+      ]},
+      { hz: "五", py: "wǔ", pos: "Số từ", mean: "Số 5 (Năm)", ex: [
+        { zh: "我家有五個人。", py: "Wǒ jiā yǒu wǔ ge rén.", vi: "Nhà tôi có 5 người." },
+        { zh: "我有五本書。", py: "Wǒ yǒu wǔ běn shū.", vi: "Tôi có 5 cuốn sách." },
+        { zh: "這裡有五張照片。", py: "Zhèlǐ yǒu wǔ zhāng zhàopiàn.", vi: "Ở đây có 5 tấm ảnh." }
+      ]},
+      { hz: "兩", py: "liǎng", pos: "Số từ", mean: "Hai (dùng trước lượng từ)", ex: [
+        { zh: "我有兩個妹妹。", py: "Wǒ yǒu liǎng ge mèimei.", vi: "Tôi có hai em gái." },
+        { zh: "這有兩張照片。", py: "Zhè yǒu liǎng zhāng zhàopiàn.", vi: "Ở đây có hai bức ảnh." },
+        { zh: "我們要兩杯咖啡。", py: "Wǒmen yào liǎng bēi kāfēi.", vi: "Chúng tôi muốn hai ly cà phê." }
+      ]}
+    ];
+
+    /* ==========================================================================
+       2. LONGEST-MATCH TOKENIZER & RENDERING ENGINE
+       ========================================================================== */
+    // Sort keys by length descending to match longest tokens first
+    const sortedDictKeys = Object.keys(dictionary).sort((a, b) => b.length - a.length);
+
+    function tokenizeChineseText(text) {
+      let i = 0;
+      let resultHTML = '';
+
+      while (i < text.length) {
+        let matched = false;
+
+        // Try to match longest key in dictionary
+        for (const key of sortedDictKeys) {
+          if (text.substr(i, key.length) === key) {
+            resultHTML += `<span class="word-token" onclick="openDictModal('${key}')">${key}</span>`;
+            i += key.length;
+            matched = true;
+            break;
+          }
+        }
+
+        if (!matched) {
+          const char = text[i];
+          // Punctuation or single unknown char
+          if (/[\u4e00-\u9fa5]/.test(char)) {
+            resultHTML += `<span class="word-token" onclick="openDictModal('${char}')">${char}</span>`;
+          } else {
+            resultHTML += `<span>${char}</span>`;
+          }
+          i++;
+        }
+      }
+      return resultHTML;
+    }
+
+    function renderDialogues() {
+      document.querySelectorAll('.d-line').forEach(line => {
+        const rawZh = line.getAttribute('data-zh');
+        const container = line.querySelector('.dialogue-zh');
+        if (container && rawZh) {
+          container.innerHTML = tokenizeChineseText(rawZh);
+        }
+      });
+
+      document.querySelectorAll('.g-zh').forEach(el => {
+        const rawZh = el.getAttribute('data-zh');
+        if (rawZh) {
+          el.innerHTML = tokenizeChineseText(rawZh);
+        }
+      });
+    }
+
+    function renderVocabGrid(list, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      let html = '';
+      list.forEach((item, idx) => {
+        const exHTML = item.ex.map(e => `
+          <div class="mt-2 p-2 bg-slate-50 rounded-lg text-xs space-y-0.5 border border-slate-100 flex items-start gap-2">
+            <button onclick="speakText('${e.zh}', this)" class="mt-0.5 w-5 h-5 bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white rounded-full flex items-center justify-center shrink-0 transition">
+              <i class="fa-solid fa-play text-[10px]"></i>
+            </button>
+            <div class="flex-grow">
+              <div class="text-slate-900 font-medium">${tokenizeChineseText(e.zh)}</div>
+              <div class="pinyin-text text-sky-700 font-mono text-[11px]">${e.py}</div>
+              <div class="trans-text text-slate-500 text-[11px]">${e.vi}</div>
+            </div>
+          </div>
+        `).join('');
+
+        html += `
+          <div class="bg-white p-4 rounded-xl border border-sky-100 shadow-sm hover:shadow transition flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-2">
+                <div>
+                  <span class="text-2xl font-bold text-sky-950 cursor-pointer hover:text-sky-600 transition font-serif" onclick="openDictModal('${item.hz}')">${item.hz}</span>
+                  <span class="ml-2 font-mono text-sm text-sky-600 font-semibold">${item.py}</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 text-[11px] font-semibold bg-sky-50 text-sky-700 rounded border border-sky-200">${item.pos}</span>
+                  <button onclick="speakText('${item.hz}', this)" class="w-8 h-8 bg-sky-100 hover:bg-sky-600 hover:text-white text-sky-700 rounded-full flex items-center justify-center transition shadow-sm">
+                    <i class="fa-solid fa-volume-high text-xs"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="mt-2 text-sm text-slate-700 font-medium">${item.mean}</p>
+              <div class="mt-3 space-y-1">
+                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ví dụ tích lũy:</span>
+                ${exHTML}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    /* ==========================================================================
+       3. DICTIONARY MODAL CONTROLLER
+       ========================================================================== */
+    function openDictModal(term) {
+      const entry = dictionary[term] || {
+        pinyin: "Chưa có Pinyin",
+        pos: "Từ đơn / Ký tự",
+        meaning: `Chữ Hán: ${term}`,
+        notes: "Nhấp nghe phát âm chuẩn giọng Đài Loan."
+      };
+
+      document.getElementById('modalHanzi').innerText = term;
+      document.getElementById('modalPinyin').innerText = entry.pinyin;
+      document.getElementById('modalPos').innerText = entry.pos;
+      document.getElementById('modalMeaning').innerText = entry.meaning;
+
+      const noteBox = document.getElementById('modalNoteBox');
+      const noteTxt = document.getElementById('modalNotes');
+      if (entry.notes && entry.notes.trim() !== "") {
+        noteTxt.innerText = entry.notes;
+        noteBox.classList.remove('hidden');
+      } else {
+        noteBox.classList.add('hidden');
+      }
+
+      const audioBtn = document.getElementById('modalAudioBtn');
+      audioBtn.onclick = function() { speakText(term, audioBtn); };
+
+      document.getElementById('dictModal').classList.remove('hidden');
+      speakText(term);
+    }
+
+    function closeDictModal() {
+      document.getElementById('dictModal').classList.add('hidden');
+    }
+
+    /* ==========================================================================
+       4. WEB SPEECH API TTS ENGINE (Zh-TW Taiwan Voice Priority)
+       ========================================================================== */
+    let synth = window.speechSynthesis;
+    let voices = [];
+    let isPlayingFull = false;
+    let currentDialogueTimeout = null;
+
+    function populateVoices() {
+      if (!synth) return;
+      voices = synth.getVoices();
+      const select = document.getElementById('ttsVoiceSelect');
+      if (!select) return;
+
+      select.innerHTML = '';
+
+      // Filter zh-TW / Taiwan voices first, fallback to zh
+      const twVoices = voices.filter(v => v.lang.includes('zh-TW') || v.lang.includes('TW') || v.name.includes('Taiwan') || v.name.includes('Meijia') || v.name.includes('HsiaoChen'));
+      const allZhVoices = voices.filter(v => v.lang.startsWith('zh'));
+
+      const priorityVoices = twVoices.length > 0 ? twVoices : allZhVoices;
+
+      if (priorityVoices.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Giọng Mac/Windows Mac định (zh)';
+        select.appendChild(option);
+        return;
+      }
+
+      priorityVoices.forEach((voice, index) => {
+        const option = document.createElement('option');
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        if (voice.lang.includes('zh-TW') || voice.name.includes('Taiwan') || index === 0) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+    }
+
+    if (synth) {
+      populateVoices();
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoices;
+      }
+    }
+
+    function speakText(text, btnEl = null) {
+      if (!synth) {
+        alert("Trình duyệt của bạn không hỗ trợ phát âm tự động Web Speech API.");
+        return;
+      }
+
+      stopTTS();
+
+      // Clean speaker name prefix if any (e.g., 怡君：)
+      const cleanText = text.replace(/^[^\u4e00-\u9fa5]+：/, '').trim();
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      const speedSelect = document.getElementById('ttsSpeedSelect');
+      utterance.rate = parseFloat(speedSelect ? speedSelect.value : 0.9);
+
+      const voiceSelect = document.getElementById('ttsVoiceSelect');
+      if (voiceSelect && voiceSelect.value) {
+        const selectedVoice = voices.find(v => v.name === voiceSelect.value);
+        if (selectedVoice) utterance.voice = selectedVoice;
+      } else {
+        const twVoice = voices.find(v => v.lang.includes('zh-TW') || v.name.includes('Taiwan'));
+        if (twVoice) utterance.voice = twVoice;
+      }
+
+      if (btnEl) {
+        btnEl.classList.add('bg-sky-600', 'text-white');
+        utterance.onend = () => {
+          btnEl.classList.remove('bg-sky-600', 'text-white');
+        };
+        utterance.onerror = () => {
+          btnEl.classList.remove('bg-sky-600', 'text-white');
+        };
+      }
+
+      synth.speak(utterance);
+    }
+
+    function stopTTS() {
+      if (synth) synth.cancel();
+      isPlayingFull = false;
+      if (currentDialogueTimeout) clearTimeout(currentDialogueTimeout);
+      document.querySelectorAll('.speaking-active').forEach(el => el.classList.remove('speaking-active'));
+    }
+
+    function playFullDialogue(dialogueContainerId, playBtn) {
+      stopTTS();
+      isPlayingFull = true;
+
+      const lines = Array.from(document.querySelectorAll(`#${dialogueContainerId} .d-line`));
+      let currentIdx = 0;
+
+      function playNext() {
+        if (!isPlayingFull || currentIdx >= lines.length) {
+          stopTTS();
+          return;
+        }
+
+        // Highlight current line
+        lines.forEach(l => l.classList.remove('speaking-active'));
+        const line = lines[currentIdx];
+        line.classList.add('speaking-active');
+        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        const zhText = line.getAttribute('data-zh');
+        const cleanText = zhText.replace(/^[^\u4e00-\u9fa5]+：/, '').trim();
+
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        const speedSelect = document.getElementById('ttsSpeedSelect');
+        utterance.rate = parseFloat(speedSelect ? speedSelect.value : 0.9);
+
+        const voiceSelect = document.getElementById('ttsVoiceSelect');
+        if (voiceSelect && voiceSelect.value) {
+          const selectedVoice = voices.find(v => v.name === voiceSelect.value);
+          if (selectedVoice) utterance.voice = selectedVoice;
+        }
+
+        utterance.onend = () => {
+          currentIdx++;
+          if (isPlayingFull) {
+            currentDialogueTimeout = setTimeout(playNext, 600);
+          }
+        };
+
+        utterance.onerror = () => {
+          stopTTS();
+        };
+
+        synth.speak(utterance);
+      }
+
+      playNext();
+    }
+
+    /* ==========================================================================
+       5. UI & STATE MANAGEMENT (Tabs, Font Size, Visibility Toggles)
+       ========================================================================== */
+    function switchTab(tabId) {
+      stopTTS();
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-sky-700', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+      });
+
+      const targetTab = document.getElementById(tabId);
+      const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+
+      if (targetTab) targetTab.classList.remove('hidden');
+      if (targetBtn) {
+        targetBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+        targetBtn.classList.add('bg-sky-700', 'text-white', 'shadow-sm');
+      }
+    }
+
+    // Dynamic Font Resizer
+    function setFontSize(val) {
+      val = Math.max(80, Math.min(300, parseInt(val)));
+      document.documentElement.style.fontSize = `${val}%`;
+      document.getElementById('fontValBadge').innerText = `${val}%`;
+      document.getElementById('fontRange').value = val;
+      localStorage.setItem('tocfl_font_size', val);
+    }
+
+    function adjustFontSize(delta) {
+      const cur = parseInt(document.getElementById('fontRange').value) || 100;
+      setFontSize(cur + delta);
+    }
+
+    // Visibility Toggles
+    let showPinyin = true;
+    let showTrans = true;
+
+    function toggleGlobalPinyin() {
+      showPinyin = !showPinyin;
+      const body = document.body;
+      const btnText = document.getElementById('pinyinBtnText');
+      if (showPinyin) {
+        body.classList.remove('hide-pinyin');
+        btnText.innerText = 'Pinyin: Hiện';
+      } else {
+        body.classList.add('hide-pinyin');
+        btnText.innerText = 'Pinyin: Ẩn';
+      }
+    }
+
+    function toggleGlobalTrans() {
+      showTrans = !showTrans;
+      const body = document.body;
+      const btnText = document.getElementById('transBtnText');
+      if (showTrans) {
+        body.classList.remove('hide-translation');
+        btnText.innerText = 'Dịch: Hiện';
+      } else {
+        body.classList.add('hide-translation');
+        btnText.innerText = 'Dịch: Ẩn';
+      }
+    }
+
+    /* ==========================================================================
+       6. INITIALIZATION ON WINDOW LOAD
+       ========================================================================== */
+    window.onload = function() {
+      // Load saved font size
+      const savedFontSize = localStorage.getItem('tocfl_font_size');
+      if (savedFontSize) setFontSize(savedFontSize);
+
+      // Render Vocab & Dialogues
+      renderVocabGrid(vocabList1, 'vocabGrid1');
+      renderVocabGrid(vocabList2, 'vocabGrid2');
+      renderDialogues();
+
+      // Populate Voices
+      populateVoices();
+    };
+  </script>
+
+</body>
+</html>
